@@ -1,0 +1,1613 @@
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Xml;
+using Server.Misc;
+using Server.Mobiles;
+using Server.Multis;
+using Server.Network;
+
+namespace Server.Accounting
+{
+    [PropertyObject]
+    public class Account : IAccount, IComparable, IComparable<Account>
+    {
+        private static readonly TimeSpan _InactiveDuration = TimeSpan.FromDays(180.0);
+        private static readonly TimeSpan _EmptyInactiveDuration = TimeSpan.FromDays(30.0);
+
+        private static MD5 m_MD5HashProvider;
+        private static SHA1 m_SHA1HashProvider;
+        private static SHA512 m_SHA512HashProvider;
+
+        private static byte[] _HashBuffer;
+
+        private readonly Mobile[] m_Mobiles;
+
+        private AccessLevel m_AccessLevel;
+        private List<AccountComment> m_Comments;
+        private List<AccountTag> m_Tags;
+        private TimeSpan m_TotalGameTime;
+
+        public Account(string username, string password)
+        {
+            Username = username;
+
+            SetPassword(password);
+
+            m_AccessLevel = AccessLevel.Player;
+
+            Created = LastLogin = DateTime.UtcNow;
+            m_TotalGameTime = TimeSpan.Zero;
+
+            m_Mobiles = new Mobile[7];
+
+            IPRestrictions = Array.Empty<string>();
+            LoginIPs = Array.Empty<IPAddress>();
+
+            Accounts.Add(this);
+        }
+
+        public Account(XmlElement node)
+        {
+            Username = Utility.GetText(node["username"], "empty");
+
+            string plainPassword = Utility.GetText(node["password"], null);
+            string MD5Password = Utility.GetText(node["cryptPassword"], null);
+            string SHA1Password = Utility.GetText(node["newCryptPassword"], null);
+            string SHA512Password = Utility.GetText(node["newSecureCryptPassword"], null);
+
+            switch (AccountHandler.ProtectPasswords)
+            {
+                case PasswordProtection.None:
+                    {
+                        if (plainPassword != null)
+                        {
+                            SetPassword(plainPassword);
+                        }
+                        else if (SHA512Password != null)
+                        {
+                            _SHA512Password = SHA512Password;
+                        }
+                        else if (SHA1Password != null)
+                        {
+                            _SHA1Password = SHA1Password;
+                        }
+                        else if (MD5Password != null)
+                        {
+                            _MD5Password = MD5Password;
+                        }
+                        else
+                        {
+                            SetPassword("empty");
+                        }
+
+                        break;
+                    }
+                case PasswordProtection.Crypt:
+                    {
+                        if (MD5Password != null)
+                        {
+                            _MD5Password = MD5Password;
+                        }
+                        else if (plainPassword != null)
+                        {
+                            SetPassword(plainPassword);
+                        }
+                        else if (SHA1Password != null)
+                        {
+                            _SHA1Password = SHA1Password;
+                        }
+                        else if (SHA512Password != null)
+                        {
+                            _SHA512Password = SHA512Password;
+                        }
+                        else
+                        {
+                            SetPassword("empty");
+                        }
+
+                        break;
+                    }
+                case PasswordProtection.NewCrypt:
+                    {
+                        if (SHA1Password != null)
+                        {
+                            _SHA1Password = SHA1Password;
+                        }
+                        else if (plainPassword != null)
+                        {
+                            SetPassword(plainPassword);
+                        }
+                        else if (MD5Password != null)
+                        {
+                            _MD5Password = MD5Password;
+                        }
+                        else if (SHA512Password != null)
+                        {
+                            _SHA512Password = SHA512Password;
+                        }
+                        else
+                        {
+                            SetPassword("empty");
+                        }
+
+                        break;
+                    }
+                default: // PasswordProtection.NewSecureCrypt
+                    {
+                        if (SHA512Password != null)
+                        {
+                            _SHA512Password = SHA512Password;
+                        }
+                        else if (plainPassword != null)
+                        {
+                            SetPassword(plainPassword);
+                        }
+                        else if (SHA1Password != null)
+                        {
+                            _SHA1Password = SHA1Password;
+                        }
+                        else if (MD5Password != null)
+                        {
+                            _MD5Password = MD5Password;
+                        }
+                        else
+                        {
+                            SetPassword("empty");
+                        }
+
+                        break;
+                    }
+            }
+
+            Enum.TryParse(Utility.GetText(node["accessLevel"], "Player"), true, out m_AccessLevel);
+
+            Flags = Utility.GetXMLInt32(Utility.GetText(node["flags"], "0"), 0);
+            Created = Utility.GetXMLDateTime(Utility.GetText(node["created"], null), DateTime.UtcNow);
+            LastLogin = Utility.GetXMLDateTime(Utility.GetText(node["lastLogin"], null), DateTime.UtcNow);
+
+            TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0"), 0);
+            Sovereigns = Utility.GetXMLInt32(Utility.GetText(node["sovereigns"], "0"), 0);
+
+            m_Mobiles = LoadMobiles(node);
+            m_Comments = LoadComments(node);
+            m_Tags = LoadTags(node);
+            LoginIPs = LoadAddressList(node);
+            IPRestrictions = LoadAccessCheck(node);
+
+            for (int index = 0; index < m_Mobiles.Length; index++)
+            {
+                Mobile m = m_Mobiles[index];
+
+                if (m != null)
+                {
+                    m.Account = this;
+                }
+            }
+
+            TimeSpan totalGameTime = Utility.GetXMLTimeSpan(Utility.GetText(node["totalGameTime"], null), TimeSpan.Zero);
+
+            if (totalGameTime == TimeSpan.Zero)
+            {
+                for (int index = 0; index < m_Mobiles.Length; index++)
+                {
+                    Mobile mobile = m_Mobiles[index];
+
+                    if (mobile is PlayerMobile playerMobile)
+                    {
+                        totalGameTime = totalGameTime + playerMobile.GameTime;
+                    }
+                }
+            }
+
+            m_TotalGameTime = totalGameTime;
+
+            Accounts.Add(this);
+        }
+
+        /// <summary>
+        ///     Object detailing information about the hardware of the last person to log into this account
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public HardwareInfo HardwareInfo { get; set; }
+
+        /// <summary>
+        ///     List of IP addresses for restricted access. '*' wildcard supported. If the array contains zero entries, all IP
+        ///     addresses are allowed.
+        /// </summary>
+        public string[] IPRestrictions { get; set; }
+
+        /// <summary>
+        ///     List of IP addresses which have successfully logged into this account.
+        /// </summary>
+        public IPAddress[] LoginIPs { get; set; }
+
+        /// <summary>
+        ///     List of account comments. Type of contained objects is AccountComment.
+        /// </summary>
+        public List<AccountComment> Comments => m_Comments ?? (m_Comments = new List<AccountComment>());
+
+        /// <summary>
+        ///     List of account tags. Type of contained objects is AccountTag.
+        /// </summary>
+        public List<AccountTag> Tags => m_Tags ?? (m_Tags = new List<AccountTag>());
+
+        /// <summary>
+        ///     Account password. Plain text. Case sensitive validation. May be null.
+        /// </summary>
+        public string PlainPassword { get; set; }
+
+        /// <summary>
+        ///     Account password. Hashed with MD5. May be null.
+        /// </summary>
+        public string _MD5Password { get; set; }
+
+        /// <summary>
+        ///     Account username and password hashed with SHA1. May be null.
+        /// </summary>
+        public string _SHA1Password { get; set; }
+
+        /// <summary>
+        ///     Account username and password hashed with SHA512. May be null.
+        /// </summary>
+        public string _SHA512Password { get; set; }
+
+        /// <summary>
+        ///     Internal bitfield of account flags. Consider using direct access properties (Banned, Young), or GetFlag/SetFlag
+        ///     methods
+        /// </summary>
+        public int Flags { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a flag indiciating if this account is banned.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool Banned
+        {
+            get
+            {
+                bool isBanned = GetFlag(0);
+
+                if (!isBanned)
+                {
+                    return false;
+                }
+
+                DateTime banTime;
+                TimeSpan banDuration;
+
+                if (!GetBanTags(out banTime, out banDuration) || banDuration == TimeSpan.MaxValue || DateTime.UtcNow < banTime + banDuration)
+                {
+                    return true;
+                }
+
+                SetUnspecifiedBan(null); // clear
+                Banned = false;
+                return false;
+            }
+            set => SetFlag(0, value);
+        }
+
+        /// <summary>
+        ///     The date and time of when this account was created.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
+        public DateTime Created { get; set; }
+
+        [CommandProperty(AccessLevel.Administrator)]
+        public TimeSpan Age => DateTime.UtcNow - Created;
+
+        /// <summary>
+        ///     Gets or sets the date and time when this account was last accessed.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public DateTime LastLogin { get; set; }
+
+        /// <summary>
+        ///     An account is considered inactive based upon LastLogin and InactiveDuration.  If the account is empty, it is based
+        ///     upon EmptyInactiveDuration
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool Inactive
+        {
+            get
+            {
+                if (AccessLevel >= AccessLevel.Counselor)
+                {
+                    return false;
+                }
+
+                TimeSpan inactiveLength = DateTime.UtcNow - LastLogin;
+
+                return inactiveLength > (Count == 0 ? _EmptyInactiveDuration : _InactiveDuration);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the total game time of this account, also considering the game time of characters
+        ///     that have been deleted.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public TimeSpan TotalGameTime
+        {
+            get
+            {
+                PlayerMobile online = null;
+
+                for (int index = 0; index < m_Mobiles.Length; index++)
+                {
+                    Mobile mobile = m_Mobiles[index];
+
+                    if (mobile is PlayerMobile pm && pm.NetState != null)
+                    {
+                        online = pm;
+                        break;
+                    }
+                }
+
+                if (online != null)
+                {
+                    return m_TotalGameTime + (DateTime.UtcNow - online.SessionStart);
+                }
+
+                return m_TotalGameTime;
+            }
+        }
+
+        /// <summary>
+        ///     Account username. Case insensitive validation.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
+        public string Username { get; set; }
+
+        /// <summary>
+        ///     Account email address. Case insensitive validation.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
+        public string Email { get; set; }
+
+        /// <summary>
+        ///     Initial AccessLevel for new characters created on this account.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, AccessLevel.Owner)]
+        public AccessLevel AccessLevel { get => m_AccessLevel; set => m_AccessLevel = value;
+        }
+
+        /// <summary>
+        ///     Gets the current number of characters on this account.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public int Count
+        {
+            get
+            {
+                int count = 0;
+
+                for (int i = 0; i < Length; ++i)
+                {
+                    if (this[i] != null)
+                    {
+                        ++count;
+                    }
+                }
+
+                return count;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the maximum amount of characters allowed to be created on this account. Values other than 1, 5, 6, or 7 are
+        ///     not supported by the client.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public int Limit => 7;
+
+        /// <summary>
+        ///     Gets the maxmimum amount of characters that this account can hold.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public int Length => m_Mobiles.Length;
+
+        /// <summary>
+        ///     Gets or sets the character at a specified index for this account.
+        ///     Out of bound index values are handled; null returned for get, ignored for set.
+        /// </summary>
+        public Mobile this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= m_Mobiles.Length)
+                {
+                    return null;
+                }
+
+                Mobile m = m_Mobiles[index];
+
+                if (m == null || !m.Deleted)
+                {
+                    return m;
+                }
+
+                m.Account = null;
+                m_Mobiles[index] = null;
+                return null;
+            }
+            set
+            {
+                if (index < 0 || index >= m_Mobiles.Length)
+                {
+                    return;
+                }
+
+                if (m_Mobiles[index] != null)
+                {
+                    m_Mobiles[index].Account = null;
+                }
+
+                m_Mobiles[index] = value;
+
+                if (m_Mobiles[index] != null)
+                {
+                    m_Mobiles[index].Account = this;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Deletes the account, all characters of the account, and all houses of those characters
+        /// </summary>
+        public void Delete()
+        {
+            for (int i = 0; i < Length; ++i)
+            {
+                Mobile m = this[i];
+
+                if (m == null)
+                {
+                    continue;
+                }
+
+                List<BaseHouse> list = BaseHouse.GetHouses(m);
+
+                for (int index = 0; index < list.Count; index++)
+                {
+                    BaseHouse h = list[index];
+
+                    h.Delete();
+                }
+
+                ColUtility.Free(list);
+
+                m.Delete();
+
+                m.Account = null;
+                m_Mobiles[i] = null;
+            }
+
+            if (LoginIPs.Length != 0 && AccountHandler.IPTable.TryGetValue(LoginIPs[0], out int value))
+            {
+                AccountHandler.IPTable[LoginIPs[0]] = --value;
+            }
+
+            Accounts.Remove(Username);
+        }
+
+        public void SetPassword(string plainPassword)
+        {
+            switch (AccountHandler.ProtectPasswords)
+            {
+                case PasswordProtection.None:
+                    {
+                        PlainPassword = plainPassword;
+                        _MD5Password = null;
+                        _SHA1Password = null;
+                        _SHA512Password = null;
+                    }
+                    break;
+                case PasswordProtection.Crypt:
+                    {
+                        PlainPassword = null;
+                        _MD5Password = HashMD5(plainPassword);
+                        _SHA1Password = null;
+                        _SHA512Password = null;
+                    }
+                    break;
+                case PasswordProtection.NewCrypt:
+                    {
+                        PlainPassword = null;
+                        _MD5Password = null;
+                        _SHA1Password = HashSHA1(Username + plainPassword);
+                        _SHA512Password = null;
+                    }
+                    break;
+                default: // PasswordProtection.NewSecureCrypt
+                    {
+                        PlainPassword = null;
+                        _MD5Password = null;
+                        _SHA1Password = null;
+                        _SHA512Password = HashSHA512(Username + plainPassword);
+                    }
+                    break;
+            }
+        }
+
+        public bool CheckPassword(string plainPassword)
+        {
+            bool ok;
+            PasswordProtection curProt;
+
+            if (PlainPassword != null)
+            {
+                ok = PlainPassword == plainPassword;
+                curProt = PasswordProtection.None;
+            }
+            else if (_MD5Password != null)
+            {
+                ok = _MD5Password == HashMD5(plainPassword);
+                curProt = PasswordProtection.Crypt;
+            }
+            else if (_SHA1Password != null)
+            {
+                ok = _SHA1Password == HashSHA1(Username + plainPassword);
+                curProt = PasswordProtection.NewCrypt;
+            }
+            else
+            {
+                ok = _SHA512Password == HashSHA512(Username + plainPassword);
+                curProt = PasswordProtection.NewSecureCrypt;
+            }
+
+            if (ok && curProt != AccountHandler.ProtectPasswords)
+            {
+                SetPassword(plainPassword);
+            }
+
+            return ok;
+        }
+
+        public int CompareTo(IAccount other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            return string.Compare(Username, other.Username, StringComparison.Ordinal);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is Account account)
+            {
+                return CompareTo(account);
+            }
+
+            throw new ArgumentException();
+        }
+
+        public int CompareTo(Account other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            return string.Compare(Username, other.Username, StringComparison.Ordinal);
+        }
+
+        private static string HashMD5(string phrase)
+        {
+            if (m_MD5HashProvider == null)
+            {
+                m_MD5HashProvider = MD5.Create();
+            }
+
+            if (_HashBuffer == null)
+            {
+                _HashBuffer = new byte[256];
+            }
+
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, _HashBuffer, 0);
+            byte[] hashed = m_MD5HashProvider.ComputeHash(_HashBuffer, 0, length);
+
+            return BitConverter.ToString(hashed);
+        }
+
+        private static string HashSHA1(string phrase)
+        {
+            if (m_SHA1HashProvider == null)
+            {
+                m_SHA1HashProvider = SHA1.Create();
+            }
+
+            if (_HashBuffer == null)
+            {
+                _HashBuffer = new byte[256];
+            }
+
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, _HashBuffer, 0);
+            byte[] hashed = m_SHA1HashProvider.ComputeHash(_HashBuffer, 0, length);
+
+            return BitConverter.ToString(hashed);
+        }
+
+        private static string HashSHA512(string phrase)
+        {
+            if (m_SHA512HashProvider == null)
+            {
+                m_SHA512HashProvider = SHA512.Create();
+            }
+
+            if (_HashBuffer == null)
+            {
+                _HashBuffer = new byte[256];
+            }
+
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, _HashBuffer, 0);
+            byte[] hashed = m_SHA512HashProvider.ComputeHash(_HashBuffer, 0, length);
+
+            return BitConverter.ToString(hashed);
+        }
+
+        /// <summary>
+        ///     Deserializes a list of string values from an xml element. Null values are not added to the list.
+        /// </summary>
+        /// <param name="node">The XmlElement from which to deserialize.</param>
+        /// <returns>String list. Value will never be null.</returns>
+        private static string[] LoadAccessCheck(XmlElement node)
+        {
+            List<string> resultList = new List<string>();
+            XmlElement accessCheck = node["accessCheck"];
+
+            if (accessCheck != null)
+            {
+                foreach (XmlElement ipElement in accessCheck.GetElementsByTagName("ip"))
+                {
+                    string ipText = Utility.GetText(ipElement, null);
+                    if (ipText != null)
+                    {
+                        resultList.Add(ipText);
+                    }
+                }
+            }
+
+            return resultList.ToArray();
+        }
+
+        /// <summary>
+        ///     Deserializes a list of IPAddress values from an xml element.
+        /// </summary>
+        /// <param name="node">The XmlElement from which to deserialize.</param>
+        /// <returns>Address list. Value will never be null.</returns>
+        private static IPAddress[] LoadAddressList(XmlElement node)
+        {
+            IPAddress[] list;
+            XmlElement addressList = node["addressList"];
+
+            if (addressList != null)
+            {
+                int count = Utility.GetXMLInt32(Utility.GetAttribute(addressList, "count", "0"), 0);
+
+                list = new IPAddress[count];
+
+                count = 0;
+
+                foreach (XmlElement ip in addressList.GetElementsByTagName("ip"))
+                {
+                    if (count < list.Length)
+                    {
+                        IPAddress address;
+
+                        if (!IPAddress.TryParse(Utility.GetText(ip, null), out address))
+                        {
+                            continue;
+                        }
+
+                        list[count] = Utility.Intern(address);
+                        count++;
+                    }
+                }
+
+                if (count == list.Length)
+                {
+                    return list;
+                }
+
+                IPAddress[] old = list;
+                list = new IPAddress[count];
+
+                for (int i = 0; i < count && i < old.Length; ++i)
+                {
+                    list[i] = old[i];
+                }
+            }
+            else
+            {
+                list = Array.Empty<IPAddress>();
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        ///     Deserializes a list of Mobile instances from an xml element.
+        /// </summary>
+        /// <param name="node">The XmlElement instance from which to deserialize.</param>
+        /// <returns>Mobile list. Value will never be null.</returns>
+        public static Mobile[] LoadMobiles(XmlElement node)
+        {
+            Mobile[] list = new Mobile[7];
+            XmlElement chars = node["chars"];
+
+            //int length = Accounts.GetInt32( Accounts.GetAttribute( chars, "length", "6" ), 6 );
+            //list = new Mobile[length];
+            //Above is legacy, no longer used
+
+            if (chars == null)
+            {
+                return list;
+            }
+
+            XmlNodeList name = chars.GetElementsByTagName("char");
+
+            for (int i = 0; i < name.Count; i++)
+            {
+                XmlElement ele = (XmlElement) name[i];
+
+                try
+                {
+                    int index = Utility.GetXMLInt32(Utility.GetAttribute(ele, "index", "0"), 0);
+                    int serial = Utility.GetXMLInt32(Utility.GetText(ele, "0"), 0);
+
+                    if (index >= 0 && index < list.Length)
+                    {
+                        list[index] = World.FindMobile(serial);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Diagnostics.ExceptionLogging.LogException(e);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        ///     Deserializes a list of AccountComment instances from an xml element.
+        /// </summary>
+        /// <param name="node">The XmlElement from which to deserialize.</param>
+        /// <returns>Comment list. Value will never be null.</returns>
+        public static List<AccountComment> LoadComments(XmlElement node)
+        {
+            XmlElement comments = node["comments"];
+
+            if (comments == null)
+            {
+                return null;
+            }
+
+            List<AccountComment> list = new List<AccountComment>();
+
+            XmlNodeList name = comments.GetElementsByTagName("comment");
+
+            for (int index = 0; index < name.Count; index++)
+            {
+                XmlElement comment = (XmlElement) name[index];
+
+                try
+                {
+                    list.Add(new AccountComment(comment));
+                }
+                catch (Exception e)
+                {
+                    Diagnostics.ExceptionLogging.LogException(e);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        ///     Deserializes a list of AccountTag instances from an xml element.
+        /// </summary>
+        /// <param name="node">The XmlElement from which to deserialize.</param>
+        /// <returns>Tag list. Value will never be null.</returns>
+        public static List<AccountTag> LoadTags(XmlElement node)
+        {
+            XmlElement tags = node["tags"];
+
+            if (tags == null)
+            {
+                return null;
+            }
+
+            List<AccountTag> list = new List<AccountTag>();
+
+            XmlNodeList name = tags.GetElementsByTagName("tag");
+
+            for (int index = 0; index < name.Count; index++)
+            {
+                XmlElement tag = (XmlElement) name[index];
+
+                try
+                {
+                    list.Add(new AccountTag(tag));
+                }
+                catch (Exception e)
+                {
+                    Diagnostics.ExceptionLogging.LogException(e);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        ///     Gets the value of a specific flag in the Flags bitfield.
+        /// </summary>
+        /// <param name="index">The zero-based flag index.</param>
+        public bool GetFlag(int index)
+        {
+            return (Flags & (1 << index)) != 0;
+        }
+
+        /// <summary>
+        ///     Sets the value of a specific flag in the Flags bitfield.
+        /// </summary>
+        /// <param name="index">The zero-based flag index.</param>
+        /// <param name="value">The value to set.</param>
+        public void SetFlag(int index, bool value)
+        {
+            if (value)
+            {
+                Flags |= 1 << index;
+            }
+            else
+            {
+                Flags &= ~(1 << index);
+            }
+        }
+
+        /// <summary>
+        ///     Adds a new tag to this account. This method does not check for duplicate names.
+        /// </summary>
+        /// <param name="name">New tag name.</param>
+        /// <param name="value">New tag value.</param>
+        public void AddTag(string name, string value)
+        {
+            Tags.Add(new AccountTag(name, value));
+        }
+
+        /// <summary>
+        ///     Removes all tags with the specified name from this account.
+        /// </summary>
+        /// <param name="name">Tag name to remove.</param>
+        public void RemoveTag(string name)
+        {
+            for (int i = Tags.Count - 1; i >= 0; --i)
+            {
+                if (i >= Tags.Count)
+                {
+                    continue;
+                }
+
+                AccountTag tag = Tags[i];
+
+                if (tag.Name == name)
+                {
+                    Tags.RemoveAt(i);
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Modifies an existing tag or adds a new tag if no tag exists.
+        /// </summary>
+        /// <param name="name">Tag name.</param>
+        /// <param name="value">Tag value.</param>
+        public void SetTag(string name, string value)
+        {
+            AccountTag tag = null;
+
+            for (int index = 0; index < Tags.Count; index++)
+            {
+                AccountTag t = Tags[index];
+
+                if (t.Name == name)
+                {
+                    tag = t;
+                    break;
+                }
+            }
+
+            if (tag != null)
+            {
+                tag.Value = value;
+            }
+            else
+            {
+                AddTag(name, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the value of a tag -or- null if there are no tags with the specified name.
+        /// </summary>
+        /// <param name="name">Name of the desired tag value.</param>
+        public string GetTag(string name)
+        {
+            for (int index = 0; index < Tags.Count; index++)
+            {
+                AccountTag tag = Tags[index];
+
+                if (tag.Name == name)
+                {
+                    string s = tag.Value;
+
+
+                    return s;
+                }
+            }
+
+            return null;
+        }
+
+        public void SetUnspecifiedBan(Mobile from)
+        {
+            SetBanTags(from, DateTime.MinValue, TimeSpan.Zero);
+        }
+
+        public void SetBanTags(Mobile from, DateTime banTime, TimeSpan banDuration)
+        {
+            if (from == null)
+            {
+                RemoveTag("BanDealer");
+            }
+            else
+            {
+                SetTag("BanDealer", from.ToString());
+            }
+
+            if (banTime == DateTime.MinValue)
+            {
+                RemoveTag("BanTime");
+            }
+            else
+            {
+                SetTag("BanTime", XmlConvert.ToString(banTime, XmlDateTimeSerializationMode.Utc));
+            }
+
+            if (banDuration == TimeSpan.Zero)
+            {
+                RemoveTag("BanDuration");
+            }
+            else
+            {
+                SetTag("BanDuration", banDuration.ToString());
+            }
+        }
+
+        public bool GetBanTags(out DateTime banTime, out TimeSpan banDuration)
+        {
+            string tagTime = GetTag("BanTime");
+            string tagDuration = GetTag("BanDuration");
+
+            banTime = tagTime != null ? Utility.GetXMLDateTime(tagTime, DateTime.MinValue) : DateTime.MinValue;
+
+            if (tagDuration == "Infinite")
+            {
+                banDuration = TimeSpan.MaxValue;
+            }
+            else if (tagDuration != null)
+            {
+                banDuration = Utility.ToTimeSpan(tagDuration);
+            }
+            else
+            {
+                banDuration = TimeSpan.Zero;
+            }
+
+            return banTime != DateTime.MinValue && banDuration != TimeSpan.Zero;
+        }
+
+        /// <summary>
+        ///     Checks if a specific NetState is allowed access to this account.
+        /// </summary>
+        /// <param name="ns">NetState instance to check.</param>
+        /// <returns>True if allowed, false if not.</returns>
+        public bool HasAccess(NetState ns)
+        {
+            return ns != null && HasAccess(ns.Address);
+        }
+
+        public bool HasAccess(IPAddress ipAddress)
+        {
+            AccessLevel level = AccountHandler.LockdownLevel;
+
+            if (level >= AccessLevel.Counselor)
+            {
+                bool hasAccess = false;
+
+                if (m_AccessLevel >= level)
+                {
+                    hasAccess = true;
+                }
+                else
+                {
+                    for (int i = 0; !hasAccess && i < Length; ++i)
+                    {
+                        Mobile m = this[i];
+
+                        if (m != null && m.AccessLevel >= level)
+                        {
+                            hasAccess = true;
+                        }
+                    }
+                }
+
+                if (!hasAccess)
+                {
+                    return false;
+                }
+            }
+
+            bool accessAllowed = IPRestrictions.Length == 0 || IPLimiter.IsExempt(ipAddress);
+
+            for (int i = 0; !accessAllowed && i < IPRestrictions.Length; ++i)
+            {
+                accessAllowed = Utility.IPMatch(IPRestrictions[i], ipAddress);
+            }
+
+            return accessAllowed;
+        }
+
+        /// <summary>
+        ///     Records the IP address of 'ns' in its 'LoginIPs' list.
+        /// </summary>
+        /// <param name="ns">NetState instance to record.</param>
+        public void LogAccess(NetState ns)
+        {
+            if (ns != null)
+            {
+                LogAccess(ns.Address);
+            }
+        }
+
+        public void LogAccess(IPAddress ipAddress)
+        {
+            if (IPLimiter.IsExempt(ipAddress))
+            {
+                return;
+            }
+
+            if (LoginIPs.Length == 0)
+            {
+                if (AccountHandler.IPTable.TryGetValue(ipAddress, out int count))
+                {
+                    AccountHandler.IPTable[ipAddress] = count + 1;
+                }
+                else
+                {
+                    AccountHandler.IPTable[ipAddress] = 1;
+                }
+            }
+
+            bool contains = false;
+
+            for (int i = 0; !contains && i < LoginIPs.Length; ++i)
+            {
+                contains = LoginIPs[i].Equals(ipAddress);
+            }
+
+            if (contains)
+            {
+                return;
+            }
+
+            IPAddress[] old = LoginIPs;
+            LoginIPs = new IPAddress[old.Length + 1];
+
+            for (int i = 0; i < old.Length; ++i)
+            {
+                LoginIPs[i] = old[i];
+            }
+
+            LoginIPs[old.Length] = ipAddress;
+        }
+
+        /// <summary>
+        ///     Checks if a specific NetState is allowed access to this account. If true, the NetState IPAddress is added to the
+        ///     address list.
+        /// </summary>
+        /// <param name="ns">NetState instance to check.</param>
+        /// <returns>True if allowed, false if not.</returns>
+        public bool CheckAccess(NetState ns)
+        {
+            return ns != null && CheckAccess(ns.Address);
+        }
+
+        public bool CheckAccess(IPAddress ipAddress)
+        {
+            bool hasAccess = HasAccess(ipAddress);
+
+            if (hasAccess)
+            {
+                LogAccess(ipAddress);
+            }
+
+            return hasAccess;
+        }
+
+        /// <summary>
+        ///     Serializes this Account instance to an XmlTextWriter.
+        /// </summary>
+        /// <param name="xml">The XmlTextWriter instance from which to serialize.</param>
+        public void Save(XmlTextWriter xml)
+        {
+            xml.WriteStartElement("account");
+
+            xml.WriteStartElement("username");
+            xml.WriteString(Username);
+            xml.WriteEndElement();
+
+            if (PlainPassword != null)
+            {
+                xml.WriteStartElement("password");
+                xml.WriteString(PlainPassword);
+                xml.WriteEndElement();
+            }
+
+            if (_MD5Password != null)
+            {
+                xml.WriteStartElement("cryptPassword");
+                xml.WriteString(_MD5Password);
+                xml.WriteEndElement();
+            }
+
+            if (_SHA1Password != null)
+            {
+                xml.WriteStartElement("newCryptPassword");
+                xml.WriteString(_SHA1Password);
+                xml.WriteEndElement();
+            }
+
+            if (_SHA512Password != null)
+            {
+                xml.WriteStartElement("newSecureCryptPassword");
+                xml.WriteString(_SHA512Password);
+                xml.WriteEndElement();
+            }
+
+            if (m_AccessLevel >= AccessLevel.Counselor)
+            {
+                xml.WriteStartElement("accessLevel");
+                xml.WriteString(m_AccessLevel.ToString());
+                xml.WriteEndElement();
+            }
+
+            if (Flags != 0)
+            {
+                xml.WriteStartElement("flags");
+                xml.WriteString(XmlConvert.ToString(Flags));
+                xml.WriteEndElement();
+            }
+
+            xml.WriteStartElement("created");
+            xml.WriteString(XmlConvert.ToString(Created, XmlDateTimeSerializationMode.Utc));
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("lastLogin");
+            xml.WriteString(XmlConvert.ToString(LastLogin, XmlDateTimeSerializationMode.Utc));
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("totalGameTime");
+            xml.WriteString(XmlConvert.ToString(TotalGameTime));
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("chars");
+
+            for (int i = 0; i < m_Mobiles.Length; ++i)
+            {
+                Mobile m = m_Mobiles[i];
+
+                if (m != null && !m.Deleted)
+                {
+                    xml.WriteStartElement("char");
+                    xml.WriteAttributeString("index", i.ToString());
+                    xml.WriteString(m.Serial.Value.ToString());
+                    xml.WriteEndElement();
+                }
+            }
+
+            xml.WriteEndElement();
+
+            if (m_Comments != null && m_Comments.Count > 0)
+            {
+                xml.WriteStartElement("comments");
+
+                for (int index = 0; index < m_Comments.Count; index++)
+                {
+                    AccountComment c = m_Comments[index];
+
+                    c.Save(xml);
+                }
+
+                xml.WriteEndElement();
+            }
+
+            if (m_Tags != null && m_Tags.Count > 0)
+            {
+                xml.WriteStartElement("tags");
+
+                for (int index = 0; index < m_Tags.Count; index++)
+                {
+                    AccountTag t = m_Tags[index];
+
+                    t.Save(xml);
+                }
+
+                xml.WriteEndElement();
+            }
+
+            if (LoginIPs.Length > 0)
+            {
+                xml.WriteStartElement("addressList");
+
+                xml.WriteAttributeString("count", LoginIPs.Length.ToString());
+
+                for (int index = 0; index < LoginIPs.Length; index++)
+                {
+                    IPAddress ip = LoginIPs[index];
+
+                    xml.WriteStartElement("ip");
+                    xml.WriteString(ip.ToString());
+                    xml.WriteEndElement();
+                }
+
+                xml.WriteEndElement();
+            }
+
+            if (IPRestrictions.Length > 0)
+            {
+                xml.WriteStartElement("accessCheck");
+
+                for (int index = 0; index < IPRestrictions.Length; index++)
+                {
+                    string ip = IPRestrictions[index];
+
+                    xml.WriteStartElement("ip");
+                    xml.WriteString(ip);
+                    xml.WriteEndElement();
+                }
+
+                xml.WriteEndElement();
+            }
+
+            xml.WriteStartElement("totalCurrency");
+            xml.WriteString(XmlConvert.ToString(TotalCurrency));
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("sovereigns");
+            xml.WriteString(XmlConvert.ToString(Sovereigns));
+            xml.WriteEndElement();
+
+            // account
+            xml.WriteEndElement();
+        }
+
+        public override string ToString()
+        {
+            return Username;
+        }
+
+        public static void OnDisconnected(Mobile m)
+        {
+            Account acc = m.Account as Account;
+
+            if (acc == null)
+            {
+                return;
+            }
+
+            if (m is PlayerMobile pm)
+            {
+                acc.m_TotalGameTime += DateTime.UtcNow - pm.SessionStart;
+            }
+        }
+
+        /// <summary>
+        ///     This amount specifies the value at which point Gold turns to Platinum.
+        ///     By default, when 1,000,000,000 Gold is accumulated, it will transform
+        ///     into 1 Platinum.
+        /// </summary>
+        public static int CurrencyThreshold
+        {
+            get => AccountGold.CurrencyThreshold;
+            set => AccountGold.CurrencyThreshold = value;
+        }
+
+        /// <summary>
+        ///     This amount represents the total amount of currency owned by the player.
+        ///     It is cumulative of both Gold and Platinum, the absolute total amount of
+        ///     Gold owned by the player can be found by multiplying this value by the
+        ///     CurrencyThreshold value.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
+        public double TotalCurrency { get; private set; }
+
+        /// <summary>
+        ///     This amount represents the current amount of Gold owned by the player.
+        ///     The value does not include the value of Platinum and ranges from
+        ///     0 to 999,999,999 by default.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public int TotalGold => (int)Math.Floor((TotalCurrency - Math.Truncate(TotalCurrency)) * Math.Max(1.0, CurrencyThreshold));
+
+        /// <summary>
+        ///     This amount represents the current amount of Platinum owned by the player.
+        ///     The value does not include the value of Gold and ranges from
+        ///     0 to 2,147,483,647 by default.
+        ///     One Platinum represents the value of CurrencyThreshold in Gold.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator)]
+        public int TotalPlat => (int)Math.Truncate(TotalCurrency);
+
+        /// <summary>
+        ///     Attempts to deposit the given amount of Gold and Platinum into this account.
+        /// </summary>
+        /// <param name="amount">Amount to deposit.</param>
+        /// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+        public bool DepositCurrency(double amount)
+        {
+            if (amount <= 0)
+            {
+                return false;
+            }
+
+            TotalCurrency += amount;
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Attempts to deposit the given amount of Gold into this account.
+        ///     If the given amount is greater than the CurrencyThreshold,
+        ///     Platinum will be deposited to offset the difference.
+        /// </summary>
+        /// <param name="amount">Amount to deposit.</param>
+        /// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+        public bool DepositGold(int amount)
+        {
+            return DepositCurrency(amount / Math.Max(1.0, CurrencyThreshold));
+        }
+
+        /// <summary>
+        ///     Attempts to deposit the given amount of Gold into this account.
+        ///     If the given amount is greater than the CurrencyThreshold,
+        ///     Platinum will be deposited to offset the difference.
+        /// </summary>
+        /// <param name="amount">Amount to deposit.</param>
+        /// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+        public bool DepositGold(long amount)
+        {
+            return DepositCurrency(amount / Math.Max(1.0, CurrencyThreshold));
+        }
+
+        /// <summary>
+        ///     Attempts to deposit the given amount of Platinum into this account.
+        /// </summary>
+        /// <param name="amount">Amount to deposit.</param>
+        /// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+        public bool DepositPlat(int amount)
+        {
+            return DepositCurrency(amount);
+        }
+
+        /// <summary>
+        ///     Attempts to deposit the given amount of Platinum into this account.
+        /// </summary>
+        /// <param name="amount">Amount to deposit.</param>
+        /// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+        public bool DepositPlat(long amount)
+        {
+            return DepositCurrency(amount);
+        }
+
+        /// <summary>
+        ///     Attempts to withdraw the given amount of Platinum and Gold from this account.
+        /// </summary>
+        /// <param name="amount">Amount to withdraw.</param>
+        /// <returns>True if successful, false if balance was too low.</returns>
+        public bool WithdrawCurrency(double amount)
+        {
+            if (amount <= 0)
+            {
+                return true;
+            }
+
+            if (amount > TotalCurrency)
+            {
+                return false;
+            }
+
+            TotalCurrency -= amount;
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Attempts to withdraw the given amount of Gold from this account.
+        ///     If the given amount is greater than the CurrencyThreshold,
+        ///     Platinum will be withdrawn to offset the difference.
+        /// </summary>
+        /// <param name="amount">Amount to withdraw.</param>
+        /// <returns>True if successful, false if balance was too low.</returns>
+        public bool WithdrawGold(int amount)
+        {
+            return WithdrawCurrency(amount / Math.Max(1.0, CurrencyThreshold));
+        }
+
+        /// <summary>
+        ///     Attempts to withdraw the given amount of Gold from this account.
+        ///     If the given amount is greater than the CurrencyThreshold,
+        ///     Platinum will be withdrawn to offset the difference.
+        /// </summary>
+        /// <param name="amount">Amount to withdraw.</param>
+        /// <returns>True if successful, false if balance was too low.</returns>
+        public bool WithdrawGold(long amount)
+        {
+            return WithdrawCurrency(amount / Math.Max(1.0, CurrencyThreshold));
+        }
+
+        /// <summary>
+        ///     Attempts to withdraw the given amount of Platinum from this account.
+        /// </summary>
+        /// <param name="amount">Amount to withdraw.</param>
+        /// <returns>True if successful, false if balance was too low.</returns>
+        public bool WithdrawPlat(int amount)
+        {
+            return WithdrawCurrency(amount);
+        }
+
+        /// <summary>
+        ///     Attempts to withdraw the given amount of Platinum from this account.
+        /// </summary>
+        /// <param name="amount">Amount to withdraw.</param>
+        /// <returns>True if successful, false if balance was too low.</returns>
+        public bool WithdrawPlat(long amount)
+        {
+            return WithdrawCurrency(amount);
+        }
+
+        /// <summary>
+        ///     Gets the total balance of Gold for this account.
+        /// </summary>
+        /// <param name="gold">Gold value, Platinum exclusive</param>
+        /// <param name="totalGold">Gold value, Platinum inclusive</param>
+        public void GetGoldBalance(out int gold, out double totalGold)
+        {
+            gold = TotalGold;
+            totalGold = TotalCurrency * Math.Max(1.0, CurrencyThreshold);
+        }
+
+        /// <summary>
+        ///     Gets the total balance of Gold for this account.
+        /// </summary>
+        /// <param name="gold">Gold value, Platinum exclusive</param>
+        /// <param name="totalGold">Gold value, Platinum inclusive</param>
+        public void GetGoldBalance(out long gold, out double totalGold)
+        {
+            gold = TotalGold;
+            totalGold = TotalCurrency * Math.Max(1.0, CurrencyThreshold);
+        }
+
+        /// <summary>
+        ///     Gets the total balance of Platinum for this account.
+        /// </summary>
+        /// <param name="plat">Platinum value, Gold exclusive</param>
+        /// <param name="totalPlat">Platinum value, Gold inclusive</param>
+        public void GetPlatBalance(out int plat, out double totalPlat)
+        {
+            plat = TotalPlat;
+            totalPlat = TotalCurrency;
+        }
+
+        /// <summary>
+        ///     Gets the total balance of Platinum for this account.
+        /// </summary>
+        /// <param name="plat">Platinum value, Gold exclusive</param>
+        /// <param name="totalPlat">Platinum value, Gold inclusive</param>
+        public void GetPlatBalance(out long plat, out double totalPlat)
+        {
+            plat = TotalPlat;
+            totalPlat = TotalCurrency;
+        }
+
+        /// <summary>
+        ///     Gets the total balance of Gold and Platinum for this account.
+        /// </summary>
+        /// <param name="gold">Gold value, Platinum exclusive</param>
+        /// <param name="totalGold">Gold value, Platinum inclusive</param>
+        /// <param name="plat">Platinum value, Gold exclusive</param>
+        /// <param name="totalPlat">Platinum value, Gold inclusive</param>
+        public void GetBalance(out int gold, out double totalGold, out int plat, out double totalPlat)
+        {
+            GetGoldBalance(out gold, out totalGold);
+            GetPlatBalance(out plat, out totalPlat);
+        }
+
+        /// <summary>
+        ///     Gets the total balance of Gold and Platinum for this account.
+        /// </summary>
+        /// <param name="gold">Gold value, Platinum exclusive</param>
+        /// <param name="totalGold">Gold value, Platinum inclusive</param>
+        /// <param name="plat">Platinum value, Gold exclusive</param>
+        /// <param name="totalPlat">Platinum value, Gold inclusive</param>
+        public void GetBalance(out long gold, out double totalGold, out long plat, out double totalPlat)
+        {
+            GetGoldBalance(out gold, out totalGold);
+            GetPlatBalance(out plat, out totalPlat);
+        }
+
+        public bool HasGoldBalance(double amount)
+        {
+            long gold;
+            double totalGold;
+
+            GetGoldBalance(out gold, out totalGold);
+
+            return amount <= totalGold;
+        }
+
+        public bool HasPlatBalance(double amount)
+        {
+            long plat;
+            double totalPlat;
+
+            GetPlatBalance(out plat, out totalPlat);
+
+            return amount <= totalPlat;
+        }
+
+        /// <summary>
+        ///     Sovereigns which can be used at the shard owners disposal. On EA, they are used for curerncy with the Ultima Store
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
+        public int Sovereigns { get; private set; }
+
+        public void SetSovereigns(int amount)
+        {
+            Sovereigns = amount;
+        }
+
+        public bool DepositSovereigns(int amount)
+        {
+            if (amount <= 0)
+            {
+                return false;
+            }
+
+            Sovereigns += amount;
+            return true;
+        }
+
+        public bool WithdrawSovereigns(int amount)
+        {
+            if (amount <= 0)
+            {
+                return true;
+            }
+
+            if (amount > Sovereigns)
+            {
+                return false;
+            }
+
+            Sovereigns -= amount;
+            return true;
+        }
+    }
+}

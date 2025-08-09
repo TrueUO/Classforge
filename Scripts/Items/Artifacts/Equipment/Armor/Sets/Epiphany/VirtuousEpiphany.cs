@@ -1,0 +1,446 @@
+namespace Server.Items
+{
+    public class HelmOfVirtuousEpiphany : PlateHelm, IEpiphanyArmor
+    {
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
+
+        public override int LabelNumber => 1150233;  // Helm of Virtuous Epiphany
+
+        [Constructable]
+        public HelmOfVirtuousEpiphany()
+        {
+            Hue = 2076;
+            ArmorAttributes.MageArmor = 1;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            EpiphanyHelper.AddProperties(this, list);
+        }
+
+        public override bool OnEquip(Mobile from)
+        {
+            bool canEquip = base.OnEquip(from);
+
+            if (canEquip)
+            {
+                foreach (Item armor in from.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+
+            return canEquip;
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile m)
+            {
+                foreach (Item armor in m.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+        }
+
+        public HelmOfVirtuousEpiphany(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class GorgetOfVirtuousEpiphany : PlateGorget, IEpiphanyArmor
+    {
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
+
+        public override int LabelNumber => 1150234;  // Gorget of Virtuous Epiphany
+
+        [Constructable]
+        public GorgetOfVirtuousEpiphany()
+        {
+            Hue = 2076;
+            ArmorAttributes.MageArmor = 1;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            EpiphanyHelper.AddProperties(this, list);
+        }
+
+        public override bool OnEquip(Mobile from)
+        {
+            bool canEquip = base.OnEquip(from);
+
+            if (canEquip)
+            {
+                foreach (Item armor in from.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+
+            return canEquip;
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile m)
+            {
+                foreach (Item armor in m.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+        }
+
+        public GorgetOfVirtuousEpiphany(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class BreastplateOfVirtuousEpiphany : PlateChest, IEpiphanyArmor
+    {
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
+
+        public override int LabelNumber => 1150235;  // Breastplate of Virtuous Epiphany
+
+        [Constructable]
+        public BreastplateOfVirtuousEpiphany()
+        {
+            Hue = 2076;
+            ArmorAttributes.MageArmor = 1;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            EpiphanyHelper.AddProperties(this, list);
+        }
+
+        public override bool OnEquip(Mobile from)
+        {
+            bool canEquip = base.OnEquip(from);
+
+            if (canEquip)
+            {
+                foreach (Item armor in from.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+
+            return canEquip;
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile m)
+            {
+                foreach (Item armor in m.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+        }
+
+        public BreastplateOfVirtuousEpiphany(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class ArmsOfVirtuousEpiphany : PlateArms, IEpiphanyArmor
+    {
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
+
+        public override int LabelNumber => 1150236;  // Arms of Virtuous Epiphany
+
+        [Constructable]
+        public ArmsOfVirtuousEpiphany()
+        {
+            Hue = 2076;
+            ArmorAttributes.MageArmor = 1;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            EpiphanyHelper.AddProperties(this, list);
+        }
+
+        public override bool OnEquip(Mobile from)
+        {
+            bool canEquip = base.OnEquip(from);
+
+            if (canEquip)
+            {
+                foreach (Item armor in from.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+
+            return canEquip;
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile m)
+            {
+                foreach (Item armor in m.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+        }
+
+        public ArmsOfVirtuousEpiphany(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class GauntletsOfVirtuousEpiphany : PlateGloves, IEpiphanyArmor
+    {
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
+
+        public override int LabelNumber => 1150237;  // Gauntlets of Virtuous Epiphany
+
+        [Constructable]
+        public GauntletsOfVirtuousEpiphany()
+        {
+            Hue = 2076;
+            ArmorAttributes.MageArmor = 1;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            EpiphanyHelper.AddProperties(this, list);
+        }
+
+        public override bool OnEquip(Mobile from)
+        {
+            bool canEquip = base.OnEquip(from);
+
+            if (canEquip)
+            {
+                foreach (Item armor in from.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+
+            return canEquip;
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile m)
+            {
+                foreach (Item armor in m.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+        }
+
+        public GauntletsOfVirtuousEpiphany(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class LegsOfVirtuousEpiphany : PlateLegs, IEpiphanyArmor
+    {
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
+
+        public override int LabelNumber => 1150238;  // Leggings of Virtuous Epiphany
+
+        [Constructable]
+        public LegsOfVirtuousEpiphany()
+        {
+            Hue = 2076;
+            ArmorAttributes.MageArmor = 1;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            EpiphanyHelper.AddProperties(this, list);
+        }
+
+        public override bool OnEquip(Mobile from)
+        {
+            bool canEquip = base.OnEquip(from);
+
+            if (canEquip)
+            {
+                foreach (Item armor in from.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+
+            return canEquip;
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile m)
+            {
+                foreach (Item armor in m.Items)
+                {
+                    if (armor is IEpiphanyArmor)
+                    {
+                        armor.InvalidateProperties();
+                    }
+                }
+            }
+        }
+
+        public LegsOfVirtuousEpiphany(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+}

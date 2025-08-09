@@ -1,0 +1,32 @@
+using Server.Items;
+
+namespace Server.Commands
+{
+    public class Mark
+    {
+        public static void Initialize()
+        {
+            CommandSystem.Register("Mark", AccessLevel.GameMaster, Mark_OnCommand);
+        }
+
+        [Usage("Mark [name]")]
+        [Description("Creates a marked rune at your location.")]
+        private static void Mark_OnCommand(CommandEventArgs e)
+        {
+            if (e.Arguments.Length <= 0)
+            {
+                e.Mobile.SendMessage("Usage: mark [RuneName]");
+                return;
+            }
+
+            string runeName = e.Arguments[0];
+
+            RecallRune rune = new RecallRune();
+            rune.Mark(e.Mobile);
+            rune.Name = rune.Description = runeName;
+
+            e.Mobile.AddToBackpack(rune);
+            e.Mobile.SendMessage($"Rune {runeName} added to your backpack.");
+        }
+    }
+}
