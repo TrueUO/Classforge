@@ -7,7 +7,6 @@ namespace Server.Items
     public enum WandEffect
     {
         Clumsiness,
-        Identification,
         Healing,
         Feeblemindedness,
         Weakness,
@@ -24,6 +23,7 @@ namespace Server.Items
     {
         private WandEffect m_WandEffect;
         private int m_Charges;
+
         public BaseWand(WandEffect effect, int minCharges, int maxCharges)
             : base(Utility.RandomList(0xDF2, 0xDF3, 0xDF4, 0xDF5))
         {
@@ -69,6 +69,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
@@ -79,6 +80,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
+
         public void ConsumeCharge(Mobile from)
         {
             --Charges;
@@ -94,6 +96,7 @@ namespace Server.Items
         public virtual void ApplyDelayTo(Mobile from)
         {
             from.BeginAction(typeof(BaseWand));
+
             Timer.DelayCall(GetUseDelay, ReleaseWandLock_Callback, from);
         }
 
@@ -155,11 +158,6 @@ namespace Server.Items
                 {
                     list.Add(1017326, m_Charges.ToString());
                     break; // clumsiness charges: ~1_val~
-                }
-                case WandEffect.Identification:
-                {
-                    list.Add(1017350, m_Charges.ToString());
-                    break; // identification charges: ~1_val~
                 }
                 case WandEffect.Healing:
                 {

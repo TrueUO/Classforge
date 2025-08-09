@@ -25,11 +25,14 @@ namespace Server.Services.ClassSystem
         // Called one time when the class is selected.
         public static void OnClassSelected(PlayerMobile pm)
         {
-            // +20 Dex bonus to start
-            pm.RawDex += 20;
+            // +15 Dex +5 Str bonus to start
+            pm.RawDex += 15;
+            pm.RawStr += 5;
 
             // starting gear
             pm.EquipItem(new Kryss());
+            pm.EquipItem(new LeatherChest());
+            pm.EquipItem(new LongPants());
             pm.EquipItem(new Shoes());
         }
     }

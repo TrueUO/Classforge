@@ -78,16 +78,17 @@ namespace Server.Items
 
         private class PickWheelTarget : Target
         {
-            private readonly Wool m_Wool;
+            private readonly Wool _Wool;
+
             public PickWheelTarget(Wool wool)
                 : base(3, false, TargetFlags.None)
             {
-                m_Wool = wool;
+                _Wool = wool;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Wool.Deleted)
+                if (_Wool.Deleted)
                 {
                     return;
                 }
@@ -101,7 +102,7 @@ namespace Server.Items
 
                 if (wheel is Item)
                 {
-                    if (!m_Wool.IsChildOf(from.Backpack))
+                    if (!_Wool.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     }
@@ -111,15 +112,9 @@ namespace Server.Items
                     }
                     else
                     {
-                        m_Wool.Consume();
-                        if (m_Wool is TaintedWool)
-                        {
-                            wheel.BeginSpin(TaintedWool.OnSpun, from, m_Wool.Hue);
-                        }
-                        else
-                        {
-                            wheel.BeginSpin(OnSpun, from, m_Wool.Hue);
-                        }
+                        _Wool.Consume();
+
+                        wheel.BeginSpin(OnSpun, from, _Wool.Hue);
                     }
                 }
                 else
@@ -127,51 +122,6 @@ namespace Server.Items
                     from.SendLocalizedMessage(502658); // Use that on a spinning wheel.
                 }
             }
-        }
-    }
-
-    public class TaintedWool : Wool
-    {
-        [Constructable]
-        public TaintedWool()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public TaintedWool(int amount)
-            : base(0x101F)
-        {
-            Stackable = true;
-            Amount = amount;
-        }
-
-        public TaintedWool(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public new static void OnSpun(ISpinningWheel wheel, Mobile from, int hue)
-        {
-            Item item = new DarkYarn(1)
-            {
-                Hue = hue
-            };
-
-            from.AddToBackpack(item);
-            from.SendLocalizedMessage(1010574); // You put a ball of yarn in your backpack.
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write(0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            reader.ReadInt();
         }
     }
 }

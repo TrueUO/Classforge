@@ -50,7 +50,6 @@ namespace Server.Items
 
         public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
         public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
-        public virtual bool CanAlter => true;
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -58,8 +57,6 @@ namespace Server.Items
         private ItemQuality m_Quality;
         protected CraftResource m_Resource;
         private int m_StrReq = -1;
-
-        private bool m_Altered;
 
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosClothingAttributes;
@@ -929,11 +926,6 @@ namespace Server.Items
             {
                 list.Add(1080418); // (Imbued)
             }
-
-            if (m_Altered)
-            {
-                list.Add(1111880); // Altered
-            }
         }
 
         public override void AddWeightProperty(ObjectPropertyList list)
@@ -1360,8 +1352,7 @@ namespace Server.Items
             Quality = 0x00000200,
             StrReq = 0x00000400,
             NegativeAttributes = 0x00000800,
-            Altered = 0x00001000,
-            xWeaponAttributes = 0x00002000
+            xWeaponAttributes = 0x00001000
         }
 
         private static void SetSaveFlag(ref SetFlag flags, SetFlag toSet, bool setIf)
@@ -1395,43 +1386,18 @@ namespace Server.Items
             SetSelfRepair = 0x00000800
         }
 
-        public void xWeaponAttributesDeserializeHelper(GenericReader reader, BaseClothing item)
-        {
-            SaveFlag flags = (SaveFlag)reader.ReadInt();
-
-            if (flags != SaveFlag.None)
-            {
-                flags = SaveFlag.xWeaponAttributes;
-            }
-
-            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
-            {
-                m_AosWeaponAttributes = new AosWeaponAttributes(item, reader);
-            }
-            else
-            {
-                m_AosWeaponAttributes = new AosWeaponAttributes(item);
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write(0);
 
-            writer.Write(12); // version
-
-            // Embroidery Tool version 11
             writer.Write(m_EngravedText);
-
-            // Version 10 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
-            //Version 8
             writer.Write(m_IsImbued);
 
-            // Version 7
             m_SAAbsorptionAttributes.Serialize(writer);
 
             writer.Write((int)m_ReforgedPrefix);
@@ -1447,7 +1413,6 @@ namespace Server.Items
             writer.Write(PoisonNonImbuing);
             writer.Write(EnergyNonImbuing);
 
-            // Version 6
             writer.Write(m_TimesImbued);
 
             SetFlag sflags = SetFlag.None;
@@ -1521,7 +1486,6 @@ namespace Server.Items
                 writer.WriteEncodedInt(m_SetSelfRepair);
             }
 
-            // Version 5
             SaveFlag flags = SaveFlag.None;
 
             SetSaveFlag(ref flags, SaveFlag.xWeaponAttributes, !m_AosWeaponAttributes.IsEmpty);
@@ -1537,8 +1501,6 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Crafter, m_Crafter != null);
             SetSaveFlag(ref flags, SaveFlag.Quality, m_Quality != ItemQuality.Normal);
             SetSaveFlag(ref flags, SaveFlag.StrReq, m_StrReq != -1);
-            //SetSaveFlag(ref flags, SaveFlag.TimesImbued, m_TimesImbued != 0);
-            SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
 
@@ -1606,49 +1568,24 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
             {
-                case 12:
-                case 11:
+                case 0:
                     {
                         m_EngravedText = reader.ReadString();
-                        goto case 9;
-                    }
-                case 10:
-                case 9:
-                    {
-                        if (version == 9)
-                        {
-                            reader.ReadBool();
-                        }
 
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
-                        goto case 8;
-                    }
-                case 8:
-                    {
+
                         m_IsImbued = reader.ReadBool();
-                        goto case 7;
-                    }
-                case 7:
-                    {
+
                         m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
 
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-
-                        if (version == 9 && reader.ReadBool())
-                        {
-                            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
-                                {
-                                    m_NegativeAttributes.NoRepair = 1;
-                                });
-                        }
 
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
@@ -1658,14 +1595,6 @@ namespace Server.Items
                         ColdNonImbuing = reader.ReadInt();
                         PoisonNonImbuing = reader.ReadInt();
                         EnergyNonImbuing = reader.ReadInt();
-                        goto case 6;
-                    }
-                case 6:
-                    {
-                        if (version == 6)
-                        {
-                            m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
-                        }
 
                         m_TimesImbued = reader.ReadInt();
 
@@ -1739,22 +1668,15 @@ namespace Server.Items
                             m_SetSelfRepair = reader.ReadEncodedInt();
                         }
 
-                        goto case 5;
-                    }
-                case 5:
-                    {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
 
-                        if (version > 11)
+                        if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
                         {
-                            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
-                            {
-                                m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
-                            }
-                            else
-                            {
-                                m_AosWeaponAttributes = new AosWeaponAttributes(this);
-                            }
+                            m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
+                        }
+                        else
+                        {
+                            m_AosWeaponAttributes = new AosWeaponAttributes(this);
                         }
 
                         if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
@@ -1849,43 +1771,6 @@ namespace Server.Items
                             PlayerConstructed = true;
                         }
 
-                        if (GetSaveFlag(flags, SaveFlag.Altered))
-                        {
-                            m_Altered = true;
-                        }
-
-                        break;
-                    }
-                case 4:
-                    {
-                        m_Resource = (CraftResource)reader.ReadInt();
-
-                        goto case 3;
-                    }
-                case 3:
-                    {
-                        m_AosAttributes = new AosAttributes(this, reader);
-                        m_AosClothingAttributes = new AosArmorAttributes(this, reader);
-                        m_AosSkillBonuses = new AosSkillBonuses(this, reader);
-                        m_AosResistances = new AosElementAttributes(this, reader);
-
-                        goto case 2;
-                    }
-                case 2:
-                    {
-                        PlayerConstructed = reader.ReadBool();
-                        goto case 1;
-                    }
-                case 1:
-                    {
-                        m_Crafter = reader.ReadMobile();
-                        m_Quality = (ItemQuality)reader.ReadInt();
-                        break;
-                    }
-                case 0:
-                    {
-                        m_Crafter = null;
-                        m_Quality = ItemQuality.Normal;
                         break;
                     }
             }
@@ -2358,17 +2243,6 @@ namespace Server.Items
             }
 
             return 0;
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Altered
-        {
-            get => m_Altered;
-            set
-            {
-                m_Altered = value;
-                InvalidateProperties();
-            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Server.Services.ClassSystem
         Cleric,  // 5% IMPLEMENTED
         Mage,    // 10% IMPLEMENTED
         Ranger,  // 5% IMPLEMENTED
-        Rogue,   // 5% IMPLEMENTED
+        Rogue,   // 10% IMPLEMENTED
         Warrior  // 10% IMPLEMENTED
     }
 

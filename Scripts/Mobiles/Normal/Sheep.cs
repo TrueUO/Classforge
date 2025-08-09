@@ -7,7 +7,10 @@ namespace Server.Mobiles
     [CorpseName("a sheep corpse")]
     public class Sheep : BaseCreature, ICarvable
     {
-        private DateTime m_NextWoolTime;
+        public override int XpToGive => 1;
+
+        private DateTime _NextWoolTime;
+
         [Constructable]
         public Sheep()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
@@ -49,20 +52,23 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextWoolTime
         {
-            get => m_NextWoolTime;
+            get => _NextWoolTime;
             set
             {
-                m_NextWoolTime = value;
-                Body = DateTime.UtcNow >= m_NextWoolTime ? 0xCF : 0xDF;
+                _NextWoolTime = value;
+
+                Body = DateTime.UtcNow >= _NextWoolTime ? 0xCF : 0xDF;
             }
         }
+
         public override int Meat => 3;
         public override MeatType MeatType => MeatType.LambLeg;
         public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
         public override int Wool => Body == 0xCF ? 3 : 0;
+
         public bool Carve(Mobile from, Item item)
         {
-            if (DateTime.UtcNow < m_NextWoolTime)
+            if (DateTime.UtcNow < _NextWoolTime)
             {
                 // This sheep is not yet ready to be shorn.
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500449, from.NetState);
@@ -80,15 +86,15 @@ namespace Server.Mobiles
         public override void OnThink()
         {
             base.OnThink();
-            Body = DateTime.UtcNow >= m_NextWoolTime ? 0xCF : 0xDF;
+            Body = DateTime.UtcNow >= _NextWoolTime ? 0xCF : 0xDF;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(0);
 
-            writer.WriteDeltaTime(m_NextWoolTime);
+            writer.WriteDeltaTime(_NextWoolTime);
         }
 
         public override void Deserialize(GenericReader reader)

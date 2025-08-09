@@ -116,7 +116,6 @@ namespace Server.Items
         private Mobile m_Crafter;
         private Poison m_Poison;
         private int m_PoisonCharges;
-        private bool m_Identified;
         private int m_Hits;
         private int m_MaxHits;
         private SlayerName m_Slayer;
@@ -182,7 +181,6 @@ namespace Server.Items
 
         public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
         public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
-        public virtual bool CanAlter => true;
 
         public override int PhysicalResistance => m_AosWeaponAttributes.ResistPhysicalBonus;
         public override int FireResistance => m_AosWeaponAttributes.ResistFireBonus;
@@ -226,17 +224,6 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ConsecratedWeaponContext ConsecratedContext { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Identified
-        {
-            get => m_Identified;
-            set
-            {
-                m_Identified = value;
-                InvalidateProperties();
-            }
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitPoints
@@ -3151,7 +3138,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(20); // version
+            writer.Write(0); // version
 
             writer.Write(m_UsesRemaining);
             writer.Write(m_ShowUsesRemaining);
@@ -3244,7 +3231,6 @@ namespace Server.Items
                 writer.WriteEncodedInt(m_SetSelfRepair);
             }
 
-            // Version 9
             SaveFlag flags = SaveFlag.None;
 
             SetSaveFlag(ref flags, SaveFlag.Quality, m_Quality != ItemQuality.Normal);
@@ -3254,7 +3240,6 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Poison, m_Poison != null);
             SetSaveFlag(ref flags, SaveFlag.PoisonCharges, m_PoisonCharges != 0);
             SetSaveFlag(ref flags, SaveFlag.Crafter, m_Crafter != null);
-            SetSaveFlag(ref flags, SaveFlag.Identified, m_Identified);
             SetSaveFlag(ref flags, SaveFlag.StrReq, m_StrReq != -1);
             SetSaveFlag(ref flags, SaveFlag.DexReq, m_DexReq != -1);
             SetSaveFlag(ref flags, SaveFlag.IntReq, m_IntReq != -1);
@@ -3438,30 +3423,29 @@ namespace Server.Items
             Poison = 0x00000010,
             PoisonCharges = 0x00000020,
             Crafter = 0x00000040,
-            Identified = 0x00000080,
-            StrReq = 0x00000100,
-            DexReq = 0x00000200,
-            IntReq = 0x00000400,
-            MinDamage = 0x00000800,
-            MaxDamage = 0x00001000,
-            HitSound = 0x00002000,
-            MissSound = 0x00004000,
-            Speed = 0x00008000,
-            MaxRange = 0x00010000,
-            Skill = 0x00020000,
-            Type = 0x00040000,
-            Animation = 0x00080000,
-            Resource = 0x00100000,
-            xAttributes = 0x00200000,
-            xWeaponAttributes = 0x00400000,
-            PlayerConstructed = 0x00800000,
-            SkillBonuses = 0x01000000,
-            Slayer2 = 0x02000000,
-            ElementalDamages = 0x04000000,
-            EngravedText = 0x08000000,
-            xAbsorptionAttributes = 0x10000000,
-            xNegativeAttributes = 0x20000000,
-            xExtendedWeaponAttributes = 0x40000000,
+            StrReq = 0x00000080,
+            DexReq = 0x00000100,
+            IntReq = 0x00000200,
+            MinDamage = 0x00000400,
+            MaxDamage = 0x00000800,
+            HitSound = 0x00001000,
+            MissSound = 0x00002000,
+            Speed = 0x00004000,
+            MaxRange = 0x00008000,
+            Skill = 0x00010000,
+            Type = 0x00020000,
+            Animation = 0x00040000,
+            Resource = 0x00080000,
+            xAttributes = 0x00100000,
+            xWeaponAttributes = 0x00200000,
+            PlayerConstructed = 0x00400000,
+            SkillBonuses = 0x00800000,
+            Slayer2 = 0x01000000,
+            ElementalDamages = 0x02000000,
+            EngravedText = 0x04000000,
+            xAbsorptionAttributes = 0x08000000,
+            xNegativeAttributes = 0x10000000,
+            xExtendedWeaponAttributes = 0x20000000
         }
 
         private static void SetSaveFlag(ref SetFlag flags, SetFlag toSet, bool setIf)
@@ -3502,17 +3486,7 @@ namespace Server.Items
 
             switch (version)
             {
-                case 20: 
-                case 19: 
-                case 18:
-                case 17:
-                case 16:
-                case 15:
-                case 14:
-                case 13:
-                case 12:
-                case 11:
-                case 10:
+                case 0:
                     {
                         m_UsesRemaining = reader.ReadInt();
                         m_ShowUsesRemaining = reader.ReadBool();
@@ -3533,33 +3507,34 @@ namespace Server.Items
                         m_EngravedText = reader.ReadString();
                         m_Slayer3 = (TalismanSlayerName)reader.ReadInt();
 
-                        SetFlag flags = (SetFlag)reader.ReadEncodedInt();
-                        if (GetSaveFlag(flags, SetFlag.PhysicalBonus))
+                        SetFlag sflags = (SetFlag)reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
                         {
                             m_SetPhysicalBonus = reader.ReadEncodedInt();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.FireBonus))
+                        if (GetSaveFlag(sflags, SetFlag.FireBonus))
                         {
                             m_SetFireBonus = reader.ReadEncodedInt();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.ColdBonus))
+                        if (GetSaveFlag(sflags, SetFlag.ColdBonus))
                         {
                             m_SetColdBonus = reader.ReadEncodedInt();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.PoisonBonus))
+                        if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
                         {
                             m_SetPoisonBonus = reader.ReadEncodedInt();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.EnergyBonus))
+                        if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
                         {
                             m_SetEnergyBonus = reader.ReadEncodedInt();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.Attributes))
+                        if (GetSaveFlag(sflags, SetFlag.Attributes))
                         {
                             m_SetAttributes = new AosAttributes(this, reader);
                         }
@@ -3568,12 +3543,12 @@ namespace Server.Items
                             m_SetAttributes = new AosAttributes(this);
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.WeaponAttributes))
+                        if (GetSaveFlag(sflags, SetFlag.WeaponAttributes))
                         {
                             m_SetSelfRepair = new AosWeaponAttributes(this, reader).SelfRepair;
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.SkillBonuses))
+                        if (GetSaveFlag(sflags, SetFlag.SkillBonuses))
                         {
                             m_SetSkillBonuses = new AosSkillBonuses(this, reader);
                         }
@@ -3582,34 +3557,26 @@ namespace Server.Items
                             m_SetSkillBonuses = new AosSkillBonuses(this);
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.Hue))
+                        if (GetSaveFlag(sflags, SetFlag.Hue))
                         {
                             m_SetHue = reader.ReadInt();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.LastEquipped))
+                        if (GetSaveFlag(sflags, SetFlag.LastEquipped))
                         {
                             m_LastEquipped = reader.ReadBool();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.SetEquipped))
+                        if (GetSaveFlag(sflags, SetFlag.SetEquipped))
                         {
                             m_SetEquipped = reader.ReadBool();
                         }
 
-                        if (GetSaveFlag(flags, SetFlag.SetSelfRepair))
+                        if (GetSaveFlag(sflags, SetFlag.SetSelfRepair))
                         {
                             m_SetSelfRepair = reader.ReadEncodedInt();
                         }
 
-                        goto case 5;
-                    }
-                case 9:
-                case 8:
-                case 7:
-                case 6:
-                case 5:
-                    {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
 
                         if (GetSaveFlag(flags, SaveFlag.Quality))
@@ -3649,11 +3616,6 @@ namespace Server.Items
                         if (GetSaveFlag(flags, SaveFlag.Crafter))
                         {
                             m_Crafter = reader.ReadMobile();
-                        }
-
-                        if (GetSaveFlag(flags, SaveFlag.Identified))
-                        {
-                            m_Identified = version >= 6 || reader.ReadBool();
                         }
 
                         if (GetSaveFlag(flags, SaveFlag.StrReq))
@@ -3721,14 +3683,7 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.Speed))
                         {
-                            if (version < 9)
-                            {
-                                m_Speed = reader.ReadInt();
-                            }
-                            else
-                            {
-                                m_Speed = reader.ReadFloat();
-                            }
+                            m_Speed = reader.ReadFloat();
                         }
                         else
                         {
@@ -3798,11 +3753,6 @@ namespace Server.Items
                             m_AosWeaponAttributes = new AosWeaponAttributes(this);
                         }
 
-                        if (version < 7 && m_AosWeaponAttributes.MageWeapon != 0)
-                        {
-                            m_AosWeaponAttributes.MageWeapon = 30 - m_AosWeaponAttributes.MageWeapon;
-                        }
-
                         if (m_AosWeaponAttributes.MageWeapon != 0 && m_AosWeaponAttributes.MageWeapon != 30 && Parent is Mobile)
                         {
                             m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
@@ -3842,7 +3792,7 @@ namespace Server.Items
                             m_EngravedText = reader.ReadString();
                         }
 
-                        if (version > 9 && GetSaveFlag(flags, SaveFlag.xAbsorptionAttributes))
+                        if (GetSaveFlag(flags, SaveFlag.xAbsorptionAttributes))
                         {
                             m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
                         }
@@ -3851,7 +3801,7 @@ namespace Server.Items
                             m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
                         }
 
-                        if (version >= 13 && GetSaveFlag(flags, SaveFlag.xNegativeAttributes))
+                        if (GetSaveFlag(flags, SaveFlag.xNegativeAttributes))
                         {
                             m_NegativeAttributes = new NegativeAttributes(this, reader);
                         }
