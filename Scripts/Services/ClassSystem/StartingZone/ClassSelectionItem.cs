@@ -109,7 +109,6 @@ namespace Server.Items
                     }
                     case CharacterClass.Mage:
                     {
-                        _Player.MoveToWorld(new Point3D(4447, 1173, 0), Map.Trammel); // Moonglow
                         MageClass.OnClassSelected(_Player);
                         break;
                     }
@@ -121,17 +120,17 @@ namespace Server.Items
                     }
                     case CharacterClass.Rogue:
                     {
-                        _Player.MoveToWorld(new Point3D(3032, 3384, 15), Map.Trammel); // Serpent's Hold
                         RogueClass.OnClassSelected(_Player);
                         break;
                     }
                     case CharacterClass.Warrior:
                     {
-                        _Player.MoveToWorld(new Point3D(2272, 1211, 0), Map.Trammel); // Cove
                         WarriorClass.OnClassSelected(_Player);
                         break;
                     }
                 }
+
+                _Player.MoveToWorld(new Point3D(633, 861, 0), Map.Trammel); // Yew
 
                 _Player.SendMessage(52, $"You are now a {ClassSystemHelper.GetClassName(selected)}.");
             }

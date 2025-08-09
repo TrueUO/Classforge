@@ -27,7 +27,6 @@ namespace Server.Gumps
         {
             pm.CloseGump(typeof(ImbuingGump));
             pm.CloseGump(typeof(ImbueSelectGump));
-            pm.CloseGump(typeof(RunicReforgingGump));
 
             m_ID = id;
             m_Value = value;

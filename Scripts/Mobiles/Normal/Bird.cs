@@ -68,6 +68,7 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override int Feathers => 25;
         public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
