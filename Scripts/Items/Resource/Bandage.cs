@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using Server.Services.ClassSystem;
 using Server.Targeting;
 
 namespace Server.Items
@@ -29,6 +30,13 @@ namespace Server.Items
         public Bandage(Serial serial)
             : base(serial)
         { }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1060658, "Class Required: Cleric"); // ~1_val~: ~2_val~
+        }
 
         TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
@@ -59,6 +67,12 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            if (from is PlayerMobile pm && pm.CharacterClass != CharacterClass.Cleric)
+            {
+                from.SendMessage("Only a Cleric can use this item.");
+                return;
+            }
+
             if (from.InRange(GetWorldLocation(), Range))
             {
                 from.RevealingAction();
