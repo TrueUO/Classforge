@@ -10,14 +10,15 @@ namespace Server.Items
 {
     public class Bandage : Item, IDyable, ICommodity
     {
-        public static int Range = 2;
+        public const int Range = 2;
 
         public override double DefaultWeight => 0.1;
 
         [Constructable]
         public Bandage()
             : this(1)
-        { }
+        {
+        }
 
         [Constructable]
         public Bandage(int amount)
@@ -29,13 +30,14 @@ namespace Server.Items
 
         public Bandage(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1060658, "Class Required: Cleric"); // ~1_val~: ~2_val~
+            list.Add("Class Required: Cleric"); 
         }
 
         TextDefinition ICommodity.Description => LabelNumber;
