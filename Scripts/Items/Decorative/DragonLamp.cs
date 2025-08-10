@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.CraftableDragonLamp")]
     public class DragonLamp : BaseLight, IFlipable
     {
         public override int LitItemID => ItemID == 0x4C4C ? 0x4C4D : 0x4C4F;
@@ -47,7 +46,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

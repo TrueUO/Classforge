@@ -1,6 +1,5 @@
 namespace Server.Misc
 {
-    [TypeAlias("Server.Misc.TreasuresOfTokunoPersistance")]
     public class TreasuresOfTokunoPersistence : Item
     {
         private static TreasuresOfTokunoPersistence m_Instance;
@@ -38,7 +37,6 @@ namespace Server.Misc
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.WriteEncodedInt((int)TreasuresOfTokuno.RewardEra);
@@ -48,19 +46,10 @@ namespace Server.Misc
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 0:
-                    {
-                        TreasuresOfTokuno.RewardEra = (TreasuresOfTokunoEra)reader.ReadEncodedInt();
-                        TreasuresOfTokuno.DropEra = (TreasuresOfTokunoEra)reader.ReadEncodedInt();
-
-                        break;
-                    }
-            }
+            TreasuresOfTokuno.RewardEra = (TreasuresOfTokunoEra)reader.ReadEncodedInt();
+            TreasuresOfTokuno.DropEra = (TreasuresOfTokunoEra)reader.ReadEncodedInt();
         }
 
         public override void Delete()

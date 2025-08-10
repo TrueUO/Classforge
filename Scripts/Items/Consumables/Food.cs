@@ -827,7 +827,6 @@ namespace Server.Items
         }
     }
 
-    [TypeAlias("Server.Items.Pizza")]
     public class CheesePizza : Food
     {
         public override int LabelNumber => 1044516;// cheese pizza

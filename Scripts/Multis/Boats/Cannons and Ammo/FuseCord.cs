@@ -1,6 +1,5 @@
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.Fusecord")]
     public class FuseCord : Item, ICommodity
     {
         public override int LabelNumber => 1116305;  // fuse cord
