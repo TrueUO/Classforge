@@ -1,6 +1,5 @@
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.SabertoothedTigerCostume")]
     public class SabreToothedTigerCostume : BaseCostume
     {
         public override string CreatureName => "sabre-toothed tiger";

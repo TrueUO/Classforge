@@ -4,7 +4,6 @@ using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOneQuest")]
     public class BouraBouraQuest : BaseQuest, ITierQuest
     {
         public BouraBouraQuest()
@@ -44,7 +43,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOne2Quest")]
     public class RaptorliciousQuest : BaseQuest, ITierQuest
     {
         public RaptorliciousQuest()
@@ -77,7 +75,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierOne3Quest")]
     public class TheSlithWarsQuest : BaseQuest, ITierQuest
     {
         public TheSlithWarsQuest()
@@ -111,7 +108,6 @@ namespace Server.Engines.Quests
     }
 
     // Tier 2
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo1Quest")]
     public class BouraBouraAndMoreBouraQuest : BaseQuest, ITierQuest
     {
         public BouraBouraAndMoreBouraQuest()
@@ -145,7 +141,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo2Quest")]
     public class RevengeOfTheSlithQuest : BaseQuest, ITierQuest
     {
         public RevengeOfTheSlithQuest()
@@ -179,7 +174,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo3Quest")]
     public class WeveGotAnAntProblemQuest : BaseQuest, ITierQuest
     {
         public WeveGotAnAntProblemQuest()
@@ -213,12 +207,11 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierTwo4Quest")]
     public class AmbushingTheAmbushersQuest : BaseQuest, ITierQuest
     {
         public AmbushingTheAmbushersQuest()
         {
-            AddObjective(new SlayObjective(typeof(KepetchAmbusher), "Kepetch Ambusher's", 20));////////////////
+            AddObjective(new SlayObjective(typeof(KepetchAmbusher), "Kepetch Ambusher's", 20));
 
             AddReward(new BaseReward(typeof(DustyExplorersBackpack), 1113190)); // Dusty Explorers Backpack
         }
@@ -247,7 +240,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierThree1Quest")]
     public class ItMakesMeSickQuest : BaseQuest, ITierQuest
     {
         public ItMakesMeSickQuest()
@@ -281,12 +273,11 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierThree2Quest")]
     public class ItsAMadMadWorldQuest : BaseQuest, ITierQuest
     {
         public ItsAMadMadWorldQuest()
         {
-            AddObjective(new SlayObjective(typeof(MaddeningHorror), "Maddening Horror's", 20));/////////////
+            AddObjective(new SlayObjective(typeof(MaddeningHorror), "Maddening Horror's", 20));
 
             AddReward(new BaseReward(typeof(DustyHuntersBackpack), 1113191)); // Dusty Hunter's Backpack
         }
@@ -314,7 +305,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    [TypeAlias("Server.Engines.Quests.PercolemTheHunterTierThree3Quest")]
     public class TheDreamersQuest : BaseQuest, ITierQuest
     {
         public TheDreamersQuest()

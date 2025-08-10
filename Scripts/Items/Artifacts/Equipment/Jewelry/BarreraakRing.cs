@@ -1,15 +1,13 @@
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.BarreraakRing")]
     public class BarreraaksRing : GoldRing
     {
         public override bool IsArtifact => true;
-        public override int LabelNumber => 1095049;  // Barreraak’s Old Beat Up Ring
+        public override int LabelNumber => 1095049; // Barreraak’s Old Beat Up Ring
 
         [Constructable]
         public BarreraaksRing()
         {
-            //TODO: Get Hue
             LootType = LootType.Blessed;
         }
 
@@ -19,17 +17,20 @@ namespace Server.Items
             {
                 return false;
             }
-            else if (from.Mounted)
+
+            if (from.Mounted)
             {
                 from.SendLocalizedMessage(1010097); // You cannot use this while mounted.
                 return false;
             }
-            else if (from.Flying)
+
+            if (from.Flying)
             {
                 from.SendLocalizedMessage(1113414); // You can't use this while flying!
                 return false;
             }
-            else if (from.IsBodyMod)
+
+            if (from.IsBodyMod)
             {
                 from.SendLocalizedMessage(1111896); // You may only change forms while in your original body.
                 return false;
@@ -66,14 +67,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write(1);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Parent is Mobile mobile)
             {
@@ -86,11 +86,6 @@ namespace Server.Items
                             m.BodyMod = 334;
                         }
                     });
-            }
-
-            if (version == 0)
-            {
-                reader.ReadInt();
             }
         }
     }
