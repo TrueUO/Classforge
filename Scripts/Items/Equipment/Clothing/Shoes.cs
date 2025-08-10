@@ -44,6 +44,9 @@ namespace Server.Items
     [Flipable(0x2307, 0x2308)]
     public class FurBoots : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public FurBoots()
             : this(0)
@@ -78,6 +81,9 @@ namespace Server.Items
     [Flipable(0x170b, 0x170c)]
     public class Boots : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
@@ -114,6 +120,9 @@ namespace Server.Items
     [Flipable]
     public class ThighBoots : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
@@ -150,6 +159,9 @@ namespace Server.Items
     [Flipable(0x170f, 0x1710)]
     public class Shoes : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
@@ -186,6 +198,9 @@ namespace Server.Items
     [Flipable(0x170d, 0x170e)]
     public class Sandals : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
@@ -222,6 +237,9 @@ namespace Server.Items
     [Flipable(0x2797, 0x27E2)]
     public class NinjaTabi : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public NinjaTabi()
             : this(0)
@@ -256,6 +274,9 @@ namespace Server.Items
     [Flipable(0x2796, 0x27E1)]
     public class SamuraiTabi : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public SamuraiTabi()
             : this(0)
@@ -290,6 +311,9 @@ namespace Server.Items
     [Flipable(0x2796, 0x27E1)]
     public class Waraji : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public Waraji()
             : this(0)
@@ -324,6 +348,9 @@ namespace Server.Items
     [Flipable(0x2FC4, 0x317A)]
     public class ElvenBoots : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
@@ -364,6 +391,9 @@ namespace Server.Items
 
     public class JesterShoes : BaseShoes
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override int LabelNumber => 1109617;  // Jester Shoes
 
         [Constructable]

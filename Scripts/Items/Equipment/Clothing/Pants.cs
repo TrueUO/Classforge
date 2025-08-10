@@ -33,6 +33,9 @@ namespace Server.Items
     [Flipable(0x152e, 0x152f)]
     public class ShortPants : BasePants
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public ShortPants()
             : this(0)
@@ -67,6 +70,9 @@ namespace Server.Items
     [Flipable(0x1539, 0x153a)]
     public class LongPants : BasePants
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public LongPants()
             : this(0)
@@ -101,6 +107,9 @@ namespace Server.Items
     [Flipable(0x279B, 0x27E6)]
     public class TattsukeHakama : BasePants
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public TattsukeHakama()
             : this(0)
@@ -135,6 +144,9 @@ namespace Server.Items
     [Flipable(0x2FC3, 0x3179)]
     public class ElvenPants : BasePants
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public ElvenPants()
             : this(0)
