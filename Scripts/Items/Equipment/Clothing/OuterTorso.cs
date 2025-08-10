@@ -33,6 +33,9 @@ namespace Server.Items
     [Flipable(0x230E, 0x230D)]
     public class GildedDress : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public GildedDress()
             : this(0)
@@ -67,6 +70,9 @@ namespace Server.Items
     [Flipable(0x1F00, 0x1EFF)]
     public class FancyDress : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public FancyDress()
             : this(0)
@@ -101,6 +107,9 @@ namespace Server.Items
     [Flipable]
     public class Robe : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public Robe()
             : this(0)
@@ -177,6 +186,9 @@ namespace Server.Items
     [Flipable(0x1f01, 0x1f02)]
     public class PlainDress : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public PlainDress()
             : this(0)
@@ -211,6 +223,9 @@ namespace Server.Items
     [Flipable(0x2799, 0x27E4)]
     public class Kamishimo : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public Kamishimo()
             : this(0)
@@ -245,6 +260,9 @@ namespace Server.Items
     [Flipable(0x279C, 0x27E7)]
     public class HakamaShita : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public HakamaShita()
             : this(0)
@@ -279,6 +297,9 @@ namespace Server.Items
     [Flipable(0x2782, 0x27CD)]
     public class MaleKimono : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public MaleKimono()
             : this(0)
@@ -315,6 +336,9 @@ namespace Server.Items
     [Flipable(0x2783, 0x27CE)]
     public class FemaleKimono : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public FemaleKimono()
             : this(0)
@@ -351,6 +375,9 @@ namespace Server.Items
     [Flipable(0x2FB9, 0x3173)]
     public class MaleElvenRobe : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public MaleElvenRobe()
             : this(0)
@@ -385,6 +412,9 @@ namespace Server.Items
     [Flipable(0x2FBA, 0x3174)]
     public class FemaleElvenRobe : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public FemaleElvenRobe()
             : this(0)
@@ -420,6 +450,9 @@ namespace Server.Items
 
     public class FloweredDress : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override int LabelNumber => 1109622;  // Flowered Dress
 
         [Constructable]
@@ -454,6 +487,9 @@ namespace Server.Items
 
     public class EveningGown : BaseOuterTorso
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override int LabelNumber => 1109625;  // Evening Gown
 
         [Constructable]
@@ -488,6 +524,9 @@ namespace Server.Items
 
     public class Epaulette : BaseClothing
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public override int LabelNumber => 1123325;  // Epaulette
 
         [Constructable]

@@ -137,7 +137,6 @@ namespace Server.Mobiles
                 Add(typeof(GoldBeadNecklace), 13);
                 Add(typeof(SilverNecklace), 10);
                 Add(typeof(SilverBeadNecklace), 10);
-                Add(typeof(Beads), 13);
                 Add(typeof(GoldBracelet), 13);
                 Add(typeof(SilverBracelet), 10);
                 Add(typeof(GoldEarrings), 13);

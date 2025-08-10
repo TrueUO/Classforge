@@ -961,10 +961,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write(12); // version
-
-            // Version 12 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
+            writer.Write(0); // version
 
             writer.Write(m_SetPhysicalBonus);
             writer.Write(m_SetFireBonus);
@@ -979,13 +976,10 @@ namespace Server.Items
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
-            //Version 7
             writer.Write(m_IsImbued);
 
-            // Version 6
             m_NegativeAttributes.Serialize(writer);
 
-            // Version 5
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
@@ -993,7 +987,6 @@ namespace Server.Items
             writer.Write(m_GorgonLenseCharges);
             writer.Write((int)m_GorgonLenseType);
 
-            // Version 4
             writer.WriteEncodedInt(m_TimesImbued);
 
             m_SAAbsorptionAttributes.Serialize(writer);
@@ -1008,7 +1001,6 @@ namespace Server.Items
             writer.Write(m_Crafter);
             writer.Write((int)m_Quality);
 
-            // Version 3
             writer.WriteEncodedInt(m_MaxHitPoints);
             writer.WriteEncodedInt(m_HitPoints);
 
@@ -1023,70 +1015,36 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
             {
-                case 12:
-                case 11:
+                case 0:
                     {
                         m_SetPhysicalBonus = reader.ReadInt();
                         m_SetFireBonus = reader.ReadInt();
                         m_SetColdBonus = reader.ReadInt();
                         m_SetPoisonBonus = reader.ReadInt();
                         m_SetEnergyBonus = reader.ReadInt();
-                        goto case 10;
-                    }
-                case 10:
-                    {
+
                         m_PlayerConstructed = reader.ReadBool();
-                        goto case 9;
-                    }
-                case 9:
-                    {
+
                         m_TalismanProtection = new TalismanAttribute(reader);
-                        goto case 8;
-                    }
-                case 8:
-                    {
-                        if (version == 11)
-                        {
-                            reader.ReadBool();
-                        }
 
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
-                        goto case 7;
-                    }
-                case 7:
-                    {
+
                         m_IsImbued = reader.ReadBool();
-                        goto case 6;
-                    }
-                case 6:
-                    {
+
                         m_NegativeAttributes = new NegativeAttributes(this, reader);
-                        goto case 5;
-                    }
-                case 5:
-                    {
+
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
 
-                        if (version < 12 && reader.ReadBool())
-                        {
-                            m_NegativeAttributes.NoRepair = 1;
-                        }
-
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
 
-                        goto case 4;
-                    }
-                case 4:
-                    {
                         m_TimesImbued = reader.ReadEncodedInt();
 
                         m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
@@ -1100,24 +1058,13 @@ namespace Server.Items
 
                         m_Crafter = reader.ReadMobile();
                         m_Quality = (ItemQuality)reader.ReadInt();
-                        goto case 3;
-                    }
-                case 3:
-                    {
+
                         m_MaxHitPoints = reader.ReadEncodedInt();
                         m_HitPoints = reader.ReadEncodedInt();
 
-                        goto case 2;
-                    }
-                case 2:
-                    {
                         m_Resource = (CraftResource)reader.ReadEncodedInt();
                         m_GemType = (GemType)reader.ReadEncodedInt();
 
-                        goto case 1;
-                    }
-                case 1:
-                    {
                         m_AosAttributes = new AosAttributes(this, reader);
                         m_AosResistances = new AosElementAttributes(this, reader);
                         m_AosSkillBonuses = new AosSkillBonuses(this, reader);
@@ -1157,14 +1104,6 @@ namespace Server.Items
                         {
                             mob.CheckStatTimers();
                         }
-
-                        break;
-                    }
-                case 0:
-                    {
-                        m_AosAttributes = new AosAttributes(this);
-                        m_AosResistances = new AosElementAttributes(this);
-                        m_AosSkillBonuses = new AosSkillBonuses(this);
 
                         break;
                     }

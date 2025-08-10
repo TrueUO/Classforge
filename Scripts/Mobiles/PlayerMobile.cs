@@ -3574,8 +3574,16 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
-            list.Add(1060658, $"Class\t{ClassSystemHelper.GetClassName(_CharacterClass)}"); // ~1_val~: ~2_val~
-            list.Add(1060659, $"Level\t{Level}"); // ~1_val~: ~2_val~
+            // Only display Class and Level if a player.
+            if (AccessLevel < AccessLevel.Counselor)
+            {
+                list.Add(1060658, $"Class\t{ClassSystemHelper.GetClassName(_CharacterClass)}"); // ~1_val~: ~2_val~
+                list.Add(1060659, $"Level\t{Level}"); // ~1_val~: ~2_val~
+            }
+            else if (AccessLevel > AccessLevel.Counselor)
+            {
+                list.Add(1018085); // Game Master
+            }
 
             Engines.JollyRoger.JollyRogerData.DisplayTitle(this, list);
 
