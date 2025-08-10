@@ -1,5 +1,4 @@
 using System;
-using Server.Engines.Quests;
 
 namespace Server.Mobiles
 {
@@ -12,6 +11,7 @@ namespace Server.Mobiles
             "dook dook",
             "dook dook dook!"
         };
+
         private bool m_CanTalk;
 
         [Constructable]
@@ -72,11 +72,6 @@ namespace Server.Mobiles
         {
             if (m_CanTalk)
             {
-                if (to != null)
-                {
-                    QuestSystem.FocusTo(this, to);
-                }
-
                 Say(m_Vocabulary[Utility.Random(m_Vocabulary.Length)]);
 
                 if (to != null && Utility.RandomBool())

@@ -61,7 +61,7 @@ namespace Server.Mobiles
 
         public override Type[] DecorativeList => [typeof(Pier), typeof(MonsterStatuette)];
 
-        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { MonsterStatuetteType.DreadHorn };
+        public override MonsterStatuetteType[] StatueTypes => new[] { MonsterStatuetteType.DreadHorn };
 
         public override bool Unprovokable => true;
 

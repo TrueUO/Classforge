@@ -5,7 +5,6 @@ using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Engines.Points;
 using Server.Engines.Quests;
-using Server.Engines.Quests.Doom;
 using Server.Engines.RisingTide;
 using Server.Engines.VvV;
 using Server.Items;
@@ -5253,16 +5252,6 @@ namespace Server.Mobiles
                 GenerateLoot(LootStage.Death);
             }
 
-            if (!NoKillAwards && Region.IsPartOf("Doom"))
-            {
-                int bones = TheSummoningQuest.GetDaemonBonesFor(this);
-
-                if (bones > 0)
-                {
-                    PackItem(new DaemonBone(bones));
-                }
-            }
-
             if (IsAnimatedDead)
             {
                 Effects.SendLocationEffect(Location, Map, 0x3728, 13, 1, 0x461, 4);
@@ -5571,7 +5560,6 @@ namespace Server.Mobiles
             MondainsLegacy.OnKilledBy(this, mob);
             PointsSystem.OnKilledBy(this, mob);
             QuestHelper.OnKilledBy(this, mob);
-            QuestSystem.OnKilledBy(this, mob);
 
             ClassSystemHelper.AwardXpForKill(this, mob);
         }

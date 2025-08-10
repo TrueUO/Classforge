@@ -377,86 +377,13 @@ namespace Server.Mobiles
 
         public virtual VendorShoeType ShoeType => VendorShoeType.Shoes;
 
-        public virtual void CheckMorph()
-        {
-            if (CheckNecromancer())
-            {
-                return;
-            }
-        }
-
-        public virtual bool CheckNecromancer()
-        {
-            Map map = Map;
-
-            if (map != Map.Malas)
-            {
-                return false;
-            }
-
-            if (!Region.IsPartOf("Umbra"))
-            {
-                return false;
-            }
-
-            if (Hue != 0x83E8)
-            {
-                TurnToNecromancer();
-            }
-
-            return true;
-        }
-
-        public override void OnAfterSpawn()
-        {
-            CheckMorph();
-        }
-
         protected override void OnMapChange(Map oldMap)
         {
             base.OnMapChange(oldMap);
 
-            CheckMorph();
-
             LoadSBInfo();
         }
 
-        public virtual int GetRandomNecromancerHue()
-        {
-            switch (Utility.Random(20))
-            {
-                case 0:
-                {
-                    return 0;
-                }
-                case 1:
-                {
-                    return 0x4E9;
-                }
-                default:
-                {
-                    return Utility.RandomList(0x485, 0x497);
-                }
-            }
-        }
-
-        public virtual void TurnToNecromancer()
-        {
-            for (int i = 0; i < Items.Count; ++i)
-            {
-                Item item = Items[i];
-
-                if (item is BaseClothing || item is BaseWeapon || item is BaseArmor || item is BaseTool)
-                {
-                    item.Hue = GetRandomNecromancerHue();
-                }
-            }
-
-            HairHue = 0;
-            FacialHairHue = 0;
-
-            Hue = 0x83E8;
-        }
         public virtual int GetHairHue()
         {
             return Utility.RandomHairHue();
@@ -1870,8 +1797,6 @@ namespace Server.Mobiles
                         break;
                     }
             }
-
-            Timer.DelayCall(TimeSpan.Zero, CheckMorph);
         }
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)

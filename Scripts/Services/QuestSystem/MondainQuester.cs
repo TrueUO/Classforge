@@ -31,10 +31,6 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override void CheckMorph()
-        {
-            // Don't morph me!
-        }
         public override bool IsActiveVendor => false;
         public override bool IsInvulnerable => true;
         public override bool DisallowAllMoves => false;
@@ -163,11 +159,6 @@ namespace Server.Engines.Quests
             base.GetProperties(list);
 
             list.Add(1072269); // Quest Giver
-        }
-
-        public void FocusTo(Mobile to)
-        {
-            QuestSystem.FocusTo(this, to);
         }
 
         public override void Serialize(GenericWriter writer)

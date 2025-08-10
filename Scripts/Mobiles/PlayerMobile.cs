@@ -1120,7 +1120,6 @@ namespace Server.Mobiles
             MasteryInfo.OnLogin(this);
             PlantSystem.OnLogin(this);
             PotionOfGloriousFortune.OnLogin(this);
-            QuestSystem.OnLogin(this);
             ShadowguardController.OnLogin(this);
             ShardPoller.OnLogin(this);
             StormLevelGump.OnLogin(this);
@@ -1381,7 +1380,6 @@ namespace Server.Mobiles
             {
                 pm.m_SessionStart = DateTime.UtcNow;
 
-                pm.m_Quest?.StartTimer();
                 QuestHelper.StartTimer(pm);
 
                 pm.BedrollLogout = false;
@@ -1443,8 +1441,6 @@ namespace Server.Mobiles
             if (m is PlayerMobile pm)
             {
                 pm.m_GameTime += DateTime.UtcNow - pm.m_SessionStart;
-
-                pm.m_Quest?.StopTimer();
 
                 QuestHelper.StopTimer(pm);
 
@@ -2093,6 +2089,8 @@ namespace Server.Mobiles
 
             if (from == this)
             {
+                list.Add(new OpenBackpackEntry(this));
+
                 if (ShadowguardController.GetInstance(Location, Map) != null)
                 {
                     list.Add(new ExitEntry(this));
@@ -2120,14 +2118,10 @@ namespace Server.Mobiles
                     list.Add(new Engines.Points.LoyaltyRating(this));
                 }
 
-                list.Add(new OpenBackpackEntry(this));
-
                 if (Alive)
                 {
                     QuestHelper.GetContextMenuEntries(list);
                 }
-
-                m_Quest?.GetContextMenuEntries(list);
 
                 if (house != null)
                 {
@@ -3235,12 +3229,6 @@ namespace Server.Mobiles
                         m_GuildRank = RankDefinition.Ranks[rank];
                         m_LastOnline = reader.ReadDateTime();
 
-                        m_Quest = QuestSerializer.DeserializeQuest(reader);
-                        if (m_Quest != null)
-                        {
-                            m_Quest.From = this;
-                        }
-
                         int count = reader.ReadEncodedInt();
                         if (count > 0)
                         {
@@ -3427,8 +3415,6 @@ namespace Server.Mobiles
 
             writer.WriteEncodedInt(m_GuildRank.Rank);
             writer.Write(m_LastOnline);
-
-            QuestSerializer.Serialize(m_Quest, writer);
 
             if (m_DoneQuests == null)
             {
@@ -3719,11 +3705,7 @@ namespace Server.Mobiles
             }
         }
 
-        private QuestSystem m_Quest;
         private List<QuestRestartInfo> m_DoneQuests;
-
-        public QuestSystem Quest { get => m_Quest; set => m_Quest = value; }
-
         public List<QuestRestartInfo> DoneQuests { get => m_DoneQuests; set => m_DoneQuests = value; }
 
         public List<BaseQuest> Quests => MondainQuestData.GetQuests(this);

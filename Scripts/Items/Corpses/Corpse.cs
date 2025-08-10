@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
-using Server.Engines.Quests;
-using Server.Engines.Quests.Doom;
 using Server.Guilds;
 using Server.Misc;
 using Server.Mobiles;
@@ -1107,28 +1105,6 @@ namespace Server.Items
                 if (!CheckLoot(from))
                 {
                     return;
-                }
-
-                if (from is PlayerMobile player)
-                {
-                    QuestSystem qs = player.Quest;
-
-                    if (qs is TheSummoningQuest && qs.FindObjective(typeof(VanquishDaemonObjective)) is VanquishDaemonObjective obj && obj.Completed && obj.CorpseWithSkull == this)
-                    {
-                        GoldenSkull sk = new GoldenSkull();
-
-                        if (player.PlaceInBackpack(sk))
-                        {
-                            obj.CorpseWithSkull = null;
-                            qs.Complete();
-                            player.SendLocalizedMessage(1050022); // For your valor in combating the devourer, you have been awarded a golden skull.
-                        }
-                        else
-                        {
-                            sk.Delete();
-                            player.SendLocalizedMessage(1050023); // You find a golden skull, but your backpack is too full to carry it.
-                        }
-                    }
                 }
 
                 base.OnDoubleClick(from);

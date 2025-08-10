@@ -82,16 +82,7 @@ namespace Server
         {
             typeof(BlueDiamond), typeof(DarkSapphire), typeof(EcruCitrine), typeof(FireRuby), typeof(PerfectEmerald), typeof(Turquoise), typeof(WhitePearl), typeof(BrilliantAmber)
         };
-
         public static Type[] RareGemTypes => m_RareGemTypes;
-
-        private static readonly Type[] m_MLResources =
-		{
-            typeof(BlueDiamond), typeof(DarkSapphire), typeof(EcruCitrine), typeof(FireRuby), typeof(PerfectEmerald), typeof(Turquoise), typeof(WhitePearl), typeof(BrilliantAmber),
-            typeof(LuminescentFungi), typeof(BarkFragment), typeof(SwitchItem), typeof(ParasiticPlant)
-        };
-
-        public static Type[] MLResources => m_MLResources;
 
         public static Type[] RegTypes => m_RegTypes;
         private static readonly Type[] m_RegTypes =
@@ -100,35 +91,17 @@ namespace Server
             typeof(SulfurousAsh), typeof(SpidersSilk)
         };
 
-        public static Type[] NecroRegTypes => m_NecroRegTypes;
-        private static readonly Type[] m_NecroRegTypes = { typeof(BatWing), typeof(GraveDust), typeof(DaemonBlood), typeof(NoxCrystal), typeof(PigIron) };
-
-        public static Type[] MysticRegTypes => m_MysticRegTypes;
-        private static readonly Type[] m_MysticRegTypes = { typeof(Bone), typeof(DragonBlood), typeof(FertileDirt), typeof(DaemonBone) };
-
         private static readonly Type[] m_PotionTypes =
         {
             typeof(AgilityPotion), typeof(StrengthPotion), typeof(RefreshPotion), typeof(LesserCurePotion),
             typeof(LesserHealPotion), typeof(LesserPoisonPotion)
         };
-
         public static Type[] PotionTypes => m_PotionTypes;
 
-        private static readonly Type[] m_ImbuingEssenceIngreds =
-        {
-            typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance), typeof(EssenceControl), typeof(EssenceDiligence),
-            typeof(EssenceDirection),   typeof(EssenceFeeling), typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence),
-            typeof(EssenceSingularity)
-        };
-
-        public static Type[] ImbuingEssenceIngreds => m_ImbuingEssenceIngreds;
-
         private static readonly Type[] m_SEInstrumentTypes = { typeof(BambooFlute) };
-
         public static Type[] SEInstrumentTypes => m_SEInstrumentTypes;
 
         private static readonly Type[] m_InstrumentTypes = { typeof(Drums), typeof(Harp), typeof(LapHarp), typeof(Lute), typeof(Tambourine), typeof(TambourineTassel) };
-
         public static Type[] InstrumentTypes => m_InstrumentTypes;
 
         private static readonly Type[] m_StatueTypes =
@@ -159,62 +132,7 @@ namespace Server
             typeof(SummonEarthElementalScroll), typeof(SummonFireElementalScroll), typeof(SummonWaterElementalScroll)
         };
 
-        private static readonly Type[] m_NecromancyScrollTypes =
-        {
-            typeof(AnimateDeadScroll), typeof(BloodOathScroll), typeof(CorpseSkinScroll), typeof(CurseWeaponScroll),
-            typeof(EvilOmenScroll), typeof(HorrificBeastScroll), typeof(LichFormScroll), typeof(MindRotScroll),
-            typeof(PainSpikeScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(SummonFamiliarScroll),
-            typeof(VampiricEmbraceScroll), typeof(VengefulSpiritScroll), typeof(WitherScroll), typeof(WraithFormScroll),
-            typeof(ExorcismScroll)
-        };
-
-        private static readonly Type[] m_ArcanistScrollTypes =
-        {
-            typeof(ArcaneCircleScroll), typeof(GiftOfRenewalScroll), typeof(ImmolatingWeaponScroll), typeof(AttuneWeaponScroll),
-            typeof(ThunderstormScroll), typeof(NatureFuryScroll),
-			typeof(ReaperFormScroll), typeof(WildfireScroll), typeof(EssenceOfWindScroll), typeof(DryadAllureScroll),
-            typeof(EtherealVoyageScroll), typeof(WordOfDeathScroll), typeof(GiftOfLifeScroll), typeof(ArcaneEmpowermentScroll)
-        };
-
-        private static readonly Type[] m_MysticismScrollTypes =
-        {
-            typeof(NetherBoltScroll), typeof(HealingStoneScroll), typeof(PurgeMagicScroll), typeof(EagleStrikeScroll),
-            typeof(AnimatedWeaponScroll), typeof(StoneFormScroll), typeof(SpellTriggerScroll), typeof(CleansingWindsScroll),
-            typeof(BombardScroll), typeof(SpellPlagueScroll), typeof(HailStormScroll), typeof(NetherCycloneScroll),
-            typeof(RisingColossusScroll), typeof(SleepScroll), typeof(MassSleepScroll), typeof(EnchantScroll)
-        };
-
         public static Type[] MageryScrollTypes => m_MageryScrollTypes;
-        public static Type[] NecromancyScrollTypes => m_NecromancyScrollTypes;
-        public static Type[] MysticismScrollTypes => m_MysticismScrollTypes;
-        public static Type[] ArcanistScrollTypes => m_ArcanistScrollTypes;
-
-        private static readonly Type[] m_GrimmochJournalTypes =
-        {
-            typeof(GrimmochJournal1), typeof(GrimmochJournal2), typeof(GrimmochJournal3), typeof(GrimmochJournal6),
-            typeof(GrimmochJournal7), typeof(GrimmochJournal11), typeof(GrimmochJournal14), typeof(GrimmochJournal17),
-            typeof(GrimmochJournal23)
-        };
-
-        public static Type[] GrimmochJournalTypes => m_GrimmochJournalTypes;
-
-        private static readonly Type[] m_LysanderNotebookTypes =
-        {
-            typeof(LysanderNotebook1), typeof(LysanderNotebook2), typeof(LysanderNotebook3), typeof(LysanderNotebook7),
-            typeof(LysanderNotebook8), typeof(LysanderNotebook11)
-        };
-
-        public static Type[] LysanderNotebookTypes => m_LysanderNotebookTypes;
-
-        private static readonly Type[] m_TavarasJournalTypes =
-        {
-            typeof(TavarasJournal1), typeof(TavarasJournal2), typeof(TavarasJournal3), typeof(TavarasJournal6),
-            typeof(TavarasJournal7), typeof(TavarasJournal8), typeof(TavarasJournal9), typeof(TavarasJournal11),
-            typeof(TavarasJournal14), typeof(TavarasJournal16), typeof(TavarasJournal16b), typeof(TavarasJournal17),
-            typeof(TavarasJournal19)
-        };
-
-        public static Type[] TavarasJournalTypes => m_TavarasJournalTypes;
 
         private static readonly Type[] m_WandTypes =
         {
@@ -234,11 +152,6 @@ namespace Server
             typeof(WildGirlOfTheForest), typeof(TreatiseOnAlchemy), typeof(VirtueBook)
         };
         public static Type[] LibraryBookTypes => m_LibraryBookTypes;
-
-        public static Item RandomEssence()
-        {
-            return Construct(m_ImbuingEssenceIngreds);
-        }
 
         public static BaseWand RandomWand()
         {
@@ -315,24 +228,9 @@ namespace Server
             return Construct(m_RareGemTypes);
         }
 
-        public static Item RandomMLResource()
-        {
-            return Construct(m_MLResources);
-        }
-
         public static Item RandomReagent()
         {
             return Construct(m_RegTypes);
-        }
-
-        public static Item RandomNecromancyReagent()
-        {
-            return Construct(m_NecroRegTypes);
-        }
-
-        public static Item RandomPossibleReagent()
-        {
-            return Construct(m_RegTypes, m_NecroRegTypes);
         }
 
         public static Item RandomPotion()
@@ -350,45 +248,9 @@ namespace Server
             return Construct(m_StatueTypes);
         }
 
-        public static SpellScroll RandomScroll(int minIndex, int maxIndex, SpellbookType type)
+        public static SpellScroll RandomScroll(int minIndex, int maxIndex)
         {
-            Type[] types;
-
-            switch (type)
-            {
-                default:
-                {
-                    types = m_MageryScrollTypes;
-                    break;
-                }
-                case SpellbookType.Necromancer:
-                {
-                    types = m_NecromancyScrollTypes;
-                    break;
-                }
-                case SpellbookType.Arcanist:
-                {
-                    types = m_ArcanistScrollTypes;
-                    break;
-                }
-                case SpellbookType.Mystic:
-                {
-                    types = m_MysticismScrollTypes;
-                    break;
-                }
-            }
-
-            return Construct(types, Utility.RandomMinMax(minIndex, maxIndex)) as SpellScroll;
-        }
-
-        public static BaseBook RandomLysanderNotebook()
-        {
-            return Construct(m_LysanderNotebookTypes) as BaseBook;
-        }
-
-        public static BaseBook RandomTavarasJournal()
-        {
-            return Construct(m_TavarasJournalTypes) as BaseBook;
+            return Construct(m_MageryScrollTypes, Utility.RandomMinMax(minIndex, maxIndex)) as SpellScroll;
         }
 
         public static BaseTalisman RandomTalisman()

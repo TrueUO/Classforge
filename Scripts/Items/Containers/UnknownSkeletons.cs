@@ -156,21 +156,16 @@ namespace Server.Items
             {
                 item = Loot.RandomReagent();
                 item.Amount = Utility.RandomMinMax(15, 20);
+
                 DropItem(item);
             }
 
             for (int i = 0; i < 3; i++)
             {
-                if (0.25 >= Utility.RandomDouble())
-                {
-                    item = Loot.Construct(Loot.NecromancyScrollTypes);
-                }
-                else
-                {
-                    item = Loot.Construct(Loot.MageryScrollTypes);
-                }
-
+                
+                item = Loot.Construct(Loot.MageryScrollTypes);
                 item.Amount = Utility.RandomMinMax(1, 2);
+
                 DropItem(item);
             }
         }
@@ -183,15 +178,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

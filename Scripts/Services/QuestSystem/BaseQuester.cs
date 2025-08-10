@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Server.ContextMenus;
-using Server.Items;
 using Server.Mobiles;
 
 namespace Server.Engines.Quests
@@ -8,6 +7,7 @@ namespace Server.Engines.Quests
     public class TalkEntry : ContextMenuEntry
     {
         private readonly BaseQuester m_Quester;
+
         public TalkEntry(BaseQuester quester)
             : base(quester.TalkNumber)
         {
@@ -28,6 +28,7 @@ namespace Server.Engines.Quests
     public abstract class BaseQuester : BaseVendor
     {
         protected List<SBInfo> m_SBInfos = new List<SBInfo>();
+
         public BaseQuester()
             : this(null)
         {
@@ -43,25 +44,12 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override void CheckMorph()
-        {
-            // Don't morph me!
-        }
-
         public override bool IsActiveVendor => false;
         public override bool IsInvulnerable => true;
         public override bool DisallowAllMoves => true;
         public override bool ClickTitle => false;
         public virtual int TalkNumber => 6146;// Talk
         protected override List<SBInfo> SBInfos => m_SBInfos;
-        public static Container GetNewContainer()
-        {
-            Bag bag = new Bag
-            {
-                Hue = QuestSystem.RandomBrightHue()
-            };
-            return bag;
-        }
 
         public override void InitSBInfo()
         {
@@ -107,11 +95,6 @@ namespace Server.Engines.Quests
             }
         }
 
-        public void FocusTo(Mobile to)
-        {
-            QuestSystem.FocusTo(this, to);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -122,12 +105,6 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
             reader.ReadInt();
-        }
-
-        protected Item SetHue(Item item, int hue)
-        {
-            item.Hue = hue;
-            return item;
         }
     }
 }

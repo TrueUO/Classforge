@@ -335,31 +335,14 @@ namespace Server.Items
             return list;
         }
 
-        public static Type[] GetReagentList(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
+        public static Type[] GetReagentList(TreasureLevel level, TreasurePackage package)
         {
             if (level != TreasureLevel.Stash || package != TreasurePackage.Mage)
             {
                 return null;
             }
 
-            switch (facet)
-            {
-                case TreasureFacet.Felucca:
-                case TreasureFacet.Trammel:
-                {
-                    return Loot.RegTypes;
-                }
-                case TreasureFacet.Malas:
-                {
-                    return Loot.NecroRegTypes;
-                }
-                case TreasureFacet.TerMur:
-                {
-                    return Loot.MysticRegTypes;
-                }
-            }
-
-            return null;
+            return Loot.RegTypes; ;
         }
 
         public static Recipe[] GetRecipeList(TreasureLevel level, TreasurePackage package)
@@ -841,7 +824,7 @@ namespace Server.Items
                 chest.DropItem(lootBag);
             }
 
-            list = GetReagentList(level, package, facet);
+            list = GetReagentList(level, package);
 
             if (list != null)
             {

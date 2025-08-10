@@ -447,7 +447,6 @@ namespace Server.Engines.Points
             Entries[typeof(SurgeShield)] = 100.0;
             Entries[typeof(HeartOfTheLion)] = 100.0;
             Entries[typeof(BloodwoodSpirit)] = 100.0;
-            Entries[typeof(Boomstick)] = 100.0;
             Entries[typeof(QuiverOfRage)] = 100.0;
             Entries[typeof(QuiverOfElements)] = 100.0;
             Entries[typeof(SoulSeeker)] = 100.0;
@@ -458,13 +457,6 @@ namespace Server.Engines.Points
             Entries[typeof(MelisandesCorrodedHatchet)] = 100.0;
             Entries[typeof(AlbinoSquirrelImprisonedInCrystal)] = 100.0;
             Entries[typeof(GrizzledMareStatuette)] = 100.0;
-            Entries[typeof(GrizzleGauntlets)] = 100.0;
-            Entries[typeof(GrizzleGreaves)] = 100.0;
-            Entries[typeof(GrizzleHelm)] = 100.0;
-            Entries[typeof(GrizzleTunic)] = 100.0;
-            Entries[typeof(GrizzleVambraces)] = 100.0;
-            Entries[typeof(ParoxysmusSwampDragonStatuette)] = 100.0;
-            Entries[typeof(ScepterOfTheChief)] = 100.0;
             Entries[typeof(CrystallineRing)] = 100.0;
             Entries[typeof(MarkOfTravesty)] = 100.0;
             Entries[typeof(ImprisonedDog)] = 100.0;
@@ -555,18 +547,12 @@ namespace Server.Engines.Points
             Entries[typeof(WhiteScales)] = 0.10;
             Entries[typeof(BlueScales)] = 0.10;
             Entries[typeof(Bottle)] = 0.25;
-            Entries[typeof(OrcishKinMask)] = 100.0;
-            Entries[typeof(PottedPlantDeed)] = 15000.0;
-            Entries[typeof(BagOfSending)] = 250.0;
-            Entries[typeof(Cauldron)] = 200.0;
             Entries[typeof(ChampionSkull)] = 1000.0;
             Entries[typeof(ClockworkAssembly)] = 50.0;
-            Entries[typeof(ConjurersTrinket)] = 10000.0;
 
             Entries[typeof(DeadWood)] = 1.0;
             Entries[typeof(DustyPillow)] = 250.0;
             Entries[typeof(EndlessDecanter)] = 10.0;
-            Entries[typeof(EternallyCorruptTree)] = 1000.0;
             Entries[typeof(ExcellentIronMaiden)] = 50.0;
             Entries[typeof(ExecutionersCap)] = 1.0;
             Entries[typeof(Flowstone)] = 250.0;

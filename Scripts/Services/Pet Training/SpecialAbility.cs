@@ -850,26 +850,6 @@ namespace Server.Mobiles
                     false,
                     new[] { typeof(AntLion) }));
 
-                // Rend
-                Definitions.Add(new DragonBreathDefinition(
-                    0.06,
-                    1.0,
-                    1.3,
-                    1.0,
-                    0, 100, 0, 0, 0, 0, 0,
-                    30.0, 45.0,
-                    0x36D4,
-                    5,
-                    0,
-                    false,
-                    false,
-                    0,
-                    0,
-                    0x227,
-                    12,
-                    false,
-                    new[] { typeof(Rend) }));
-
                 // Crystal Sea Serpent
                 Definitions.Add(new DragonBreathDefinition(
                    0.55,

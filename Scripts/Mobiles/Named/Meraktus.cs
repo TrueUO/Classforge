@@ -13,7 +13,7 @@ namespace Server.Mobiles
         public override bool DoesGoldShower => false;
         public override Type[] UniqueList => [];
         public override Type[] SharedList => [];
-        public override Type[] DecorativeList => new Type[]
+        public override Type[] DecorativeList => new[]
                 {
                     typeof(ArtifactLargeVase),
                     typeof(ArtifactVase),
@@ -67,13 +67,11 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 5);
-            AddLoot(LootPack.Talisman, 5);
-            AddLoot(LootPack.PeerlessResource, 8);
+           
             AddLoot(LootPack.LootItem<MalletAndChisel>());
-            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(MinotaurHedge), typeof(BonePile), typeof(LightYarn) }, 100.0, 1, false, true));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(MinotaurHedge), typeof(BonePile), typeof(LightYarn) }, 100.0, 1, false, true));
             AddLoot(LootPack.LootItem<TormentedChains>(50.0, 1));
             AddLoot(LootPack.LootItem<CrimsonCincture>(2.25, 1));
-            AddLoot(LootPack.ArcanistScrolls, 1);
         }
 
         public override int GetAngerSound()
