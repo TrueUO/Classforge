@@ -14,7 +14,7 @@ namespace Server.Services.ClassSystem
 
         public static readonly SkillName[] SecondarySkills =
         [
-           
+           SkillName.Tactics
         ];
 
         public static readonly SkillName[] CraftSkills =

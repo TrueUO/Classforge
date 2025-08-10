@@ -111,27 +111,6 @@ namespace Server.Menus.Questions
             })
         };
 
-        private static readonly StuckMenuEntry[] m_TerMurEntries = new StuckMenuEntry[]
-        {
-            // Royal City
-            new StuckMenuEntry(1112571, new Point3D[]
-            {
-                new Point3D(750, 3440, -20),
-                new Point3D(709, 3444, -20),
-                new Point3D(802, 3431, -10),
-                new Point3D(848, 3450, -19),
-                new Point3D(738, 3486, -19)
-            }),
-
-            // Holy City
-            new StuckMenuEntry(1112572, new Point3D[]
-            {
-                new Point3D(997, 3869, -42),
-                new Point3D(961, 3921, -42),
-                new Point3D(996, 3962, -42)
-            })
-        };
-
         private readonly Mobile m_Mobile;
         private readonly Mobile m_Sender;
         private readonly bool m_MarkUse;
@@ -152,7 +131,7 @@ namespace Server.Menus.Questions
 
             AddHtmlLocalized(50, 20, 250, 35, 1011027, false, false); // Chose a town:
 
-            StuckMenuEntry[] entries = IsTerMur(beheld) ? m_TerMurEntries : IsInSecondAgeArea(beheld) ? m_T2AEntries : m_Entries;
+            StuckMenuEntry[] entries = IsInSecondAgeArea(beheld) ? m_T2AEntries : m_Entries;
 
             for (int i = 0; i < entries.Length; i++)
             {
@@ -204,7 +183,7 @@ namespace Server.Menus.Questions
             else
             {
                 int index = info.ButtonID - 1;
-                StuckMenuEntry[] entries = IsTerMur(m_Mobile) ? m_TerMurEntries : IsInSecondAgeArea(m_Mobile) ? m_T2AEntries : m_Entries;
+                StuckMenuEntry[] entries = IsInSecondAgeArea(m_Mobile) ? m_T2AEntries : m_Entries;
 
                 if (index >= 0 && index < entries.Length)
                 {
@@ -231,11 +210,6 @@ namespace Server.Menus.Questions
             }
 
             return false;
-        }
-
-        private static bool IsTerMur(Mobile m)
-        {
-            return m.Map == Map.TerMur && !SpellHelper.IsEodon(m.Map, m.Location);
         }
 
         private void Teleport(StuckMenuEntry entry)

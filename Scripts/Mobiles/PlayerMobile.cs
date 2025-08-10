@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Server.Accounting;
+using Server.Commands;
 using Server.ContextMenus;
 using Server.Engines.ArenaSystem;
 using Server.Engines.CannedEvil;
@@ -43,6 +42,8 @@ using Server.Spells.Seventh;
 using Server.Spells.Sixth;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
+using System;
+using System.Collections.Generic;
 using Aggression = Server.Misc.Aggression;
 using RankDefinition = Server.Guilds.RankDefinition;
 
@@ -141,6 +142,8 @@ namespace Server.Mobiles
 
         #region Custom
         // Overwrites the classic Skills button on the paperdoll and sends our new menu.
+        // LoginStats.cs sends the skill packet once on login so it can update correctly.
+        // Since we are overriding it, it won't query skills at first login per normal without this.
         public override void OnSkillsQuery(Mobile from)
         {
             if (from == this)
@@ -160,10 +163,6 @@ namespace Server.Mobiles
                 {
                     from.SendMessage("You must select a class before you can access the skills menu.");
                 }
-            }
-            else
-            {
-                base.OnSkillsQuery(from);
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.Craft;
+using Server.Mobiles;
 using Server.Network;
 using Server.Services.ClassSystem;
 using AMA = Server.Items.ArmorMeditationAllowance;
@@ -1738,6 +1739,13 @@ namespace Server.Items
                 if (_Owner != null && _Owner != from)
                 {
                     from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                // Class Item Restriction Support
+                if (ClassRequired != CharacterClass.None && from is PlayerMobile pm && ClassRequired != pm.CharacterClass)
+                {
+                    from.SendMessage($"Only a {ClassRequired} can use this item."); 
                     return false;
                 }
 

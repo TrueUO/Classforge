@@ -8,11 +8,11 @@ namespace Server.Services.ClassSystem
     {
         private readonly PlayerMobile _Pm;
 
-        public const int Width = 510;
-        public const int Height = 510;
+        private const int _Width = 510;
+        private const int _Height = 530;
 
-        public static int White => 1152;
-        public static int Yellow => 53;
+        private static int White => 1152;
+        private static int Yellow => 53;
 
         public CustomSkillGump(PlayerMobile user)
             : base(user, 100, 100)
@@ -25,12 +25,12 @@ namespace Server.Services.ClassSystem
         public override void AddGumpLayout()
         {
             AddPage(0);
-            AddBackground(0, 0, Width, Height, 9200);
+            AddBackground(0, 0, _Width, _Height, 9200);
 
             // Title
-            AddImageTiled(10, 10, Width - 20, 25, 2624);
-            AddAlphaRegion(10, 10, Width - 20, 25);
-            AddLabel(205, 12, 0xD7, "Skills & Stats");
+            AddImageTiled(10, 10, _Width - 20, 25, 2624);
+            AddAlphaRegion(10, 10, _Width - 20, 25);
+            AddLabel(210, 12, 0xD7, "Skills & Stats");
 
             // Remaining Points
             AddLabel(20, 50, Yellow, "Stat Points To Spend:");
@@ -59,43 +59,73 @@ namespace Server.Services.ClassSystem
             SkillName[] primarySkills = ClassSystemHelper.GetPrimarySkills(_Pm.CharacterClass); 
             for (int i = 0; i < primarySkills.Length; i++)
             {
-                SkillName sk = primarySkills[i];
+                SkillName primary = primarySkills[i];
 
                 int y = 120 + i * 30;
-                double cur = _Pm.Skills[sk].Base;
+                double cur = _Pm.Skills[primary].Base;
 
-                AddLabel(270, y, Yellow, $"{sk}"); // skill name
+                AddLabel(270, y, Yellow, $"{primary}"); // skill name
                 AddLabel(340, y, White, $"{cur:F1}"); // skill value
-                AddLabel(370, y, White, $" / {_Pm.Skills[sk].Cap}"); // skill cap
-                AddButton(445, y, 4014, 4015, 10 + i, GumpButtonType.Reply, 0); // skill+
+                AddLabel(370, y, White, $" / {_Pm.Skills[primary].Cap}"); // skill cap
+
+                // disable button if Skill value is at cap.
+                if (_Pm.Skills[primary].Value < _Pm.Skills[primary].Cap)
+                {
+                    AddButton(445, y, 4014, 4015, 10 + i, GumpButtonType.Reply, 0); // skill+
+                }
             }
 
-            AddLabel(270, 230, Yellow, "CRAFTING SKILLS:"); // CRAFTING SKILLS
+            AddLabel(270, 230, Yellow, "SECONDARY SKILLS:"); // SECONDARY SKILLS
+            SkillName[] secondarySkills = ClassSystemHelper.GetSecondarySkills(_Pm.CharacterClass);
+            for (int i = 0; i < secondarySkills.Length; i++)
+            {
+                SkillName secondary = secondarySkills[i];
+
+                int y = 260 + i * 30;
+                double cur = _Pm.Skills[secondary].Base;
+
+                AddLabel(270, y, Yellow, $"{secondary}"); // skill name
+                AddLabel(340, y, White, $"{cur:F1}"); // skill value
+                AddLabel(370, y, White, $" / {_Pm.Skills[secondary].Cap}"); // skill cap
+
+                // disable button if Skill value is at cap.
+                if (_Pm.Skills[secondary].Value < _Pm.Skills[secondary].Cap)
+                {
+                    AddButton(445, y, 4014, 4015, 20 + i, GumpButtonType.Reply, 0); // skill+
+                }
+            }
+
+            AddLabel(270, 360, Yellow, "CRAFTING SKILLS:"); // CRAFTING SKILLS
             SkillName[] craftingSkills = ClassSystemHelper.GetCraftSkills(_Pm.CharacterClass);
             for (int i = 0; i < craftingSkills.Length; i++)
             {
-                SkillName sk = craftingSkills[i];
+                SkillName craft = craftingSkills[i];
 
-                int y = 260 + i * 30;
-                double cur = _Pm.Skills[sk].Base;
+                int y = 390 + i * 30;
+                double cur = _Pm.Skills[craft].Base;
 
-                AddLabel(270, y, Yellow, $"{sk}"); // skill name
+                AddLabel(270, y, Yellow, $"{craft}"); // skill name
                 AddLabel(340, y, White, $"{cur:F1}"); // skill value
-                AddLabel(370, y, White, $" / {_Pm.Skills[sk].Cap}"); // skill cap
-                AddButton(445, y, 4014, 4015, 20 + i, GumpButtonType.Reply, 0); // skill+
+                AddLabel(370, y, White, $" / {_Pm.Skills[craft].Cap}"); // skill cap
+
+                // disable button if Skill value is at cap.
+                if (_Pm.Skills[craft].Value < _Pm.Skills[craft].Cap)
+                {
+                    AddButton(445, y, 4014, 4015, 30 + i, GumpButtonType.Reply, 0); // skill+
+                }
             }
 
             // button to access the old skills menu for now as well to access some skills directly.
             // need to change in the future to be able to do everything from new menu
-            AddButton(20, 390, 0x7E1, 0x7E0, 90, GumpButtonType.Reply, 0);
+            AddButton(20, 405, 0x7E1, 0x7E0, 90, GumpButtonType.Reply, 0);
 
-            AddLabel(20, 420, Yellow, $"Class: {ClassSystemHelper.GetClassName(_Pm.CharacterClass)}");
-            AddLabel(20, 445, Yellow, $"Level: {_Pm.Level}/{ClassSystemHelper.MaxLevel}");
-            AddLabel(20, 470, Yellow, $"Progress: {_Pm.Xp}/{ClassSystemHelper.XpNeededForNextLevel(_Pm.Level)} XP toward Level {_Pm.Level + 1}");
+            AddLabel(20, 440, Yellow, $"Class: {ClassSystemHelper.GetClassName(_Pm.CharacterClass)}");
+            AddLabel(20, 465, Yellow, $"Level: {_Pm.Level}/{ClassSystemHelper.MaxLevel}");
+            AddLabel(20, 490, Yellow, $"Progress: {_Pm.Xp}/{ClassSystemHelper.XpNeededForNextLevel(_Pm.Level)} XP toward Level {_Pm.Level + 1}");
 
             // Close Button
-            AddButton(Width - 50, Height - 40, 4017, 4018, 0, GumpButtonType.Reply, 0);
-            AddLabel(Width - 85, Height - 38, White, "Close");
+            AddButton(_Width - 50, _Height - 40, 4017, 4018, 0, GumpButtonType.Reply, 0);
+            AddLabel(_Width - 85, _Height - 38, White, "Close");
         }
 
         public override void OnResponse(RelayInfo info)
@@ -134,18 +164,27 @@ namespace Server.Services.ClassSystem
             SkillName[] allowedPrimary = ClassSystemHelper.GetPrimarySkills(_Pm.CharacterClass);
             if (_Pm.SkillPointsToSpend > 0 && id >= 10 && id < 20)
             {
-                SkillName ap = allowedPrimary[id - 10]; // ids 10 to 19
+                SkillName primary = allowedPrimary[id - 10]; // ids 10 to 19
 
-                _Pm.Skills[ap].Base += 0.1;  // +0.1 per point
+                _Pm.Skills[primary].Base += 0.1;  // +0.1 per point
+                _Pm.SkillPointsToSpend--;
+            }
+
+            SkillName[] allowedSecondary = ClassSystemHelper.GetSecondarySkills(_Pm.CharacterClass);
+            if (_Pm.SkillPointsToSpend > 0 && id >= 20 && id < 30)
+            {
+                SkillName secondary = allowedSecondary[id - 20]; // ids 20 to 29
+
+                _Pm.Skills[secondary].Base += 0.1;  // +0.1 per point
                 _Pm.SkillPointsToSpend--;
             }
 
             SkillName[] allowedCraft = ClassSystemHelper.GetCraftSkills(_Pm.CharacterClass);
-            if (_Pm.SkillPointsToSpend > 0 && id >= 20 && id < 30)
+            if (_Pm.SkillPointsToSpend > 0 && id >= 30 && id < 40)
             {
-                SkillName ac = allowedCraft[id - 20]; // ids 20 to 29
+                SkillName craft = allowedCraft[id - 30]; // ids 30 to 39
 
-                _Pm.Skills[ac].Base += 0.1;  // +0.1 per point
+                _Pm.Skills[craft].Base += 0.1;  // +0.1 per point
                 _Pm.SkillPointsToSpend--;
             }
 
