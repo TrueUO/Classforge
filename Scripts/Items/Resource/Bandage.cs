@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
+using Server.Services.ClassSystem;
 using Server.Targeting;
 
 namespace Server.Items
 {
     public class Bandage : Item, IDyable, ICommodity
     {
-        public static int Range = 2;
+        public const int Range = 2;
 
         public override double DefaultWeight => 0.1;
 
         [Constructable]
         public Bandage()
             : this(1)
-        { }
+        {
+        }
 
         [Constructable]
         public Bandage(int amount)
@@ -28,7 +30,15 @@ namespace Server.Items
 
         public Bandage(Serial serial)
             : base(serial)
-        { }
+        {
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add("Class Required: Cleric"); 
+        }
 
         TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
@@ -59,6 +69,12 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            if (from is PlayerMobile pm && pm.CharacterClass != CharacterClass.Cleric)
+            {
+                from.SendMessage("Only a Cleric can use this item.");
+                return;
+            }
+
             if (from.InRange(GetWorldLocation(), Range))
             {
                 from.RevealingAction();

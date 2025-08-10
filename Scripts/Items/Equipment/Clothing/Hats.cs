@@ -83,8 +83,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public Kasa()
@@ -125,8 +125,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 9;
         public override int BaseEnergyResistance => 9;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public ClothNinjaHood()
@@ -167,8 +167,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 9;
         public override int BaseEnergyResistance => 9;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public FlowerGarland()
@@ -209,8 +209,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public FloppyHat()
@@ -251,8 +251,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public WideBrimHat()
@@ -293,8 +293,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public Cap()
@@ -335,8 +335,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 8;
         public override int BaseEnergyResistance => 8;
 
-        public override int InitMinHits => 14;
-        public override int InitMaxHits => 28;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public SkullCap()
@@ -377,8 +377,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 8;
         public override int BaseEnergyResistance => 8;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public Bandana()
@@ -421,8 +421,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 4;
         public override int BaseEnergyResistance => 4;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public BearMask()
@@ -470,8 +470,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 1;
         public override int BaseEnergyResistance => 7;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public DeerMask()
@@ -519,8 +519,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 4;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public HornedTribalMask()
@@ -568,8 +568,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 10;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public TribalMask()
@@ -616,8 +616,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public TallStrawHat()
@@ -658,8 +658,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public StrawHat()
@@ -700,8 +700,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 7;
         public override int BaseEnergyResistance => 8;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         public override bool Dye(Mobile from, DyeTub sender)
         {
@@ -777,8 +777,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 7;
         public override int BaseEnergyResistance => 8;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         public override bool Dye(Mobile from, DyeTub sender)
         {
@@ -820,8 +820,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 10;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         public static int GetRandomHue()
         {
@@ -879,8 +879,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public WizardsHat()
@@ -920,8 +920,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public Bonnet()
@@ -961,8 +961,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public FeatheredHat()
@@ -1002,8 +1002,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public TricorneHat()
@@ -1043,8 +1043,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public JesterHat()
@@ -1086,8 +1086,8 @@ namespace Server.Items
         public override int BasePoisonResistance => 5;
         public override int BaseEnergyResistance => 5;
 
-        public override int InitMinHits => 20;
-        public override int InitMaxHits => 30;
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public ChefsToque()

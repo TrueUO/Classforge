@@ -135,9 +135,7 @@ namespace Server.Items
         public CommodityDeed(Item commodity)
             : base(0x14F0)
         {
-            Weight = 1.0;
             Hue = 0x47;
-            LootType = LootType.Blessed;
 
             Commodity = commodity;
         }
@@ -152,6 +150,8 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        public override double DefaultWeight => 1.0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Item Commodity { get; private set; }
@@ -205,7 +205,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // version
+            writer.Write(0); // version
 
             writer.Write(Commodity);
         }
