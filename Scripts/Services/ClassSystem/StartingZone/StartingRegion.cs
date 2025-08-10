@@ -1,30 +1,23 @@
-using Server.Spells;
-
 namespace Server.Regions
 {
-    public class MonestaryRegion : BaseRegion
+    public class CathedralRegion : BaseRegion
     {
         public static void Initialize()
         {
-            new MonestaryRegion();
+            _ = new CathedralRegion();
         }
 
-        public MonestaryRegion()
-            : base("Doom Monestary", Map.Malas, DefaultPriority, new Rectangle2D(64, 204, 99, 37))
+        public CathedralRegion()
+            : base("The Avatar's Cathedral", Map.Malas, DefaultPriority, new Rectangle2D(64, 204, 99, 37))
         {
             GoLocation = new Point3D(79, 223, -1);
 
             Register();
         }
 
-        public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
+        public override bool CanUseStuckMenu(Mobile m)
         {
-            if (traveller.AccessLevel > AccessLevel.Player)
-            {
-                return true;
-            }
-
-            return type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom;
+            return false;
         }
     }
 }

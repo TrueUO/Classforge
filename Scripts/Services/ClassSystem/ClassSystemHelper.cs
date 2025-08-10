@@ -209,6 +209,37 @@ namespace Server.Services.ClassSystem
             }
         }
 
+        public static SkillName[] GetSecondarySkills(CharacterClass characterClass)
+        {
+            switch (characterClass)
+            {
+                case CharacterClass.Cleric:
+                {
+                    return ClericClass.SecondarySkills;
+                }
+                case CharacterClass.Mage:
+                {
+                    return MageClass.SecondarySkills;
+                }
+                case CharacterClass.Ranger:
+                {
+                    return RangerClass.SecondarySkills;
+                }
+                case CharacterClass.Rogue:
+                {
+                    return RogueClass.SecondarySkills;
+                }
+                case CharacterClass.Warrior:
+                {
+                    return WarriorClass.SecondarySkills;
+                }
+                default:
+                {
+                    return [];
+                }
+            }
+        }
+
         public static SkillName[] GetCraftSkills(CharacterClass characterClass)
         {
             switch (characterClass)
