@@ -51,7 +51,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.LootItem<Scimitar>());
             AddLoot(LootPack.LootItem<WoodenShield>());
-            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(BoneArms), typeof(BoneChest), typeof(BoneGloves), typeof(BoneLegs), typeof(BoneHelm) }));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(BoneArms), typeof(BoneChest), typeof(BoneGloves), typeof(BoneLegs), typeof(BoneHelm) }));
         }
 
         public override bool BleedImmune => true;

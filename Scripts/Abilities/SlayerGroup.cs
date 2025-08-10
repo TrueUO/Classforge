@@ -43,7 +43,7 @@ namespace Server.Items
                 (
                     SlayerName.Repond,
 
-                    typeof(Barracoon), typeof(MasterTheophilus),
+                    typeof(Barracoon), 
                     typeof(ArcticOgreLord),
                     typeof(Cyclops), typeof(Ettin),
                     typeof(EvilMage), typeof(EvilMageLord),
@@ -129,9 +129,7 @@ namespace Server.Items
                     typeof(Skeleton), typeof(Spectre),
                     typeof(Wraith), typeof(Zombie),
                     typeof(UnfrozenMummy), typeof(RedDeath),
-                    typeof(SirPatrick), typeof(LadyJennifyr),
-                    typeof(MasterMikael), typeof(MasterJonath),
-                    typeof(LadyMarai), typeof(PrimevalLich),
+                    typeof(LadyJennifyr), typeof(PrimevalLich),
                     typeof(Niporailem), typeof(DreamWraith),
                     typeof(EffeteUndeadGargoyle), typeof(UndeadGargoyle),
                     typeof(UndeadGuardian), typeof(PutridUndeadGargoyle),
@@ -201,7 +199,6 @@ namespace Server.Items
                     typeof(ShadowIronElemental), typeof(SnowElemental),
                     typeof(ValoriteElemental), typeof(VeriteElemental),
                     typeof(WaterElemental), typeof(SummonedWaterElemental),
-                    typeof(Flurry), typeof(Mistral),
                     typeof(Tempest), typeof(UnboundEnergyVortex),
                     typeof(ChaosVortex), typeof(WindElemental),
                     typeof(FlameElemental), typeof(QuartzElemental),
@@ -263,7 +260,6 @@ namespace Server.Items
                             SlayerName.Vacuum,
 
                             typeof(AirElemental),   typeof(SummonedAirElemental),
-                            typeof(Flurry),         typeof(Mistral),
                             typeof(Tempest),        typeof(UnboundEnergyVortex),
                             typeof(ChaosVortex),    typeof(WindElemental),
                             typeof(DemonKnight),    typeof(VortexElemental)
@@ -359,8 +355,7 @@ namespace Server.Items
                     typeof(TerathanAvenger), typeof(TerathanDrone),
                     typeof(TerathanMatriarch), typeof(TerathanWarrior),
                     typeof(LadyLissith), typeof(LadySabrix),
-                    typeof(Virulent), typeof(Silk),
-                    typeof(Malefic), typeof(Navrey),
+                    typeof(Navrey),
                     typeof(SentinelSpider), typeof(WolfSpider),
                     typeof(TrapdoorSpider), typeof(Anlorzen),
                     typeof(Anlorlem)
@@ -382,8 +377,7 @@ namespace Server.Items
                         typeof(DreadSpider),        typeof(FrostSpider),
                         typeof(GiantBlackWidow),    typeof(GiantSpider),
                         typeof(Mephitis),           typeof(LadyLissith),
-                        typeof(LadySabrix),         typeof(Virulent),
-                        typeof(Silk),               typeof(Malefic),
+                        typeof(LadySabrix),         
                         typeof(Navrey),             typeof(SentinelSpider),
                         typeof(WolfSpider),         typeof(TrapdoorSpider),
                         typeof(Anlorzen)
@@ -434,14 +428,13 @@ namespace Server.Items
                     typeof(SwampDragon), typeof(WhiteWyrm),
                     typeof(Wyvern), typeof(Yamandon),
                     typeof(Hydra), typeof(CrystalHydra),
-                    typeof(CrystalSeaSerpent), typeof(Rend),
-                    typeof(Abscess), typeof(ChickenLizard),
+                    typeof(CrystalSeaSerpent), 
                     typeof(StygianDragon), typeof(FairyDragon),
                     typeof(Skree), typeof(Slith),
                     typeof(StoneSlith), typeof(ToxicSlith),
                     typeof(Raptor), typeof(Kepetch),
                     typeof(KepetchAmbusher), typeof(FrostDragon),
-                    typeof(ColdDrake), typeof(FrostDrake), typeof(Coil),
+                    typeof(ColdDrake), typeof(FrostDrake), 
                     typeof(SkeletalDrake), typeof(CoralSnake)
                 );
 
@@ -460,8 +453,7 @@ namespace Server.Items
                         typeof(SkeletalDragon),     typeof(SwampDragon),
                         typeof(WhiteWyrm),          typeof(Wyvern),
                         typeof(Hydra),              typeof(CrystalHydra),
-                        typeof(Rend),               typeof(Abscess),
-                        typeof(StygianDragon),
+                        typeof(Abscess),            typeof(StygianDragon),
                         typeof(FairyDragon),        typeof(SkeletalDrake),
                         typeof(ColdDrake)
                     ),
@@ -487,7 +479,7 @@ namespace Server.Items
                     (
                         SlayerName.SnakesBane,
 
-                        typeof(CrystalSeaSerpent),  typeof(Coil),
+                        typeof(CrystalSeaSerpent),
                         typeof(CoralSnake),         typeof(DeepSeaSerpent),
                         typeof(GiantIceWorm),       typeof(GiantSerpent),
                         typeof(IceSerpent),         typeof(IceSnake),

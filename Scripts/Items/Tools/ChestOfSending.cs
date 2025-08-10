@@ -160,7 +160,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1054107); // This item must be in your backpack.
                 }
-                else if (item is Container || item is BagOfSending || item is ChestOfSending)
+                else if (item is Container || item is ChestOfSending)
                 {
                     from.SendLocalizedMessage(1150420, "#1150424"); // You cannot send a container through the ~1_NAME~.
                 }
@@ -179,7 +179,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1150422, "#1150424"); // The ~1_NAME~ will not function while being traded.
                 }
-                else if (!item.VerifyMove(from) || item is Engines.Quests.QuestItem)
+                else if (!item.VerifyMove(from))
                 {
                     from.SendLocalizedMessage(1150421, "#1150424"); // The ~1_NAME~ rejects that item.
                 }

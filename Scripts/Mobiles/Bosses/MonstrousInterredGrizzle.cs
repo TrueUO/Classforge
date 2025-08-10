@@ -59,9 +59,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
-            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
-            AddLoot(LootPack.PeerlessResource, 8);
-            AddLoot(LootPack.Talisman, 5);
+            
             AddLoot(LootPack.LootItem<GrizzledBones>());
 
             AddLoot(LootPack.RandomLootItem(new[] { typeof(TombstoneOfTheDamned), typeof(GlobOfMonstreousInterredGrizzle), typeof(MonsterousInterredGrizzleMaggots), typeof(GrizzledSkullCollection) }));
