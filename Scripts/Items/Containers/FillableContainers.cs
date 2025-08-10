@@ -1216,7 +1216,6 @@ namespace Server.Items
                 new FillableEntry(1, typeof(GoldNecklace)),
                 new FillableEntry(1, typeof(GoldBeadNecklace)),
                 new FillableEntry(1, typeof(Necklace)),
-                new FillableEntry(1, typeof(Beads)),
                 new FillableEntry(9, Loot.GemTypes)
             });
         public static FillableContent Library = new FillableContent(

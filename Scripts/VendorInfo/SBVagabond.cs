@@ -19,7 +19,6 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Necklace), 26, 20, 0x1085, 0));
                 Add(new GenericBuyInfo(typeof(GoldNecklace), 27, 20, 0x1088, 0));
                 Add(new GenericBuyInfo(typeof(GoldBeadNecklace), 27, 20, 0x1089, 0));
-                Add(new GenericBuyInfo(typeof(Beads), 27, 20, 0x108B, 0));
                 Add(new GenericBuyInfo(typeof(GoldBracelet), 27, 20, 0x1086, 0));
                 Add(new GenericBuyInfo(typeof(GoldEarrings), 27, 20, 0x1087, 0));
 
@@ -61,7 +60,6 @@ namespace Server.Mobiles
                 Add(typeof(GoldBeadNecklace), 13);
                 Add(typeof(SilverNecklace), 10);
                 Add(typeof(SilverBeadNecklace), 10);
-                Add(typeof(Beads), 13);
                 Add(typeof(GoldBracelet), 13);
                 Add(typeof(SilverBracelet), 10);
                 Add(typeof(GoldEarrings), 13);

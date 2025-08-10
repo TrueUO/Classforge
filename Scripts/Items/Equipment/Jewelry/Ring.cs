@@ -15,31 +15,25 @@ namespace Server.Items
         }
 
         public override int BaseGemTypeNumber => 1044176;// star sapphire ring
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (version == 1)
-            {
-                if (Weight == .1)
-                {
-                    Weight = -1;
-                }
-            }
+            reader.ReadInt();
         }
     }
 
     public class GoldRing : BaseRing
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public GoldRing()
             : base(0x108a)
@@ -55,20 +49,21 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SilverRing : BaseRing, IRepairable
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public CraftSystem RepairSystem => DefTinkering.CraftSystem;
 
         [Constructable]
@@ -86,15 +81,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

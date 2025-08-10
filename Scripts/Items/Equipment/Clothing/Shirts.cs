@@ -33,6 +33,9 @@ namespace Server.Items
     [Flipable(0x1efd, 0x1efe)]
     public class FancyShirt : BaseShirt
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public FancyShirt()
             : this(0)
@@ -67,6 +70,9 @@ namespace Server.Items
     [Flipable(0x1517, 0x1518)]
     public class Shirt : BaseShirt
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public Shirt()
             : this(0)
@@ -101,6 +107,9 @@ namespace Server.Items
     [Flipable(0x2794, 0x27DF)]
     public class ClothNinjaJacket : BaseShirt
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public ClothNinjaJacket()
             : this(0)
@@ -135,6 +144,9 @@ namespace Server.Items
 
     public class ElvenShirt : BaseShirt
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public ElvenShirt()
             : this(0)
@@ -168,6 +180,9 @@ namespace Server.Items
 
     public class ElvenDarkShirt : BaseShirt
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public ElvenDarkShirt()
             : this(0)

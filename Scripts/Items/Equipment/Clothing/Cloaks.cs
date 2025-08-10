@@ -33,6 +33,9 @@ namespace Server.Items
     [Flipable]
     public class Cloak : BaseCloak
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public Cloak()
             : this(0)
@@ -67,6 +70,9 @@ namespace Server.Items
     [Flipable(0x230A, 0x2309)]
     public class FurCape : BaseCloak
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public FurCape()
             : this(0)

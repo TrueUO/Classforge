@@ -15,31 +15,25 @@ namespace Server.Items
         }
 
         public override int BaseGemTypeNumber => 1044221;// star sapphire bracelet
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write(2); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (version == 1)
-            {
-                if (Weight == .1)
-                {
-                    Weight = -1;
-                }
-            }
+            reader.ReadInt();
         }
     }
 
     public class GoldBracelet : BaseBracelet
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         [Constructable]
         public GoldBracelet()
             : base(0x1086)
@@ -54,20 +48,21 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SilverBracelet : BaseBracelet, IRepairable
     {
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
+
         public CraftSystem RepairSystem => DefTinkering.CraftSystem;
 
         [Constructable]
@@ -84,15 +79,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
