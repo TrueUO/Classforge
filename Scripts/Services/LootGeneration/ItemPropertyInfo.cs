@@ -1422,7 +1422,7 @@ namespace Server.Items
 
                             NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
 
-                            if (neg != null && (neg.Brittle > 0 || neg.Antique > 0 || neg.NoRepair > 0))
+                            if (neg != null && (neg.Brittle > 0 || neg.Antique > 0))
                             {
                                 return false;
                             }

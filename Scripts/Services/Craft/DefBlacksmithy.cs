@@ -245,10 +245,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(ChaosShield), 1011080, 1027107, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
             AddCraft(typeof(OrderShield), 1011080, 1027108, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
 
-            index = AddCraft(typeof(ShieldOrb), 1011080, 1126890, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044037);
-            AddSkill(index, SkillName.Magery, 100.0, 100.0);
-            AddRecipe(index, (int)CraftRecipes.ShieldOrb);
-
             AddCraft(typeof(Broadsword), 1011081, 1023934, 35.4, 85.4, typeof(IronIngot), 1044036, 10, 1044037);
             AddCraft(typeof(Cutlass), 1011081, 1025185, 24.3, 74.3, typeof(IronIngot), 1044036, 8, 1044037);
             AddCraft(typeof(Dagger), 1011081, 1023921, -0.4, 49.6, typeof(IronIngot), 1044036, 3, 1044037);
@@ -257,13 +253,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Longsword), 1011081, 1023937, 28.0, 78.0, typeof(IronIngot), 1044036, 12, 1044037);
             AddCraft(typeof(Scimitar), 1011081, 1025046, 31.7, 81.7, typeof(IronIngot), 1044036, 10, 1044037);
             AddCraft(typeof(VikingSword), 1011081, 1025049, 24.3, 74.3, typeof(IronIngot), 1044036, 14, 1044037);
-
-            index = AddCraft(typeof(RuneCarvingKnife), 1011081, 1072915, 70.0, 120.0, typeof(IronIngot), 1044036, 9, 1044037);
-            AddRes(index, typeof(DreadHornMane), 1032682, 1, 1053098);
-            AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
-            AddRes(index, typeof(Muculent), 1032680, 10, 1053098);
-            AddRecipe(index, (int)CraftRecipes.RuneCarvingKnife);
-            ForceNonExceptional(index);
 
             index = AddCraft(typeof(ButchersWarCleaver), 1011081, 1073526, 75.0, 125.0, typeof(IronIngot), 1044036, 18, 1044037);
             AddRes(index, typeof(Turquoise), 1032691, 1, 1044240);
@@ -311,8 +300,6 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(DragonChest), 1011173, 1029793, 85.0, 135.0, typeof(RedScales), 1060883, 36, 1060884);
             SetUseSubRes2(index, true);
-
-            AddCraft(typeof(MetalKeg), 1011173, 1150675, 85.0, 100.0, typeof(IronIngot), 1044036, 25, 1044253);
 
             // Set the overridable material
             SetSubRes(typeof(IronIngot), 1044022);

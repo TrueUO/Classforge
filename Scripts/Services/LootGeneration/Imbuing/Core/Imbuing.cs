@@ -1180,11 +1180,6 @@ namespace Server.SkillHandlers
                 {
                     total++;
                 }
-
-                if (wep.SearingWeapon)
-                {
-                    total++;
-                }
             }
             else if (item is BaseArmor armor)
             {
@@ -1488,11 +1483,6 @@ namespace Server.SkillHandlers
                 if (weapon.Slayer3 != TalismanSlayerName.None)
                 {
                     weight += GetIntensityForAttribute(weapon, weapon.Slayer3, id, 1, trueWeight, imbuing);
-                }
-
-                if (weapon.SearingWeapon)
-                {
-                    weight += GetIntensityForAttribute(weapon, "SearingWeapon", id, 1, trueWeight, imbuing);
                 }
 
                 if (weapon is BaseRanged ranged && ranged.Velocity > 0)
@@ -2062,11 +2052,6 @@ namespace Server.SkillHandlers
                 if (id == 60 && w is BaseRanged ranged)
                 {
                     return ranged.Velocity;
-                }
-
-                if (id == 62)
-                {
-                    return w.SearingWeapon ? 1 : 0;
                 }
 
                 if (attr is AosElementAttribute ele)

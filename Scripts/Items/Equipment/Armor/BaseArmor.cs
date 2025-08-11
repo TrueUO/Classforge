@@ -112,9 +112,7 @@ namespace Server.Items
 
         public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
 
-        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
-
-        public virtual bool CanAlter => true;
+        public virtual bool CanRepair => true;
 
         public virtual bool UseIntOrDexProperty => false;
 
@@ -440,15 +438,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrRequirement
         {
-            get
-            {
-                if (m_NegativeAttributes.Massive > 0)
-                {
-                    return 125;
-                }
-
-                return m_StrReq == -1 ? StrReq : m_StrReq;
-            }
+            get => m_StrReq == -1 ? StrReq : m_StrReq;
             set
             {
                 m_StrReq = value;
@@ -621,19 +611,6 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TalismanAttribute Protection { get => m_TalismanProtection; set { m_TalismanProtection = value; InvalidateProperties(); } }
-
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                {
-                    return base.DefaultWeight;
-                }
-
-                return 50;
-            }
-        }
 
         public int ComputeStatReq(StatType type)
         {

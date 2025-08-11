@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Mobiles;
 using Server.Network;
@@ -180,26 +179,13 @@ namespace Server.Items
         public virtual int InitMaxHits => 0;
 
         public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
-        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
+        public virtual bool CanRepair => true;
 
         public override int PhysicalResistance => m_AosWeaponAttributes.ResistPhysicalBonus;
         public override int FireResistance => m_AosWeaponAttributes.ResistFireBonus;
         public override int ColdResistance => m_AosWeaponAttributes.ResistColdBonus;
         public override int PoisonResistance => m_AosWeaponAttributes.ResistPoisonBonus;
         public override int EnergyResistance => m_AosWeaponAttributes.ResistEnergyBonus;
-
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                {
-                    return base.DefaultWeight;
-                }
-
-                return 50;
-            }
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AosAttributes Attributes { get => m_AosAttributes; set { } }
@@ -435,15 +421,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrRequirement
         {
-            get
-            {
-                if (m_NegativeAttributes.Massive > 0)
-                {
-                    return 125;
-                }
-
-                return m_StrReq == -1 ? StrengthReq : m_StrReq;
-            }
+            get => m_StrReq == -1 ? StrengthReq : m_StrReq;
             set
             {
                 m_StrReq = value;
@@ -510,23 +488,6 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool SearingWeapon
-        {
-            get => HasSocket<SearingWeapon>();
-            set
-            {
-                if (!value)
-                {
-                    RemoveSocket<SearingWeapon>();
-                }
-                else if (!SearingWeapon)
-                {
-                    AttachSocket(new SearingWeapon(this));
-                }
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public ItemPower ItemPower
         {
             get => m_ItemPower;
@@ -545,16 +506,6 @@ namespace Server.Items
         {
             get => m_ReforgedSuffix;
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
-        }
-
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-
-            if (SearingWeapon && Parent == from)
-            {
-                list.Add(new SearingWeapon.ToggleExtinguishEntry(from, this));
-            }
         }
 
         public override void OnAfterDuped(Item newItem)
@@ -889,11 +840,6 @@ namespace Server.Items
                 if (IsSetItem && m_SetEquipped)
                 {
                     SetHelper.RemoveSetBonus(m, SetID, this);
-                }
-
-                if (SearingWeapon)
-                {
-                    Server.Items.SearingWeapon.OnWeaponRemoved(this);
                 }
 
                 if (ExtendedWeaponAttributes.Focus > 0)
@@ -1989,22 +1935,6 @@ namespace Server.Items
                 if (d > 0)
                 {
                     defender.Damage(d);
-                }
-            }
-
-            if (defender != null && Server.Items.SearingWeapon.CanSear(this) && attacker.Mana > 0)
-            {
-                int d = SearingWeaponContext.Damage;
-
-                if (ranged && 10 > Utility.Random(100) || 20 > Utility.Random(100))
-                {
-                    AOS.Damage(defender, attacker, d, 0, 100, 0, 0, 0);
-                    AOS.Damage(attacker, null, 4, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-
-                    defender.FixedParticles(0x36F4, 1, 11, 0x13A8, 0, 0, EffectLayer.Waist);
-
-                    SearingWeaponContext.CheckHit(attacker, defender);
-                    attacker.Mana--;
                 }
             }
 
@@ -4160,10 +4090,6 @@ namespace Server.Items
             {
                 list.Add(1053099, "#{0}\t{1}", oreType, GetNameString()); // ~1_oretype~ ~2_armortype~
             }
-            else if (SearingWeapon)
-            {
-                list.Add(1151318, $"#{LabelNumber}");
-            }
             else if (Name == null)
             {
                 list.Add(LabelNumber);
@@ -4465,11 +4391,6 @@ namespace Server.Items
             if ((fprop = m_ExtendedWeaponAttributes.HitExplosion * focusBonus) != 0)
             {
                 list.Add(1158922, ((int)fprop).ToString()); // hit explosion ~1_val~%
-            }
-
-            if (SearingWeapon)
-            {
-                list.Add(1151183); // Searing Weapon
             }
 
             if ((fprop = m_AosWeaponAttributes.HitMagicArrow * focusBonus) != 0)

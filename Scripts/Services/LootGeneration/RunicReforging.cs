@@ -467,8 +467,6 @@ namespace Server.Items
 
         private static readonly Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 
-        public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo => m_PrefixSuffixInfo;
-
         public static void Configure()
         {
             Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
@@ -1817,7 +1815,7 @@ namespace Server.Items
                             return 0;
                         }
 
-                        switch (Utility.Random(item is BaseJewel ? 2 : 4))
+                        switch (Utility.Random(2))
                         {
                             case 0:
                             {
@@ -1826,14 +1824,6 @@ namespace Server.Items
                             case 1:
                             {
                                 item.LootType = LootType.Cursed; break;
-                            }
-                            case 2:
-                            {
-                                neg.Unwieldly = 1; break;
-                            }
-                            case 3:
-                            {
-                                neg.Massive = 1; break;
                             }
                         }
 
@@ -1850,7 +1840,7 @@ namespace Server.Items
 
                         if (0.75 > chance)
                         {
-                            switch (Utility.Random(item is BaseJewel ? 2 : 4))
+                            switch (Utility.Random(2))
                             {
                                 case 0:
                                 {
@@ -1859,14 +1849,6 @@ namespace Server.Items
                                 case 1:
                                 {
                                     item.LootType = LootType.Cursed; break;
-                                }
-                                case 2:
-                                {
-                                    neg.Unwieldly = 1; break;
-                                }
-                                case 3:
-                                {
-                                    neg.Massive = 1; break;
                                 }
                             }
 
@@ -1901,7 +1883,7 @@ namespace Server.Items
 
                         if (0.6 > chance)
                         {
-                            switch (Utility.Random(item is BaseJewel ? 2 : 4))
+                            switch (Utility.Random(2))
                             {
                                 case 0:
                                 {
@@ -1910,14 +1892,6 @@ namespace Server.Items
                                 case 1:
                                 {
                                     item.LootType = LootType.Cursed; break;
-                                }
-                                case 2:
-                                {
-                                    neg.Unwieldly = 1; break;
-                                }
-                                case 3:
-                                {
-                                    neg.Massive = 1; break;
                                 }
                             }
 

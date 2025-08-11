@@ -49,7 +49,7 @@ namespace Server.Items
         }
 
         public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
-        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
+        public virtual bool CanRepair => true;
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -125,15 +125,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrRequirement
         {
-            get
-            {
-                if (m_NegativeAttributes.Massive > 0)
-                {
-                    return 125;
-                }
-
-                return m_StrReq == -1 ? StrReq : m_StrReq;
-            }
+            get => m_StrReq == -1 ? StrReq : m_StrReq;
             set
             {
                 m_StrReq = value;
@@ -329,19 +321,6 @@ namespace Server.Items
         public virtual int BaseStrBonus => 0;
         public virtual int BaseDexBonus => 0;
         public virtual int BaseIntBonus => 0;
-
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                {
-                    return base.DefaultWeight;
-                }
-
-                return 50;
-            }
-        }
 
         public override bool CanEquip(Mobile from)
         {

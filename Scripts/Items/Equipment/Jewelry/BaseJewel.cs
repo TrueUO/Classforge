@@ -290,19 +290,6 @@ namespace Server.Items
             }
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                {
-                    return base.DefaultWeight;
-                }
-
-                return 50;
-            }
-        }
-
         public override void OnAfterDuped(Item newItem)
         {
             BaseJewel jewel = newItem as BaseJewel;
@@ -492,7 +479,7 @@ namespace Server.Items
         }
 
         public virtual bool CanFortify => IsImbued == false && NegativeAttributes.Antique < 4;
-        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
+        public virtual bool CanRepair => true;
 
         public override void OnAdded(object parent)
         {

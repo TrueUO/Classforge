@@ -137,8 +137,7 @@ namespace Server.Engines.Harvest
         {
             new MutateEntry( 0.0,  80.0, 333, false, typeof(StoneFootwear)),
             new MutateEntry( 80.0, 80.0, 333, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth)),
-            new MutateEntry( 85.0, 80.0, 333, false, typeof(StonePaver)),
-            new MutateEntry( 80.0, 80.0, 4080, false, typeof(BaseWeapon))
+            new MutateEntry( 85.0, 80.0, 333, false, typeof(StonePaver))
         };
 
         public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
@@ -1196,20 +1195,6 @@ namespace Server.Engines.Harvest
                     if (chance > Utility.RandomDouble())
                     {
                         newType = entry.m_Types[Utility.Random(entry.m_Types.Length)];
-
-                        if (newType == typeof(BaseWeapon))
-                        {
-                            BaseWeapon wep = Loot.RandomWeapon();
-
-                            if (wep != null)
-                            {
-                                wep.AttachSocket(new SearingWeapon(wep));
-
-                                from.AddToBackpack(wep);
-                                from.SendMessage("You have pulled out an item : mysterious weapon");
-                                return typeof(BaseWeapon);
-                            }
-                        }
                     }
                 }
             }

@@ -564,24 +564,6 @@ namespace Server.Engines.VendorSearching
 
                             break;
                         }
-                        case Misc.CannotRepair:
-                        {
-                            if (CheckCanRepair(item))
-                            {
-                                return false;
-                            }
-
-                            break;
-                        }
-                        case Misc.NotCannotBeRepaired:
-                        {
-                            if (!CheckCanRepair(item))
-                            {
-                                return false;
-                            }
-
-                            break;
-                        }
                         case Misc.Brittle:
                         {
                             NegativeAttributes neg2 = RunicReforging.GetNegativeAttributes(item);
@@ -631,11 +613,6 @@ namespace Server.Engines.VendorSearching
                         return false;
                     }
 
-                    if (s == "SearingWeapon" && (!(item is BaseWeapon) || !((BaseWeapon) item).SearingWeapon))
-                    {
-                        return false;
-                    }
-
                     if (s == "ArtifactRarity" && (!(item is IArtifact) || ((IArtifact) item).ArtifactRarity < value))
                     {
                         return false;
@@ -672,13 +649,6 @@ namespace Server.Engines.VendorSearching
             }
 
             return true;
-        }
-
-        private static bool CheckCanRepair(Item item)
-        {
-            NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
-
-            return neg != null && neg.NoRepair != 0;
         }
 
         private static bool CheckKeyword(string searchstring, Item item)
@@ -1112,8 +1082,6 @@ namespace Server.Engines.VendorSearching
         PromotionalToken,
         Cursed,
         NotCursed,
-        CannotRepair,
-        NotCannotBeRepaired,
         Brittle,
         NotBrittle,
         Antique,

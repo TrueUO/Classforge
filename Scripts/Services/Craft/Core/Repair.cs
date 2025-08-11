@@ -268,10 +268,6 @@ namespace Server.Engines.Craft
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
-                            else if (weapon.NegativeAttributes.NoRepair > 0)
-                            {
-                                number = 1044277; // That item cannot be repaired.
-                            }
                             else
                             {
                                 if (CheckWeaken(from, skill, weapon.HitPoints, weapon.MaxHitPoints))
@@ -315,10 +311,6 @@ namespace Server.Engines.Craft
                             else if (armor.MaxHitPoints <= toWeaken)
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
-                            }
-                            else if (armor.NegativeAttributes.NoRepair > 0)
-                            {
-                                number = 1044277; // That item cannot be repaired.
                             }
                             else
                             {
@@ -364,10 +356,6 @@ namespace Server.Engines.Craft
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
-                            else if (jewel.NegativeAttributes.NoRepair > 0)
-                            {
-                                number = 1044277; // That item cannot be repaired.
-                            }
                             else
                             {
                                 if (CheckWeaken(from, skill, jewel.HitPoints, jewel.MaxHitPoints))
@@ -411,10 +399,6 @@ namespace Server.Engines.Craft
                             else if (clothing.MaxHitPoints <= toWeaken)
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
-                            }
-                            else if (clothing.NegativeAttributes.NoRepair > 0)// quick fix
-                            {
-                                number = 1044277; // That item cannot be repaired.
                             }
                             else
                             {

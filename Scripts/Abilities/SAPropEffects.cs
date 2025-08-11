@@ -468,32 +468,6 @@ namespace Server.Items
         }
     }
 
-    public class SearingWeaponContext : PropertyEffect
-    {
-        public static int Damage => Utility.RandomMinMax(10, 15);
-
-        public SearingWeaponContext(Mobile from, Mobile defender)
-            : base(from, defender, null, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
-        {
-            from.SendLocalizedMessage(1151177); //The searing attack cauterizes the wound on impact.
-        }
-
-        public static void CheckHit(Mobile attacker, Mobile defender)
-        {
-            SearingWeaponContext context = GetContext<SearingWeaponContext>(attacker, defender);
-
-            if (context == null)
-            {
-                AddEffects(new SearingWeaponContext(attacker, defender));
-            }
-        }
-
-        public static bool HasContext(Mobile defender)
-        {
-            return VictimIsUnderEffects<SearingWeaponContext>(defender);
-        }
-    }
-
     public class BoneBreakerContext : PropertyEffect
     {
         public static Dictionary<Mobile, DateTime> _Immunity;
