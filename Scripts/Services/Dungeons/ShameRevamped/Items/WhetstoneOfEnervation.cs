@@ -39,7 +39,7 @@ namespace Server.Items
                             {
                                 m.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                             }
-                            else if (wep.TimesImbued > 0 || wep.Quality != ItemQuality.Exceptional)
+                            else if (wep.Quality != ItemQuality.Exceptional)
                             {
                                 m.SendLocalizedMessage(1046439); // Invalid target.
                             }

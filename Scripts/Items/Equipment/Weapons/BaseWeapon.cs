@@ -144,8 +144,6 @@ namespace Server.Items
         private WeaponType m_Type;
         private WeaponAnimation m_Animation;
 
-        private int m_TimesImbued;
-        private bool m_IsImbued;
         private bool m_DImodded;
 
         private ItemPower m_ItemPower;
@@ -178,7 +176,7 @@ namespace Server.Items
         public virtual int InitMinHits => 0;
         public virtual int InitMaxHits => 0;
 
-        public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
+        public virtual bool CanFortify => NegativeAttributes.Antique < 4;
         public virtual bool CanRepair => true;
 
         public override int PhysicalResistance => m_AosWeaponAttributes.ResistPhysicalBonus;
@@ -441,50 +439,10 @@ namespace Server.Items
         public int LastParryChance { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int TimesImbued
-        {
-            get => m_TimesImbued;
-            set => m_TimesImbued = value;
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsImbued
-        {
-            get
-            {
-                if (TimesImbued >= 1 && !m_IsImbued)
-                {
-                    m_IsImbued = true;
-                }
-
-                return m_IsImbued;
-            }
-            set
-            {
-                if (TimesImbued >= 1)
-                {
-                    m_IsImbued = true;
-                }
-                else
-                {
-                    m_IsImbued = value;
-                }
-
-                InvalidateProperties();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public bool DImodded
         {
             get => m_DImodded;
             set => m_DImodded = value;
-        }
-
-        public int[] BaseResists => new[] { 0, 0, 0, 0, 0 };
-
-        public virtual void OnAfterImbued(Mobile m, int mod, int value)
-        {
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3076,15 +3034,11 @@ namespace Server.Items
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
-            writer.Write(m_IsImbued);
-
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
 
             writer.Write(m_DImodded);
-
-            writer.Write(m_TimesImbued);
             
             writer.Write(m_EngravedText);
 
@@ -3424,15 +3378,11 @@ namespace Server.Items
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
 
-                        m_IsImbued = reader.ReadBool();
-
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
 
                         m_DImodded = reader.ReadBool();
-
-                        m_TimesImbued = reader.ReadInt();
 
                         m_EngravedText = reader.ReadString();
                         m_Slayer3 = (TalismanSlayerName)reader.ReadInt();
@@ -4182,11 +4132,6 @@ namespace Server.Items
             if (m_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
-            }
-
-            if (IsImbued)
-            {
-                list.Add(1080418); // (Imbued)
             }
         }
 

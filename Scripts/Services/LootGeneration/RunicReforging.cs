@@ -868,7 +868,6 @@ namespace Server.Items
                 {
                     return AosWeaponAttribute.HitLightning;
                 }
-                //case 4: return AosWeaponAttribute.HitCurse;
             }
         }
 

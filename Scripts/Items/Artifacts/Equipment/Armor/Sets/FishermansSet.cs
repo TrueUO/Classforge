@@ -19,28 +19,6 @@ namespace Server.Items
         public override int InitMinHits => 125;
         public override int InitMaxHits => 125;
 
-        public override int BasePhysicalResistance => Resistances.Physical == 0 ? 3 : base.BasePhysicalResistance;
-        public override int BaseFireResistance => Resistances.Fire == 0 ? 8 : base.BaseFireResistance;
-        public override int BaseColdResistance => Resistances.Cold == 0 ? 23 : base.BaseColdResistance;
-        public override int BasePoisonResistance => Resistances.Poison == 0 ? 8 : base.BasePoisonResistance;
-        public override int BaseEnergyResistance => Resistances.Energy == 0 ? 8 : base.BaseEnergyResistance;
-
-        public override int[] BaseResists
-        {
-            get
-            {
-                int[] list = new int[5];
-
-                list[0] = base.BasePhysicalResistance;
-                list[1] = base.BaseFireResistance;
-                list[2] = base.BaseColdResistance;
-                list[3] = base.BasePoisonResistance;
-                list[4] = base.BaseEnergyResistance;
-
-                return list;
-            }
-        }
-
         [Constructable]
         public FishermansHat()
         {
@@ -78,28 +56,6 @@ namespace Server.Items
         public override int InitMinHits => 125;
         public override int InitMaxHits => 125;
 
-        public override int BasePhysicalResistance => PhysicalBonus == 0 ? 6 : base.BasePhysicalResistance;
-        public override int BaseFireResistance => FireBonus == 0 ? 20 : base.BaseFireResistance;
-        public override int BaseColdResistance => ColdBonus == 0 ? 7 : base.BaseColdResistance;
-        public override int BasePoisonResistance => PoisonBonus == 0 ? 7 : base.BasePoisonResistance;
-        public override int BaseEnergyResistance => EnergyBonus == 0 ? 8 : base.BaseEnergyResistance;
-
-        public override int[] BaseResists
-        {
-            get
-            {
-                int[] list = new int[5];
-
-                list[0] = base.BasePhysicalResistance;
-                list[1] = base.BaseFireResistance;
-                list[2] = base.BaseColdResistance;
-                list[3] = base.BasePoisonResistance;
-                list[4] = base.BaseEnergyResistance;
-
-                return list;
-            }
-        }
-
         [Constructable]
         public FishermansTrousers()
         {
@@ -123,7 +79,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -139,28 +95,6 @@ namespace Server.Items
 
         public override int InitMinHits => 125;
         public override int InitMaxHits => 125;
-
-        public override int BasePhysicalResistance => PhysicalBonus == 0 ? 4 : base.BasePhysicalResistance;
-        public override int BaseFireResistance => FireBonus == 0 ? 19 : base.BaseFireResistance;
-        public override int BaseColdResistance => ColdBonus == 0 ? 5 : base.BaseColdResistance;
-        public override int BasePoisonResistance => PoisonBonus == 0 ? 5 : base.BasePoisonResistance;
-        public override int BaseEnergyResistance => EnergyBonus == 0 ? 5 : base.BaseEnergyResistance;
-
-        public override int[] BaseResists
-        {
-            get
-            {
-                int[] list = new int[5];
-
-                list[0] = base.BasePhysicalResistance;
-                list[1] = base.BaseFireResistance;
-                list[2] = base.BaseColdResistance;
-                list[3] = base.BasePoisonResistance;
-                list[4] = base.BaseEnergyResistance;
-
-                return list;
-            }
-        }
 
         [Constructable]
         public FishermansVest()
@@ -199,28 +133,6 @@ namespace Server.Items
 
         public override int InitMinHits => 125;
         public override int InitMaxHits => 125;
-
-        public override int BasePhysicalResistance => PhysicalBonus == 0 ? 4 : base.BasePhysicalResistance;
-        public override int BaseFireResistance => FireBonus == 0 ? 19 : base.BaseFireResistance;
-        public override int BaseColdResistance => ColdBonus == 0 ? 5 : base.BaseColdResistance;
-        public override int BasePoisonResistance => PoisonBonus == 0 ? 5 : base.BasePoisonResistance;
-        public override int BaseEnergyResistance => EnergyBonus == 0 ? 5 : base.BaseEnergyResistance;
-
-        public override int[] BaseResists
-        {
-            get
-            {
-                int[] list = new int[5];
-
-                list[0] = base.BasePhysicalResistance;
-                list[1] = base.BaseFireResistance;
-                list[2] = base.BaseColdResistance;
-                list[3] = base.BasePoisonResistance;
-                list[4] = base.BaseEnergyResistance;
-
-                return list;
-            }
-        }
 
         [Constructable]
         public FishermansEelskinGloves()

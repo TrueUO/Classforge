@@ -71,14 +71,6 @@ namespace Server.Items
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
 
-        private int m_TimesImbued;
-        private bool m_IsImbued;
-        private int m_PhysNonImbuing;
-        private int m_FireNonImbuing;
-        private int m_ColdNonImbuing;
-        private int m_PoisonNonImbuing;
-        private int m_EnergyNonImbuing;
-
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosArmorAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
@@ -110,7 +102,7 @@ namespace Server.Items
         public virtual int DexReq => 0;
         public virtual int IntReq => 0;
 
-        public virtual bool CanFortify => !IsImbued && NegativeAttributes.Antique < 4;
+        public virtual bool CanFortify => NegativeAttributes.Antique < 4;
 
         public virtual bool CanRepair => true;
 
@@ -327,71 +319,6 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public LenseType GorgonLenseType { get => m_GorgonLenseType; set { m_GorgonLenseType = value; InvalidateProperties(); } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int TimesImbued { get => m_TimesImbued; set { m_TimesImbued = value; InvalidateProperties(); } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsImbued
-        {
-            get
-            {
-                if (TimesImbued >= 1 && !m_IsImbued)
-                {
-                    m_IsImbued = true;
-                }
-
-                return m_IsImbued;
-            }
-            set
-            {
-                if (TimesImbued >= 1)
-                {
-                    m_IsImbued = true;
-                }
-                else
-                {
-                    m_IsImbued = value;
-                }
-
-                InvalidateProperties();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int PhysNonImbuing { get => m_PhysNonImbuing; set => m_PhysNonImbuing = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int FireNonImbuing { get => m_FireNonImbuing; set => m_FireNonImbuing = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int ColdNonImbuing { get => m_ColdNonImbuing; set => m_ColdNonImbuing = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int PoisonNonImbuing { get => m_PoisonNonImbuing; set => m_PoisonNonImbuing = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int EnergyNonImbuing { get => m_EnergyNonImbuing; set => m_EnergyNonImbuing = value; }
-
-        public virtual int[] BaseResists
-        {
-            get
-            {
-                int[] list = new int[5];
-
-                list[0] = BasePhysicalResistance;
-                list[1] = BaseFireResistance;
-                list[2] = BaseColdResistance;
-                list[3] = BasePoisonResistance;
-                list[4] = BaseEnergyResistance;
-
-                return list;
-            }
-        }
-
-        public virtual void OnAfterImbued(Mobile m, int mod, int value)
-        {
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ReforgedPrefix ReforgedPrefix { get => m_ReforgedPrefix; set { m_ReforgedPrefix = value; InvalidateProperties(); } }
@@ -1063,22 +990,12 @@ namespace Server.Items
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
-            writer.Write(m_IsImbued);
-
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
 
             writer.Write(m_GorgonLenseCharges);
             writer.Write((int)m_GorgonLenseType);
-
-            writer.Write(m_PhysNonImbuing);
-            writer.Write(m_FireNonImbuing);
-            writer.Write(m_ColdNonImbuing);
-            writer.Write(m_PoisonNonImbuing);
-            writer.Write(m_EnergyNonImbuing);
-
-            writer.Write(m_TimesImbued);
 
             SetFlag sflags = SetFlag.None;
 
@@ -1326,22 +1243,12 @@ namespace Server.Items
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
 
-                        m_IsImbued = reader.ReadBool();
-
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
 
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
-
-                        m_PhysNonImbuing = reader.ReadInt();
-                        m_FireNonImbuing = reader.ReadInt();
-                        m_ColdNonImbuing = reader.ReadInt();
-                        m_PoisonNonImbuing = reader.ReadInt();
-                        m_EnergyNonImbuing = reader.ReadInt();
-
-                        m_TimesImbued = reader.ReadInt();
 
                         SetFlag sflags = (SetFlag)reader.ReadEncodedInt();
 
@@ -2155,11 +2062,6 @@ namespace Server.Items
             {
                 list.Add(1060636); // Exceptional
             }
-
-            if (IsImbued)
-            {
-                list.Add(1080418); // (Imbued)
-            }
         }
 
         public override void AddWeightProperty(ObjectPropertyList list)
@@ -2723,19 +2625,6 @@ namespace Server.Items
                 from.CheckSkill(SkillName.ArmsLore, 0, 100);
             }
 
-            // Imbuing needs to keep track of what is natrual, what is imbued bonuses
-            m_PhysNonImbuing = m_PhysicalBonus;
-            m_FireNonImbuing = m_FireBonus;
-            m_ColdNonImbuing = m_ColdBonus;
-            m_PoisonNonImbuing = m_PoisonBonus;
-            m_EnergyNonImbuing = m_EnergyBonus;
-
-            // Gives MageArmor property for certain armor types
-            if (m_AosArmorAttributes.MageArmor <= 0 && IsMageArmorType(this))
-            {
-                m_AosArmorAttributes.MageArmor = 1;
-            }
-
             InvalidateProperties();
         }
 
@@ -2760,12 +2649,6 @@ namespace Server.Items
                 m_ColdBonus = Math.Max(0, m_ColdBonus - info.ArmorColdResist);
                 m_PoisonBonus = Math.Max(0, m_PoisonBonus - info.ArmorPoisonResist);
                 m_EnergyBonus = Math.Max(0, m_EnergyBonus - info.ArmorEnergyResist);
-
-                m_PhysNonImbuing = Math.Max(0, PhysNonImbuing - info.ArmorPhysicalResist);
-                m_FireNonImbuing = Math.Max(0, m_FireNonImbuing - info.ArmorFireResist);
-                m_ColdNonImbuing = Math.Max(0, m_ColdNonImbuing - info.ArmorColdResist);
-                m_PoisonNonImbuing = Math.Max(0, m_PoisonNonImbuing - info.ArmorPoisonResist);
-                m_EnergyNonImbuing = Math.Max(0, m_EnergyNonImbuing - info.ArmorEnergyResist);
             }
 
             info = GetResourceAttrs(m_Resource);
@@ -2776,12 +2659,6 @@ namespace Server.Items
             m_ColdBonus += info.ArmorColdResist;
             m_PoisonBonus += info.ArmorPoisonResist;
             m_EnergyBonus += info.ArmorEnergyResist;
-
-            m_PhysNonImbuing += info.ArmorPhysicalResist;
-            m_FireNonImbuing += info.ArmorFireResist;
-            m_ColdNonImbuing += info.ArmorColdResist;
-            m_PoisonNonImbuing += info.ArmorPoisonResist;
-            m_EnergyNonImbuing += info.ArmorEnergyResist;
         }
 
         public virtual void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
@@ -2831,31 +2708,6 @@ namespace Server.Items
 
             return info.AttributeInfo;
         }
-
-        public static bool IsMageArmorType(BaseArmor armor)
-        {
-            Type t = armor.GetType();
-
-            for (int index = 0; index < _MageArmorTypes.Length; index++)
-            {
-                Type type = _MageArmorTypes[index];
-
-                if (type == t || t.IsSubclassOf(type))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static Type[] _MageArmorTypes =
-        {
-            typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
-            typeof(PlateMempo),         typeof(PlateDo),
-            typeof(PlateHiroSode),      typeof(PlateSuneate),
-            typeof(PlateHaidate)
-        };
 
         public override bool OnDragLift(Mobile from)
         {

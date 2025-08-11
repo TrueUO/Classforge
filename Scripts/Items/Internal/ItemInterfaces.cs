@@ -41,16 +41,7 @@ namespace Server.Items
         bool CanBeSeenBy(PlayerMobile m);
     }
 
-    public interface IImbuableEquipement
-    {
-        int TimesImbued { get; set; }
-        bool IsImbued { get; set; }
-
-        int[] BaseResists { get; }
-        void OnAfterImbued(Mobile m, int mod, int value);
-    }
-
-    public interface ICombatEquipment : IImbuableEquipement
+    public interface ICombatEquipment
     {
         ItemPower ItemPower { get; set; }
         ReforgedPrefix ReforgedPrefix { get; set; }

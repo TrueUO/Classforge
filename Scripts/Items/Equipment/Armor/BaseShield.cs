@@ -245,12 +245,6 @@ namespace Server.Items
                     ColdBonus = Math.Max(0, ColdBonus - info.ShieldColdResist);
                     PoisonBonus = Math.Max(0, PoisonBonus - info.ShieldPoisonResist);
                     EnergyBonus = Math.Max(0, EnergyBonus - info.ShieldEnergyResist);
-
-                    PhysNonImbuing = Math.Max(0, PhysNonImbuing - info.ShieldPhysicalResist);
-                    FireNonImbuing = Math.Max(0, FireNonImbuing - info.ShieldFireResist);
-                    ColdNonImbuing = Math.Max(0, ColdNonImbuing - info.ShieldColdResist);
-                    PoisonNonImbuing = Math.Max(0, PoisonNonImbuing - info.ShieldPoisonResist);
-                    EnergyNonImbuing = Math.Max(0, EnergyNonImbuing - info.ShieldEnergyResist);
                 }
 
                 info = GetResourceAttrs(Resource);
@@ -261,12 +255,6 @@ namespace Server.Items
                 ColdBonus += info.ShieldColdResist;
                 PoisonBonus += info.ShieldPoisonResist;
                 EnergyBonus += info.ShieldEnergyResist;
-
-                PhysNonImbuing += info.ShieldPhysicalResist;
-                FireNonImbuing += info.ShieldFireResist;
-                ColdNonImbuing += info.ShieldColdResist;
-                PoisonNonImbuing += info.ShieldPoisonResist;
-                EnergyNonImbuing += info.ShieldEnergyResist;
             }
         }
     }

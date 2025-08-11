@@ -20,22 +20,6 @@ namespace Server.Items
             DropItem(new Sapphire(Utility.RandomMinMax(10, 25)));
             DropItem(new StarSapphire(Utility.RandomMinMax(10, 25)));
             DropItem(new Diamond(Utility.RandomMinMax(10, 25)));
-
-            for (int i = 0; i < 5; i++)
-            {
-                Type type = SkillHandlers.Imbuing.IngredTypes[Utility.Random(SkillHandlers.Imbuing.IngredTypes.Length)];
-
-                if (type != null)
-                {
-                    Item item = Loot.Construct(type);
-
-                    if (item != null)
-                    {
-                        item.Amount = Utility.RandomMinMax(5, 12);
-                        DropItem(item);
-                    }
-                }
-            }
         }
 
         public GemologistsSatchel(Serial serial)
@@ -52,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

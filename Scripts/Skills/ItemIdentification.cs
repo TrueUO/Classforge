@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Network;
-using Server.SkillHandlers;
 using Server.Targeting;
 
 namespace Server.Items
@@ -80,69 +79,6 @@ namespace Server.Items
                 }
 
                 from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1041351, AffixType.Append, "  " + GetPriceFor(item), "", from.NetState); // You guess the value of that item at:
-
-                if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
-                {
-                    if (Imbuing.TimesImbued(item) > 0)
-                    {
-                        from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1111877, from.NetState); // You conclude that item cannot be magically unraveled. The magic in that item has been weakened due to either low durability or the imbuing process.
-                    }
-                    else
-                    {
-                        int weight = Imbuing.GetTotalWeight(item, -1, false, true);
-                        string imbIngred = null;
-                        double skill = from.Skills[SkillName.Imbuing].Base;
-                        bool badSkill = false;
-
-                        if (!Imbuing.CanUnravelItem(from, item, false))
-                        {
-                            weight = 0;
-                        }
-
-                        if (weight > 0 && weight <= 200)
-                        {
-                            imbIngred = "Magical Residue";
-                        }
-                        else if (weight > 200 && weight < 480)
-                        {
-                            imbIngred = "Enchanted Essence";
-
-                            if (skill < 45.0)
-                            {
-                                badSkill = true;
-                            }
-                        }
-                        else if (weight >= 480)
-                        {
-                            imbIngred = "Relic Fragment";
-
-                            if (skill < 95.0)
-                            {
-                                badSkill = true;
-                            }
-                        }
-
-                        if (imbIngred != null)
-                        {
-                            if (badSkill)
-                            {
-                                from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1111875, from.NetState); // Your Imbuing skill is not high enough to identify the imbuing ingredient.
-                            }
-                            else
-                            {
-                                from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1111874, imbIngred, from.NetState); //You conclude that item will magically unravel into: ~1_ingredient~
-                            }
-                        }
-                        else  // Cannot be Unravelled
-                        {
-                            from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1111876, from.NetState); //You conclude that item cannot be magically unraveled. It appears to possess little to no magic.
-                        }
-                    }
-                }
-                else
-                {
-                    from.LocalOverheadMessage(MessageType.Emote, 0x3B2, 1111878); //You conclude that item cannot be magically unraveled.
-                }
             }
 
             public static int GetPriceFor(Item item)
