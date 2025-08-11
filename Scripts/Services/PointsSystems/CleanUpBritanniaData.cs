@@ -268,141 +268,9 @@ namespace Server.Engines.Points
             Entries[typeof(BarbedLeather)] = 2.0;
             
             //BOD Rewards
-            Entries[typeof(Sandals)] = 2.0;
             Entries[typeof(LeatherGlovesOfMining)] = 50.0;
             Entries[typeof(StuddedGlovesOfMining)] = 100.0;
             Entries[typeof(RingmailGlovesOfMining)] = 500.0;
-
-            //ArtifactRarity 1 Stealable Artifacts
-            Entries[typeof(RockArtifact)] = 5.0;
-            Entries[typeof(SkullCandleArtifact)] = 5.0;
-            Entries[typeof(BottleArtifact)] = 5.0;
-            Entries[typeof(DamagedBooksArtifact)] = 5.0;
-            Entries[typeof(Basket1Artifact)] = 5.0;
-            Entries[typeof(Basket2Artifact)] = 5.0;
-            Entries[typeof(Basket3NorthArtifact)] = 5.0;
-            Entries[typeof(Basket3WestArtifact)] = 5.0;
-
-            //ArtifactRarity 2 Stealable Artifacts
-            Entries[typeof(StretchedHideArtifact)] = 15.0;
-            Entries[typeof(BrazierArtifact)] = 15.0;
-            Entries[typeof(Basket4Artifact)] = 15.0;
-            Entries[typeof(Basket5NorthArtifact)] = 15.0;
-            Entries[typeof(Basket5WestArtifact)] = 15.0;
-            Entries[typeof(Basket6Artifact)] = 15.0;
-            Entries[typeof(ZenRock1Artifact)] = 15.0;
-
-            //ArtifactRarity 3 Stealable Artifacts
-            Entries[typeof(LampPostArtifact)] = 25.0;
-            Entries[typeof(BooksNorthArtifact)] = 25.0;
-            Entries[typeof(BooksWestArtifact)] = 25.0;
-            Entries[typeof(BooksFaceDownArtifact)] = 25.0;
-            Entries[typeof(BowlsVerticalArtifact)] = 25.0;
-            Entries[typeof(FanWestArtifact)] = 25.0;
-            Entries[typeof(FanNorthArtifact)] = 25.0;
-            Entries[typeof(Sculpture1Artifact)] = 25.0;
-            Entries[typeof(Sculpture2Artifact)] = 25.0;
-            Entries[typeof(TeapotWestArtifact)] = 25.0;
-            Entries[typeof(TeapotNorthArtifact)] = 25.0;
-            Entries[typeof(TowerLanternArtifact)] = 25.0;
-            Entries[typeof(Urn1Artifact)] = 25.0;
-            Entries[typeof(Urn2Artifact)] = 25.0;
-            Entries[typeof(ZenRock2Artifact)] = 25.0;
-            Entries[typeof(ZenRock3Artifact)] = 25.0;
-            Entries[typeof(JugsOfGoblinRotgutArtifact)] = 25.0;
-            Entries[typeof(MysteriousSupperArtifact)] = 25.0;
-
-            //ArtifactRarity 4 Stealable Artifacts
-            Entries[typeof(BowlArtifact)] = 50.0;
-            Entries[typeof(BowlsHorizontalArtifact)] = 50.0;
-            Entries[typeof(CupsArtifact)] = 50.0;
-            Entries[typeof(TripleFanWestArtifact)] = 50.0;
-            Entries[typeof(TripleFanNorthArtifact)] = 50.0;
-            Entries[typeof(Painting1WestArtifact)] = 50.0;
-            Entries[typeof(Painting1NorthArtifact)] = 50.0;
-            Entries[typeof(Painting2WestArtifact)] = 50.0;
-            Entries[typeof(Painting2NorthArtifact)] = 50.0;
-            Entries[typeof(SakeArtifact)] = 50.0;
-            Entries[typeof(StolenBottlesOfLiquor1Artifact)] = 50.0;
-            Entries[typeof(StolenBottlesOfLiquor2Artifact)] = 50.0;
-            Entries[typeof(BottlesOfSpoiledWine1Artifact)] = 50.0;
-            Entries[typeof(NaverysWeb1Artifact)] = 50.0;
-            Entries[typeof(NaverysWeb2Artifact)] = 50.0;
-
-            //ArtifactRarity 5 Stealable Artifacts
-            Entries[typeof(Painting3Artifact)] = 100.0;
-            Entries[typeof(SwordDisplay1WestArtifact)] = 100.0;
-            Entries[typeof(SwordDisplay1NorthArtifact)] = 100.0;
-            Entries[typeof(DyingPlantArtifact)] = 100.0;
-            Entries[typeof(LargePewterBowlArtifact)] = 100.0;
-            Entries[typeof(NaverysWeb3Artifact)] = 100.0;
-            Entries[typeof(NaverysWeb4Artifact)] = 100.0;
-            Entries[typeof(NaverysWeb5Artifact)] = 100.0;
-            Entries[typeof(NaverysWeb6Artifact)] = 100.0;
-            Entries[typeof(BloodySpoonArtifact)] = 100.0;
-            Entries[typeof(RemnantsOfMeatLoafArtifact)] = 100.0;
-            Entries[typeof(HalfEatenSupperArtifact)] = 100.0;
-            Entries[typeof(BackpackArtifact)] = 100.0;
-            Entries[typeof(BloodyWaterArtifact)] = 100.0;
-            Entries[typeof(EggCaseArtifact)] = 100.0;
-            Entries[typeof(GruesomeStandardArtifact)] = 100.0;
-            Entries[typeof(SkinnedGoatArtifact)] = 100.0;
-            Entries[typeof(StuddedLeggingsArtifact)] = 100.0;
-            Entries[typeof(TarotCardsArtifact)] = 100.0;
-
-            //ArtifactRarity 6 Stealable Artifacts
-            Entries[typeof(Painting4WestArtifact)] = 200.0;
-            Entries[typeof(Painting4NorthArtifact)] = 200.0;
-            Entries[typeof(SwordDisplay2WestArtifact)] = 200.0;
-            Entries[typeof(SwordDisplay2NorthArtifact)] = 200.0;
-            Entries[typeof(LargeDyingPlantArtifact)] = 200.0;
-            Entries[typeof(GargishLuckTotemArtifact)] = 200.0;
-            Entries[typeof(BookOfTruthArtifact)] = 200.0;
-            Entries[typeof(GargishTraditionalVaseArtifact)] = 200.0;
-            Entries[typeof(GargishProtectiveTotemArtifact)] = 200.0;
-            Entries[typeof(BottlesOfSpoiledWine2Artifact)] = 200.0;
-            Entries[typeof(BatteredPanArtifact)] = 200.0;
-            Entries[typeof(RustedPanArtifact)] = 200.0;
-
-            //ArtifactRarity 7 Stealable Artifacts
-            Entries[typeof(FlowersArtifact)] = 350.0;
-            Entries[typeof(GargishBentasVaseArtifact)] = 350.0;
-            Entries[typeof(GargishPortraitArtifact)] = 350.0;
-            Entries[typeof(GargishKnowledgeTotemArtifact)] = 350.0;
-            Entries[typeof(GargishMemorialStatueArtifact)] = 350.0;
-            Entries[typeof(StolenBottlesOfLiquor3Artifact)] = 350.0;
-            Entries[typeof(BottlesOfSpoiledWine3Artifact)] = 350.0;
-            Entries[typeof(DriedUpInkWellArtifact)] = 350.0;
-            Entries[typeof(FakeCopperIngotsArtifact)] = 350.0;
-            Entries[typeof(CocoonArtifact)] = 350.0;
-            Entries[typeof(StuddedTunicArtifact)] = 350.0;
-
-            //ArtifactRarity 8 Stealable Artifacts
-            Entries[typeof(Painting5WestArtifact)] = 750.0;
-            Entries[typeof(Painting5NorthArtifact)] = 750.0;
-            Entries[typeof(DolphinLeftArtifact)] = 750.0;
-            Entries[typeof(DolphinRightArtifact)] = 750.0;
-            Entries[typeof(SwordDisplay3SouthArtifact)] = 750.0;
-            Entries[typeof(SwordDisplay3EastArtifact)] = 750.0;
-            Entries[typeof(SwordDisplay4WestArtifact)] = 750.0;
-            Entries[typeof(PushmePullyuArtifact)] = 750.0;
-            Entries[typeof(StolenBottlesOfLiquor4Artifact)] = 750.0;
-            Entries[typeof(RottedOarsArtifact)] = 750.0;
-            Entries[typeof(PricelessTreasureArtifact)] = 750.0;
-            Entries[typeof(SkinnedDeerArtifact)] = 750.0;
-
-            //ArtifactRarity 9 Stealable Artifacts
-            Entries[typeof(Painting6WestArtifact)] = 1400.0;
-            Entries[typeof(Painting6NorthArtifact)] = 1400.0;
-            Entries[typeof(ManStatuetteSouthArtifact)] = 1400.0;
-            Entries[typeof(ManStatuetteEastArtifact)] = 1400.0;
-            Entries[typeof(SwordDisplay4NorthArtifact)] = 1400.0;
-            Entries[typeof(SwordDisplay5WestArtifact)] = 1400.0;
-            Entries[typeof(SwordDisplay5NorthArtifact)] = 1400.0;
-            Entries[typeof(TyballsFlaskStandArtifact)] = 1400.0;
-            Entries[typeof(BlockAndTackleArtifact)] = 1400.0;
-            Entries[typeof(LeatherTunicArtifact)] = 1400.0;
-            Entries[typeof(SaddleArtifact)] = 1400.0;
 
             //ArtifactRarity 10
             Entries[typeof(TitansHammer)] = 2750.0;
@@ -414,9 +282,6 @@ namespace Server.Engines.Points
             Entries[typeof(TenthAnniversarySculpture)] = 1500.0;
             Entries[typeof(MapOfTheKnownWorld)] = 1500.0;
             Entries[typeof(AnkhPendant)] = 1500.0;
-            Entries[typeof(DragonsEnd)] = 1500.0;
-            Entries[typeof(JaanasStaff)] = 1500.0;
-            Entries[typeof(KatrinasCrook)] = 1500.0;
             Entries[typeof(CompassionArms)] = 1500.0;
             Entries[typeof(JusticeBreastplate)] = 1500.0;
             Entries[typeof(ValorGauntlets)] = 1500.0;
@@ -449,7 +314,6 @@ namespace Server.Engines.Points
             Entries[typeof(BloodwoodSpirit)] = 100.0;
             Entries[typeof(QuiverOfRage)] = 100.0;
             Entries[typeof(QuiverOfElements)] = 100.0;
-            Entries[typeof(SoulSeeker)] = 100.0;
             Entries[typeof(TotemOfVoid)] = 100.0;
             Entries[typeof(CrimsonCincture)] = 100.0;
             Entries[typeof(DreadFlute)] = 100.0;
@@ -556,7 +420,6 @@ namespace Server.Engines.Points
             Entries[typeof(ExcellentIronMaiden)] = 50.0;
             Entries[typeof(ExecutionersCap)] = 1.0;
             Entries[typeof(Flowstone)] = 250.0;
-            Entries[typeof(GlacialStaff)] = 500.0;
             Entries[typeof(GrapeVine)] = 500.0;
             Entries[typeof(HorseShoes)] = 200.0;
             Entries[typeof(MangledHeadOfDreadhorn)] = 1000.0;
@@ -572,7 +435,6 @@ namespace Server.Engines.Points
             Entries[typeof(TastyTreat)] = 100.0;
             Entries[typeof(TribalBerry)] = 10.0;
             Entries[typeof(WallBlood)] = 5000.0;
-            Entries[typeof(Whip)] = 200.0;
             Entries[typeof(BalmOfSwiftness)] = 100.0;
             Entries[typeof(TaintedMushroom)] = 1000.0;
             Entries[typeof(GoldenSkull)] = 1000.0;
@@ -581,12 +443,6 @@ namespace Server.Engines.Points
             Entries[typeof(SlithEye)] = 500.0;
             Entries[typeof(WhiteClothDyeTub)] = 300.0;
             Entries[typeof(Lodestone)] = 75.0;
-            Entries[typeof(FeyWings)] = 75.0;
-            Entries[typeof(PlantClippings)] = 1.0;
-            Entries[typeof(BasketOfRolls)] = 5.0;
-            Entries[typeof(Yeast)] = 10.0;
-            Entries[typeof(ValentinesCard)] = 50.0;
-            Entries[typeof(MetallicClothDyeTub)] = 100.0;
 
             //Treasure Hunting
             Entries[typeof(Lockpick)] = 0.10;

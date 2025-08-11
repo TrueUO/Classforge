@@ -228,7 +228,7 @@ namespace Server.Engines.CityLoyalty
                 amount = 40 + Utility.RandomMinMax(10, entry.Details.Count * 20);
             }
 
-            switch (Utility.Random(4))
+            switch (Utility.Random(3))
             {
                 case 0:
                 {
@@ -271,6 +271,7 @@ namespace Server.Engines.CityLoyalty
                             return new ValoriteIngot(amount);
                         }
                     }
+
                     break;
                 }
                 case 1:
@@ -294,6 +295,7 @@ namespace Server.Engines.CityLoyalty
                             return new BarbedLeather(amount);
                         }
                     }
+
                     break;
                 }
                 case 2:
@@ -329,22 +331,11 @@ namespace Server.Engines.CityLoyalty
                             return new FrostwoodBoard(amount);
                         }
                     }
+
                     break;
                 }
-                case 3:
-                {
-                    Item item = Loot.Construct(SkillHandlers.Imbuing.IngredTypes[Utility.Random(SkillHandlers.Imbuing.IngredTypes.Length)]);
-
-                    amount /= 10;
-
-                    if (item != null && item.Stackable)
-                    {
-                        item.Amount = amount;
-                    }
-
-                    return item;
-                }
             }
+
             return null;
         }
 

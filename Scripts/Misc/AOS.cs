@@ -996,11 +996,6 @@ namespace Server
                     value += 10;
                 }
 
-                if (SearingWeaponContext.HasContext(m))
-                {
-                    value -= m is PlayerMobile ? 20 : 60;
-                }
-
                 //Virtue Artifacts
                 value += AnkhPendant.GetHitsRegenModifier(m);
             }
@@ -2170,10 +2165,7 @@ namespace Server
     public enum NegativeAttribute
     {
         Brittle = 0x00000001,
-        Massive = 0x00000002,
-        Unwieldly = 0x00000004,
-        Antique = 0x00000008,
-        NoRepair = 0x00000010
+        Antique = 0x00000002
     }
 
     public sealed class NegativeAttributes : BaseAttributes
@@ -2195,11 +2187,6 @@ namespace Server
 
         public void GetProperties(ObjectPropertyList list, Item item)
         {
-            if (NoRepair > 0)
-            {
-                list.Add(1151782);
-            }
-
             if (Brittle > 0)
             {
                 list.Add(1116209);
@@ -2291,89 +2278,60 @@ namespace Server
         public int Brittle { get => this[NegativeAttribute.Brittle]; set => this[NegativeAttribute.Brittle] = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Massive { get => this[NegativeAttribute.Massive]; set => this[NegativeAttribute.Massive] = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int Unwieldly { get => this[NegativeAttribute.Unwieldly]; set => this[NegativeAttribute.Unwieldly] = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public int Antique { get => this[NegativeAttribute.Antique]; set => this[NegativeAttribute.Antique] = value; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int NoRepair { get => this[NegativeAttribute.NoRepair]; set => this[NegativeAttribute.NoRepair] = value; }
     }
 
     [PropertyObject]
     public abstract class BaseAttributes
     {
-        private readonly Item m_Owner;
-        private uint m_Names;
-        private int[] m_Values;
+        private readonly Item _Owner;
+        private uint _Names;
+        private int[] _Values;
 
-        private static readonly int[] m_Empty = Array.Empty<int>();
+        private static readonly int[] _Empty = [];
 
-        public bool IsEmpty => m_Names == 0;
-        public Item Owner => m_Owner;
+        public bool IsEmpty => _Names == 0;
+        public Item Owner => _Owner;
 
         public BaseAttributes(Item owner)
         {
-            m_Owner = owner;
-            m_Values = m_Empty;
+            _Owner = owner;
+            _Values = _Empty;
         }
 
         public BaseAttributes(Item owner, BaseAttributes other)
         {
-            m_Owner = owner;
-            m_Values = new int[other.m_Values.Length];
-            other.m_Values.CopyTo(m_Values, 0);
-            m_Names = other.m_Names;
+            _Owner = owner;
+            _Values = new int[other._Values.Length];
+            other._Values.CopyTo(_Values, 0);
+            _Names = other._Names;
         }
 
         public BaseAttributes(Item owner, GenericReader reader)
         {
-            m_Owner = owner;
+            _Owner = owner;
 
-            int version = reader.ReadByte();
+            reader.ReadByte();
 
-            switch (version)
+            _Names = reader.ReadUInt();
+
+            _Values = new int[reader.ReadEncodedInt()];
+            for (int i = 0; i < _Values.Length; ++i)
             {
-                case 1:
-                    {
-                        m_Names = reader.ReadUInt();
-                        m_Values = new int[reader.ReadEncodedInt()];
-
-                        for (int i = 0; i < m_Values.Length; ++i)
-                        {
-                            m_Values[i] = reader.ReadEncodedInt();
-                        }
-
-                        break;
-                    }
-                case 0:
-                    {
-                        m_Names = reader.ReadUInt();
-                        m_Values = new int[reader.ReadInt()];
-
-                        for (int i = 0; i < m_Values.Length; ++i)
-                        {
-                            m_Values[i] = reader.ReadInt();
-                        }
-
-                        break;
-                    }
+                _Values[i] = reader.ReadEncodedInt();
             }
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((byte)1); // version;
+            writer.Write((byte)0); // version;
 
-            writer.Write(m_Names);
-            writer.WriteEncodedInt(m_Values.Length);
+            writer.Write(_Names);
 
-            for (int i = 0; i < m_Values.Length; ++i)
+            writer.WriteEncodedInt(_Values.Length);
+            for (int i = 0; i < _Values.Length; ++i)
             {
-                writer.WriteEncodedInt(m_Values[i]);
+                writer.WriteEncodedInt(_Values[i]);
             }
         }
 
@@ -2381,16 +2339,16 @@ namespace Server
         {
             uint mask = (uint)bitmask;
 
-            if ((m_Names & mask) == 0)
+            if ((_Names & mask) == 0)
             {
                 return 0;
             }
 
             int index = GetIndex(mask);
 
-            if (index >= 0 && index < m_Values.Length)
+            if (index >= 0 && index < _Values.Length)
             {
-                return m_Values[index];
+                return _Values[index];
             }
 
             return 0;
@@ -2402,87 +2360,87 @@ namespace Server
 
             if (value != 0)
             {
-                if ((m_Names & mask) != 0)
+                if ((_Names & mask) != 0)
                 {
                     int index = GetIndex(mask);
 
-                    if (index >= 0 && index < m_Values.Length)
+                    if (index >= 0 && index < _Values.Length)
                     {
-                        m_Values[index] = value;
+                        _Values[index] = value;
                     }
                 }
                 else
                 {
                     int index = GetIndex(mask);
 
-                    if (index >= 0 && index <= m_Values.Length)
+                    if (index >= 0 && index <= _Values.Length)
                     {
-                        int[] old = m_Values;
-                        m_Values = new int[old.Length + 1];
+                        int[] old = _Values;
+                        _Values = new int[old.Length + 1];
 
                         for (int i = 0; i < index; ++i)
                         {
-                            m_Values[i] = old[i];
+                            _Values[i] = old[i];
                         }
 
-                        m_Values[index] = value;
+                        _Values[index] = value;
 
                         for (int i = index; i < old.Length; ++i)
                         {
-                            m_Values[i + 1] = old[i];
+                            _Values[i + 1] = old[i];
                         }
 
-                        m_Names |= mask;
+                        _Names |= mask;
                     }
                 }
             }
-            else if ((m_Names & mask) != 0)
+            else if ((_Names & mask) != 0)
             {
                 int index = GetIndex(mask);
 
-                if (index >= 0 && index < m_Values.Length)
+                if (index >= 0 && index < _Values.Length)
                 {
-                    m_Names &= ~mask;
+                    _Names &= ~mask;
 
-                    if (m_Values.Length == 1)
+                    if (_Values.Length == 1)
                     {
-                        m_Values = m_Empty;
+                        _Values = _Empty;
                     }
                     else
                     {
-                        int[] old = m_Values;
-                        m_Values = new int[old.Length - 1];
+                        int[] old = _Values;
+                        _Values = new int[old.Length - 1];
 
                         for (int i = 0; i < index; ++i)
                         {
-                            m_Values[i] = old[i];
+                            _Values[i] = old[i];
                         }
 
                         for (int i = index + 1; i < old.Length; ++i)
                         {
-                            m_Values[i - 1] = old[i];
+                            _Values[i - 1] = old[i];
                         }
                     }
                 }
             }
 
-            if (m_Owner != null && m_Owner.Parent is Mobile m)
+            if (_Owner != null && _Owner.Parent is Mobile m)
             {
                 m.CheckStatTimers();
                 m.UpdateResistances();
                 m.Delta(MobileDelta.Stat | MobileDelta.WeaponDamage | MobileDelta.Hits | MobileDelta.Stam | MobileDelta.Mana);
             }
 
-            if (m_Owner != null)
+            if (_Owner != null)
             {
-                m_Owner.InvalidateProperties();
+                _Owner.InvalidateProperties();
             }
         }
 
         private int GetIndex(uint mask)
         {
             int index = 0;
-            uint ourNames = m_Names;
+            uint ourNames = _Names;
             uint currentBit = 1;
 
             while (currentBit != mask)

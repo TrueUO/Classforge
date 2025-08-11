@@ -94,7 +94,7 @@ namespace Server.Items
                 Item startingSandals = _Player.FindItemOnLayer(Layer.Shoes);
                 startingSandals?.Delete();
 
-                // Add starting items and move player based on class selected.
+                // Add starting items and move player.
                 CharacterClass selected = (CharacterClass)info.ButtonID;
 
                 _Player.CharacterClass = selected;
@@ -103,7 +103,6 @@ namespace Server.Items
                 {
                     case CharacterClass.Cleric:
                     {
-                        //_Player.MoveToWorld(new Point3D(4447, 1173, 0), Map.Trammel); // Moonglow
                         ClericClass.OnClassSelected(_Player);
                         break;
                     }
@@ -114,7 +113,6 @@ namespace Server.Items
                     }
                     case CharacterClass.Ranger:
                     {
-                        //_Player.MoveToWorld(new Point3D(3032, 3384, 15), Map.Trammel); // Serpent's Hold
                         RangerClass.OnClassSelected(_Player);
                         break;
                     }

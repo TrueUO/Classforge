@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("an ice serpent corpse")]
@@ -51,7 +49,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
-            AddLoot(LootPack.LootItem<GlacialStaff>(2.5));
         }
 
         public override void Serialize(GenericWriter writer)

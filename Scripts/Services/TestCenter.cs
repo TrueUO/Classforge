@@ -258,37 +258,6 @@ namespace Server.Misc
 
             Container bag = new Bag
             {
-                Hue = 75,
-                Name = "Bag of Imbuing Materials"
-            };
-
-            for (int i = 0; i < Imbuing.IngredTypes.Length; i++)
-            {
-                Item item = Loot.Construct(Imbuing.IngredTypes[i]);
-
-                if (item != null)
-                {
-                    if (item.Stackable)
-                    {
-                        item.Amount = 1000;
-                        bag.DropItem(item);
-                    }
-                    else
-                    {
-                        bag.DropItem(item);
-
-                        for (int j = 0; j < 10; j++)
-                        {
-                            bag.DropItem(Loot.Construct(Imbuing.IngredTypes[j]));
-                        }
-                    }
-                }
-            }
-
-            PlaceItemIn(box, 17, 67, bag);
-
-            bag = new Bag
-            {
                 Hue = 1195,
                 Name = "Bag of Elven Materials"
             };

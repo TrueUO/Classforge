@@ -13,7 +13,7 @@ namespace Server
         private static readonly Type[] m_Artifacts =
         [
             typeof(BloodwoodSpirit), typeof(QuiverOfRage), typeof(QuiverOfElements),
-            typeof(SoulSeeker), typeof(TotemOfVoid)
+            typeof(TotemOfVoid)
         ];
 
         public static void Initialize()

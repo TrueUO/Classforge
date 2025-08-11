@@ -12,10 +12,10 @@ namespace Server.Misc
 
         private static readonly Type[] m_VirtueArtifacts =
         {
-            typeof( KatrinasCrook ), typeof( JaanasStaff ), typeof( DragonsEnd ), typeof( AnkhPendant ),
-            typeof( MapOfTheKnownWorld ), typeof( TenthAnniversarySculpture ),
-            typeof( CompassionArms ), typeof( JusticeBreastplate ), typeof( ValorGauntlets ), typeof( HonestyGorget ),
-            typeof( SpiritualityHelm ), typeof( HonorLegs ), typeof( SacrificeSollerets )
+            typeof(AnkhPendant), typeof(MapOfTheKnownWorld), typeof(TenthAnniversarySculpture),
+            typeof(CompassionArms), typeof(JusticeBreastplate), typeof(ValorGauntlets),
+            typeof(HonestyGorget), typeof(SpiritualityHelm), typeof(HonorLegs),
+            typeof(SacrificeSollerets)
         };
 
         public static Type[] Artifacts => m_VirtueArtifacts;

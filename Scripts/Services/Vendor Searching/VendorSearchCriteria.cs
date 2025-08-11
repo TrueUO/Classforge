@@ -87,8 +87,6 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosAttribute.NightSight, 1075643),
                 new SearchCriterionEntry(Misc.Cursed, 1116639),
                 new SearchCriterionEntry(Misc.NotCursed, 1154701),
-                new SearchCriterionEntry(Misc.CannotRepair, 1151826),
-                new SearchCriterionEntry(Misc.NotCannotBeRepaired, 1154705),
                 new SearchCriterionEntry(Misc.Brittle, 1116209),
                 new SearchCriterionEntry(Misc.NotBrittle, 1154702),
                 new SearchCriterionEntry(Misc.Antique, 1152714),

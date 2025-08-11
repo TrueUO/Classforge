@@ -226,40 +226,4 @@ namespace Server.Mobiles.MannequinProperty
             return false;
         }
     }
-
-    public class SearingWeaponProperty : ValuedProperty
-    {
-        public override bool IsMagical => true;
-        public override Catalog Catalog => Catalog.HitEffects;
-        public override bool IsBoolen => true;
-        public override int LabelNumber => 1151183;  // Searing Weapon
-        public override int Description => 1152471;  // This property provides a 20% chance (10% for ranged weapons) to deal additional fire damage to a target while inflicting 4 points of direct damage to the wielder.  This property also induces a hit point regeneration penalty on the target that lasts for four seconds.  The penalty is -20 hit point regeneration for players and -60 hit point regeneration for monsters and NPCs.  Each attack with a weapon with this property consumes one mana.  This property is only found on weapons.
-        public override int SpriteW => 270;
-        public override int SpriteH => 270;
-
-        public bool GetPropertyValue(Item item)
-        {
-            return item is BaseWeapon weapon && weapon.SearingWeapon;
-        }
-
-        public override bool Matches(Item item)
-        {
-            return GetPropertyValue(item);
-        }
-
-        public override bool Matches(List<Item> items)
-        {
-            for (int index = 0; index < items.Count; index++)
-            {
-                Item i = items[index];
-
-                if (GetPropertyValue(i))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
 }

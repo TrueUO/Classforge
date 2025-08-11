@@ -44,14 +44,4 @@ namespace Server.Mobiles.MannequinProperty
         public override int SpriteH => 240;
         public override NegativeAttribute Attribute => NegativeAttribute.Brittle;
     }
-
-    public class NotCannotBeRepairedProperty : NegativeAttr
-    {
-        public override Catalog Catalog => Catalog.None;
-        public override int LabelNumber => 1151782;  // cannot be repaired
-        public override bool IsSpriteGraph => true;
-        public override int SpriteW => 120;
-        public override int SpriteH => 240;
-        public override NegativeAttribute Attribute => NegativeAttribute.NoRepair;
-    }
 }

@@ -30,8 +30,6 @@ namespace Server.Items
         private CraftResource m_Resource;
         private GemType m_GemType;
 
-        private int m_TimesImbued;
-        private bool m_IsImbued;
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
 
@@ -188,40 +186,6 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int TimesImbued
-        {
-            get { return m_TimesImbued; }
-            set { m_TimesImbued = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsImbued
-        {
-            get
-            {
-                if (TimesImbued >= 1 && !m_IsImbued)
-                {
-                    m_IsImbued = true;
-                }
-
-                return m_IsImbued;
-            }
-            set
-            {
-                if (TimesImbued >= 1)
-                {
-                    m_IsImbued = true;
-                }
-                else
-                {
-                    m_IsImbued = value;
-                }
-
-                InvalidateProperties();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public int GorgonLenseCharges
         {
             get { return m_GorgonLenseCharges; }
@@ -238,12 +202,6 @@ namespace Server.Items
         {
             get { return m_GorgonLenseType; }
             set { m_GorgonLenseType = value; InvalidateProperties(); }
-        }
-
-        public virtual int[] BaseResists => new int[] { 0, 0, 0, 0, 0 };
-
-        public virtual void OnAfterImbued(Mobile m, int mod, int value)
-        {
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -287,19 +245,6 @@ namespace Server.Items
                 }
 
                 return BaseGemTypeNumber + (int)m_GemType - 1;
-            }
-        }
-
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                {
-                    return base.DefaultWeight;
-                }
-
-                return 50;
             }
         }
 
@@ -431,13 +376,7 @@ namespace Server.Items
 
         public virtual int OnHit(BaseWeapon weap, int damageTaken)
         {
-            if (m_TimesImbued == 0 && m_MaxHitPoints == 0)
-            {
-                return damageTaken;
-            }
-
-            //Sanity check incase some one has a bad state Jewel.
-            if (m_TimesImbued >= 1 && m_MaxHitPoints == 0)
+            if (m_MaxHitPoints == 0)
             {
                 return damageTaken;
             }
@@ -448,34 +387,31 @@ namespace Server.Items
             {
                 int wear = 1;
 
+                if (m_HitPoints >= wear)
+                {
+                    HitPoints -= wear;
+                    wear = 0;
+                }
+                else
+                {
+                    wear -= HitPoints;
+                    HitPoints = 0;
+                }
+
                 if (wear > 0)
                 {
-                    if (m_HitPoints >= wear)
+                    if (m_MaxHitPoints > wear)
                     {
-                        HitPoints -= wear;
-                        wear = 0;
+                        MaxHitPoints -= wear;
+
+                        if (Parent is Mobile mobile)
+                        {
+                            mobile.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                        }
                     }
                     else
                     {
-                        wear -= HitPoints;
-                        HitPoints = 0;
-                    }
-
-                    if (wear > 0)
-                    {
-                        if (m_MaxHitPoints > wear)
-                        {
-                            MaxHitPoints -= wear;
-
-                            if (Parent is Mobile mobile)
-                            {
-                                mobile.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
-                            }
-                        }
-                        else
-                        {
-                            Delete();
-                        }
+                        Delete();
                     }
                 }
             }
@@ -491,8 +427,8 @@ namespace Server.Items
         {
         }
 
-        public virtual bool CanFortify => IsImbued == false && NegativeAttributes.Antique < 4;
-        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
+        public virtual bool CanFortify => NegativeAttributes.Antique < 4;
+        public virtual bool CanRepair => true;
 
         public override void OnAdded(object parent)
         {
@@ -625,11 +561,6 @@ namespace Server.Items
             if (m_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1063341); // exceptional
-            }
-
-            if (IsImbued)
-            {
-                list.Add(1080418); // (Imbued)
             }
         }
 
@@ -976,8 +907,6 @@ namespace Server.Items
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
-            writer.Write(m_IsImbued);
-
             m_NegativeAttributes.Serialize(writer);
 
             writer.Write((int)m_ReforgedPrefix);
@@ -986,8 +915,6 @@ namespace Server.Items
 
             writer.Write(m_GorgonLenseCharges);
             writer.Write((int)m_GorgonLenseType);
-
-            writer.WriteEncodedInt(m_TimesImbued);
 
             m_SAAbsorptionAttributes.Serialize(writer);
 
@@ -1034,8 +961,6 @@ namespace Server.Items
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
 
-                        m_IsImbued = reader.ReadBool();
-
                         m_NegativeAttributes = new NegativeAttributes(this, reader);
 
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
@@ -1044,8 +969,6 @@ namespace Server.Items
 
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
-
-                        m_TimesImbued = reader.ReadEncodedInt();
 
                         m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
 
