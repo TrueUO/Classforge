@@ -13,7 +13,10 @@ namespace Server.ForestSpawn
         // on startup load system
         public static void Initialize()
         {
-            LoadSystem();
+            if (_IsEnabled)
+            {
+                LoadSystem();
+            }
         }
 
         // System Controls

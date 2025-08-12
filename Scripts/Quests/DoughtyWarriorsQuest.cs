@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Mobiles;
+using Server.Services.ClassSystem;
 
 namespace Server.Engines.Quests
 {
@@ -10,32 +11,43 @@ namespace Server.Engines.Quests
         public override Type NextQuest => typeof(DoughtyWarriors2Quest);
         public override bool DoneOnce => true;
 
-        /* Doughty Warriors */
-        public override object Title => 1075379;
+        public override object Title => "The Classforge";
 
-        /*Youngsters these days! Sorry, I didn’t introduce myself. I’m Kane,
-         * the Master of Arms for this city. This lot of trainees I got, they’re
-         * not worth a bucket of sour spit. You know the invasion some years back?
-         * Well, some of these pups weren’t even born then! What I need is an example,
-         * something that will put some steel into their spines. You seem pretty tough,
-         * what do you say to helping me out? */
-        public override object Description => 1075380;
+        public override object Description => "Kill sheep";
 
-        /* Ah. I see. Never mind then. */
-        public override object Refuse => 1075382;
+        public override object Refuse => "";
 
-        /* You’ll find mongbats all over the place. They’re a real pest.
-         * Once you’ve killed ten of them, come back and see me again. */
-        public override object Uncomplete => 1075383;
+        public override object Uncomplete => "";
 
-        /* Excellent! That’s the old fighting spirit. */
-        public override object Complete => 1075384;
+        public override object Complete => "";
 
         public DoughtyWarriorsQuest()
         {
-            AddObjective(new SlayObjective(typeof(Mongbat), "Mongbats", 10));
+            AddObjective(new SlayObjective(typeof(Sheep), "Sheep", 5));
 
-            AddReward(new BaseReward(1075381)); // Show them what a real warrior is made of!
+            AddReward(new BaseReward("+25 XP"));
+            AddReward(new BaseReward("The famous sword: Life Stealer"));
+        }
+
+        public override void GiveRewards()
+        {
+            base.GiveRewards();
+
+            ClassSystemHelper.AwardXp(Owner, 25, "a quest");
+
+            Broadsword sword = new Broadsword
+            {
+                Name = "Life Stealer",
+                WeaponAttributes =
+                {
+                    HitLeechHits = 5
+                },
+                MaxHitPoints = 75,
+                HitPoints = 75,
+                Owner = Owner
+            };
+
+            Owner.AddToBackpack(sword);
         }
 
         public override void Serialize(GenericWriter writer)

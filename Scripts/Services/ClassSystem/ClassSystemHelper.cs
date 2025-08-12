@@ -57,72 +57,69 @@ namespace Server.Services.ClassSystem
             return (int)(BaseXp * Math.Pow(GrowthFactor, n - 1));
         }
 
-        public static class LevelUpHelper
+        public static void AwardXp(PlayerMobile pm, int xpGain, string source = "")
         {
-            public static void AwardXp(PlayerMobile pm, int xpGain, string source = "")
+            if (pm.Level >= MaxLevel)
             {
-                if (pm.Level >= MaxLevel)
-                {
-                    pm.SendMessage("You have reached the maximum level!");
-                    return;
-                }
-
-                pm.Xp += xpGain;
-                pm.SendMessage($"+{xpGain} XP{(string.IsNullOrEmpty(source) ? "" : $" from {source}")}.");
-
-                CheckLevelUp(pm);
-
-                if (pm.Level < MaxLevel)
-                {
-                    pm.SendMessage($"Progress: {pm.Xp}/{XpNeededForNextLevel(pm.Level)} XP toward Level {pm.Level + 1}.");
-                }
-                else
-                {
-                    pm.SendMessage("You have reached the maximum level!");
-                }
+                pm.SendMessage("You have reached the maximum level!");
+                return;
             }
 
-            public static void CheckLevelUp(PlayerMobile pm)
+            pm.Xp += xpGain;
+            pm.SendMessage($"+{xpGain} XP{(string.IsNullOrEmpty(source) ? "" : $" from {source}")}.");
+
+            CheckLevelUp(pm);
+
+            if (pm.Level < MaxLevel)
             {
-                while (pm.Level < MaxLevel)
+                pm.SendMessage($"Progress: {pm.Xp}/{XpNeededForNextLevel(pm.Level)} XP toward Level {pm.Level + 1}.");
+            }
+            else
+            {
+                pm.SendMessage("You have reached the maximum level!");
+            }
+        }
+
+        public static void CheckLevelUp(PlayerMobile pm)
+        {
+            while (pm.Level < MaxLevel)
+            {
+                // cost to go from current Level to next
+                if (pm.Xp < XpNeededForNextLevel(pm.Level))
                 {
-                    // cost to go from current Level to next
-                    if (pm.Xp < XpNeededForNextLevel(pm.Level))
-                    {
-                        break;
-                    }
+                    break;
+                }
 
-                    pm.Xp -= XpNeededForNextLevel(pm.Level); // reset player xp to 0 for next level
-                    pm.Level++;
-                    
-                    pm.PrivateOverheadMessage(MessageType.Regular, 52, false, $"Congratulations! You reached Level {pm.Level}.", pm.NetState);
+                pm.Xp -= XpNeededForNextLevel(pm.Level); // reset player xp to 0 for next level
+                pm.Level++;
 
-                    Effects.SendLocationParticles(EffectItem.Create(pm.Location, pm.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
-                    Effects.PlaySound(pm.Location, pm.Map, 0x243);
-                    Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(pm.X - 6, pm.Y - 6, pm.Z + 15), pm.Map), pm, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                    Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(pm.X - 4, pm.Y - 6, pm.Z + 15), pm.Map), pm, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                    Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(pm.X - 6, pm.Y - 4, pm.Z + 15), pm.Map), pm, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                    Effects.SendTargetParticles(pm, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+                pm.PrivateOverheadMessage(MessageType.Regular, 52, false, $"Congratulations! You reached Level {pm.Level}.", pm.NetState);
 
-                    pm.SkillPointsToSpend += SkillPointsToAwardPerLevel(pm);
+                Effects.SendLocationParticles(EffectItem.Create(pm.Location, pm.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
+                Effects.PlaySound(pm.Location, pm.Map, 0x243);
+                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(pm.X - 6, pm.Y - 6, pm.Z + 15), pm.Map), pm, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(pm.X - 4, pm.Y - 6, pm.Z + 15), pm.Map), pm, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(pm.X - 6, pm.Y - 4, pm.Z + 15), pm.Map), pm, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Effects.SendTargetParticles(pm, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-                    if (CanGainStatPoints(pm))
-                    {
-                        pm.StatPointsToSpend += 2;
-                    }
+                pm.SkillPointsToSpend += SkillPointsToAwardPerLevel(pm);
 
-                    if (pm.SkillPointsToSpend > 0 && pm.StatPointsToSpend > 0)
-                    {
-                        pm.SendMessage($"You currently have {pm.SkillPointsToSpend} skill points and {pm.StatPointsToSpend} stat points to spend.");
-                    }
-                    else if (pm.SkillPointsToSpend > 0 && pm.StatPointsToSpend == 0)
-                    {
-                        pm.SendMessage($"You currently have {pm.SkillPointsToSpend} skill points to spend.");
-                    }
-                    else if (pm.SkillPointsToSpend == 0 && pm.StatPointsToSpend > 0)
-                    {
-                        pm.SendMessage($"You currently have {pm.StatPointsToSpend} stat points to spend.");
-                    }
+                if (CanGainStatPoints(pm))
+                {
+                    pm.StatPointsToSpend += 2;
+                }
+
+                if (pm.SkillPointsToSpend > 0 && pm.StatPointsToSpend > 0)
+                {
+                    pm.SendMessage($"You currently have {pm.SkillPointsToSpend} skill points and {pm.StatPointsToSpend} stat points to spend.");
+                }
+                else if (pm.SkillPointsToSpend > 0 && pm.StatPointsToSpend == 0)
+                {
+                    pm.SendMessage($"You currently have {pm.SkillPointsToSpend} skill points to spend.");
+                }
+                else if (pm.SkillPointsToSpend == 0 && pm.StatPointsToSpend > 0)
+                {
+                    pm.SendMessage($"You currently have {pm.StatPointsToSpend} stat points to spend.");
                 }
             }
         }
@@ -144,7 +141,7 @@ namespace Server.Services.ClassSystem
             double taperPercent = 1.0 - 0.75 * (pm.Level - 1) / (MaxLevel - 1); // 1.0 → 0.25
             taperPercent = Math.Max(0.25, taperPercent); // Clamp minimum at 25%*/
            
-            LevelUpHelper.AwardXp(pm, killed.XpToGive, $"{killed.Name}");
+            AwardXp(pm, killed.XpToGive, $"{killed.Name}");
         }
 
         public static string GetClassName(CharacterClass characterClass)
