@@ -7,7 +7,7 @@ namespace Server.Mobiles
     [CorpseName("a sheep corpse")]
     public class Sheep : BaseCreature, ICarvable
     {
-        public override int XpToGive => 1;
+        public override int XpToGive => 2;
 
         private DateTime _NextWoolTime;
 
