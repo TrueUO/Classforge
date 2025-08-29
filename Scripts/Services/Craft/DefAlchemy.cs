@@ -209,9 +209,6 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(LuminescentFungi), 1073475, 5, 1044253);
             AddRecipe(index, (int)CraftRecipes.DarkglowPotion);
 
-            index = AddCraft(typeof(ScouringToxin), 1116350, 1112292, 75.0, 100.0, typeof(ToxicVenomSac), 1112291, 1, 1044253);
-            AddRes(index, typeof(Bottle), 1044529, 1, 500315);
-
             // Explosive
             index = AddCraft(typeof(LesserExplosionPotion), 1116351, 1044555, 5.0, 55.0, typeof(SulfurousAsh), 1044359, 3, 1044367);
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);
@@ -248,18 +245,10 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(SmokeBomb), 1116353, 1030248, 90.0, 120.0, typeof(Eggs), 1044477, 1, 1044253);
             AddRes(index, typeof(Ginseng), 1044356, 3, 1044364);
 
-            AddCraft(typeof(HoveringWisp), 1116353, 1072881, 75.0, 125.0, typeof(CapturedEssence), 1032686, 4, 1044253);
-
             index = AddCraft(typeof(NaturalDye), 1116353, 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
             AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
             SetItemHue(index, 2101);
             SetRequireResTarget(index);
-
-            index = AddCraft(typeof(NexusCore), 1116353, 1153501, 90.0, 120.0, typeof(MandrakeRoot), 1015013, 10, 1044253);
-            AddRes(index, typeof(SpidersSilk), 1015007, 10, 1044253);
-            AddRes(index, typeof(DarkSapphire), 1032690, 5, 1044253);
-            AddRes(index, typeof(CrushedGlass), 1113351, 5, 1044253);
-            ForceNonExceptional(index);
 
             // Ingrediants
             index = AddCraft(typeof(PlantPigment), 1044495, 1112132, 33.0, 83.0, typeof(PlantClippings), 1112131, 1, 1044253);
@@ -273,14 +262,6 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(CrystalGranules), 1044495, 1112329, 75.0, 100.0, typeof(ShimmeringCrystals), 1075095, 1, 1044253);
             SetItemHue(index, 2625);
-
-            index = AddCraft(typeof(VialOfVitriol), 1044495, 1113331, 90.0, 100.0, typeof(ParasiticPotion), 1072848, 1, 1113754);
-            AddRes(index, typeof(Nightshade), 1044358, 30, 1044366);
-            AddSkill(index, SkillName.Magery, 75.0, 100.0);
-
-            index = AddCraft(typeof(BottleIchor), 1044495, 1113361, 90.0, 100.0, typeof(DarkglowPotion), 1072849, 1, 1113755);
-            AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044368);
-            AddSkill(index, SkillName.Magery, 75.0, 100.0);
 
             index = AddCraft(typeof(Potash), 1044495, 1116319, 0.0, 50.0, typeof(Board), 1044041, 1, 1044253);
             SetNeedWater(index, true);

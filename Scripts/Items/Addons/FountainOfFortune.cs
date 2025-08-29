@@ -86,11 +86,11 @@ namespace Server.Items
                     }
                     case 2:
                     {
-                        item = new RelicFragment(5); break;
+                        item = new Gold(50); break;
                     }
                     case 3:
                     {
-                        item = new EnchantedEssence(5); break;
+                        item = new Gold(100); break;
                     }
                 }
 

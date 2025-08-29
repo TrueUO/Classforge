@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a hare corpse")]
@@ -44,16 +42,6 @@ namespace Server.Mobiles
 
         public override bool IsScaryToPets => true;
         public override bool BardImmune => true;
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.5)
-            {
-                c.DropItem(new AnimalPheromone());
-            }
-        }
 
         public override void GenerateLoot()
         {

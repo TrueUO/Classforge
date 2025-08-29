@@ -304,16 +304,6 @@ namespace Server.Items
             return null;
         }
 
-        public static Type[] GetSpecialMaterials(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
-        {
-            if (package == TreasurePackage.Artisan && level == TreasureLevel.Supply)
-            {
-                return _SpecialMaterialTable[(int)facet];
-            }
-
-            return null;
-        }
-
         public static Type[] GetDecorativeList(TreasureLevel level, TreasurePackage package, TreasureFacet facet)
         {
             Type[] list = null;
@@ -683,17 +673,6 @@ namespace Server.Items
             new[] { typeof(AncientWeapon2) }
         };
 
-        private static readonly Type[][] _SpecialMaterialTable =
-        {
-            null, // tram
-            null, // fel
-            null, // ilsh
-            new[] { typeof(LuminescentFungi), typeof(BarkFragment), typeof(Blight), typeof(Corruption), typeof(Muculent), typeof(Putrefaction), typeof(Scourge), typeof(Taint)  }, // malas
-            null, // tokuno
-            new[] { typeof(AbyssalCloth), typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance), typeof(EssenceControl), typeof(EssenceDiligence), typeof(EssenceDirection), typeof(EssenceFeeling), typeof(EssenceOrder), typeof(EssencePassion), typeof(EssencePersistence), typeof(EssenceSingularity) }, // ter
-            null  // eodon
-        };
-
         private static readonly Type[][] _SpecialSupplyLoot =
         {
             new[] { typeof(LegendaryMapmakersGlasses), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding), typeof(ShieldEngravingTool), null },
@@ -874,26 +853,6 @@ namespace Server.Items
                     craft.Amount = amount;
 
                     chest.DropItem(craft);
-                }
-
-                list = null;
-            }
-
-            // TODO: DO each drop, or do only 1 drop?
-            list = GetSpecialMaterials(level, package, facet);
-
-            if (list != null)
-            {
-                amount = GetSpecialResourceAmount(quality);
-
-                for (int index = 0; index < list.Length; index++)
-                {
-                    Type type = list[index];
-
-                    Item specialCraft = Loot.Construct(type);
-                    specialCraft.Amount = amount;
-
-                    chest.DropItem(specialCraft);
                 }
 
                 list = null;

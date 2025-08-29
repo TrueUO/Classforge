@@ -130,63 +130,12 @@ namespace Server.Engines.Craft
             AddCraft(typeof(EasleEast), 1044294, 1044318, 86.8, 111.8, typeof(Board), 1044041, 20, 1044351);
             AddCraft(typeof(EasleNorth), 1044294, 1044319, 86.8, 111.8, typeof(Board), 1044041, 20, 1044351);
 
-            index = AddCraft(typeof(RedHangingLantern), 1044294, 1029412, 65.0, 90.0, typeof(Board), 1044041, 5, 1044351);
-            AddRes(index, typeof(BlankScroll), 1044377, 10, 1044378);
-
-            index = AddCraft(typeof(WhiteHangingLantern), 1044294, 1029416, 65.0, 90.0, typeof(Board), 1044041, 5, 1044351);
-            AddRes(index, typeof(BlankScroll), 1044377, 10, 1044378);
-
-            index = AddCraft(typeof(ShojiScreen), 1044294, 1029423, 80.0, 105.0, typeof(Board), 1044041, 75, 1044351);
-            AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
-            AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
-
-            index = AddCraft(typeof(BambooScreen), 1044294, 1029428, 80.0, 105.0, typeof(Board), 1044041, 75, 1044351);
-            AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
-            AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
-
             index = AddCraft(typeof(FishingPole), 1044294, 1023519, 68.4, 93.4, typeof(Board), 1044041, 5, 1044351); //This is in the categor of Other during AoS
             AddSkill(index, SkillName.Tailoring, 40.0, 45.0);
             AddRes(index, typeof(Cloth), 1044286, 5, 1044287);
 
             index = AddCraft(typeof(WoodenContainerEngraver), 1044294, 1072153, 75.0, 100.0, typeof(Board), 1044041, 4, 1044351);
             AddRes(index, typeof(IronIngot), 1044036, 2, 1044037);
-
-            index = AddCraft(typeof(RunedSwitch), 1044294, 1072896, 70.0, 120.0, typeof(Board), 1044041, 2, 1044351);
-            AddRes(index, typeof(EnchantedSwitch), 1072893, 1, 1053098);
-            AddRes(index, typeof(RunedPrism), 1073465, 1, 1053098);
-            AddRes(index, typeof(JeweledFiligree), 1072894, 1, 1053098);
-
-            index = AddCraft(typeof(ArcanistStatueSouthDeed), 1044294, 1072885, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(ArcanistStatueEastDeed), 1044294, 1072886, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(WarriorStatueSouthDeed), 1044294, 1072887, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            AddRecipe(index, (int)CraftRecipes.WarriorStatueSouth);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(WarriorStatueEastDeed), 1044294, 1072888, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            AddRecipe(index, (int)CraftRecipes.WarriorStatueEast);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(MountedDreadHorn), 1044294, 1032632, 90.0, 115.0, typeof(Board), 1044041, 50, 1044351);
-            AddRes(index, typeof(PristineDreadHorn), 1032634, 1, 1053098);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(AcidProofRope), 1044294, 1074886, 80, 130.0, typeof(GreaterStrengthPotion), 1073466, 2, 1044253);
-            AddRes(index, typeof(ProtectionScroll), 1044395, 1, 1053098);
-            AddRes(index, typeof(SwitchItem), 1032127, 1, 1053098);
-            AddRecipe(index, (int)CraftRecipes.AcidProofRope);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(GargishBanner), 1044294, 1095312, 94.7, 115.0, typeof(Board), 1044041, 50, 1044351);
-            AddSkill(index, SkillName.Tailoring, 75.0, 105.0);
-            AddRes(index, typeof(Cloth), 1044286, 50, 1044287);
-
-            AddCraft(typeof(Incubator), 1044294, 1112479, 90.0, 115.0, typeof(Board), 1044041, 100, 1044351);
-
-            AddCraft(typeof(ChickenCoop), 1044294, 1112570, 90.0, 115.0, typeof(Board), 1044041, 150, 1044351);
 
             index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155849, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
             SetData(index, CraftableItemType.DarkWoodenSignHanger);
@@ -569,15 +518,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(WaterTroughSouthDeed), 1044298, 1044350, 94.7, 119.7, typeof(Board), 1044041, 150, 1044351);
 
             // Anvils and Forges
-            index = AddCraft(typeof(ElvenForgeDeed), 1111809, 1072875, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(SoulForgeDeed), 1111809, 1095827, 100.0, 200.0, typeof(Board), 1044041, 150, 1044351);
-            AddSkill(index, SkillName.Imbuing, 75.0, 80.0);
-            AddRes(index, typeof(IronIngot), 1044036, 150, 1044037);
-            AddRes(index, typeof(RelicFragment), 1031699, 1, 1044253);
-            ForceNonExceptional(index);
-
             index = AddCraft(typeof(SmallForgeDeed), 1111809, 1044330, 73.6, 98.6, typeof(Board), 1044041, 5, 1044351);
             AddSkill(index, SkillName.Blacksmith, 75.0, 80.0);
             AddRes(index, typeof(IronIngot), 1044036, 75, 1044037);

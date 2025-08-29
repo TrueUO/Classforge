@@ -25,14 +25,6 @@ namespace Server.Items
             typeof(LargeFishingNet)
         };
 
-        public static Type[] ImbuingIngreds => m_ImbuingIngreds;
-        private static readonly Type[] m_ImbuingIngreds =
-        {
-            typeof(AbyssalCloth),   typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance),
-            typeof(EssenceControl), typeof(EssenceDiligence), typeof(EssenceDirection),   typeof(EssenceFeeling),
-            typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence), typeof(EssenceSingularity)
-        };
-
         private static readonly TimeSpan _DeleteTime = TimeSpan.FromHours(3);
 
         private List<Item> m_Lifted = new List<Item>();
@@ -330,14 +322,6 @@ namespace Server.Items
             for (int i = 0; i < count; i++)
             {
                 cont.DropItem(Loot.RandomGem());
-            }
-
-            if (level > 1)
-            {
-                Item item = Loot.Construct(m_ImbuingIngreds[Utility.Random(m_ImbuingIngreds.Length)]);
-
-                item.Amount = level;
-                cont.DropItem(item);
             }
 
             Item arty = null;

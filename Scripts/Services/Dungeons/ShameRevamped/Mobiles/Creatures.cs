@@ -1389,7 +1389,6 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.LootItemCallback(ClayGolem.CheckSpawnCrystal, 33.0, 5, false, false));
-            AddLoot(LootPack.LootItem<VoidCore>(20.0));
         }
 
         public UnboundEnergyVortex(Serial serial)

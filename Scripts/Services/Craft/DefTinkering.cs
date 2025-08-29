@@ -74,12 +74,8 @@ namespace Server.Engines.Craft
 
         public override bool RetainsColorFrom(CraftItem item, Type type)
         {
-            if (type == typeof(CrystalDust))
-            {
-                return false;
-            }
-
             bool contains = false;
+
             type = item.ItemType;
 
             for (int i = 0; !contains && i < m_TinkerColorables.Length; ++i)
@@ -223,10 +219,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Hinge), 1044047, 1024181, 5.0, 55.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(BolaBall), 1044047, 1023699, 45.0, 95.0, typeof(IronIngot), 1044036, 10, 1044037);
 
-            index = AddCraft(typeof(JeweledFiligree), 1044047, 1072894, 70.0, 110.0, typeof(IronIngot), 1044036, 2, 1044037);
-            AddRes(index, typeof(StarSapphire), 1044231, 1, 1044253);
-            AddRes(index, typeof(Ruby), 1044234, 1, 1044253);
-
             AddCraft(typeof(ButcherKnife), 1044048, 1025110, 25.0, 75.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(SpoonLeft), 1044048, 1044158, 0.0, 50.0, typeof(IronIngot), 1044036, 1, 1044037);
             AddCraft(typeof(SpoonRight), 1044048, 1044159, 0.0, 50.0, typeof(IronIngot), 1044036, 1, 1044037);
@@ -263,14 +255,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(FancyWindChimes), 1044050, 1030291, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
 
             AddCraft(typeof(TerMurStyleCandelabra), 1044050, 1095313, 55.0, 105.0, typeof(IronIngot), 1044036, 4, 1044037);
-
-            index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(MedusaDarkScales), 1112626, 2, 1053097);
-            AddRes(index, typeof(CrystalDust), 1112328, 3, 1044253);
-            ForceNonExceptional(index);
-            SetItemHue(index, 1266);
-
-            index = AddCraft(typeof(ScaleCollar), 1044050, 1112480, 50.0, 100.0, typeof(RedScales), 1112626, 4, 1053097);
-            AddRes(index, typeof(Scourge), 1032677, 1, 1044253);
 
             index = AddCraft(typeof(DragonLamp), 1044050, 1098404, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
             AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
@@ -377,39 +361,9 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(BarrelLid), 1044251, 1, 1044253);
             AddRes(index, typeof(BarrelTap), 1044252, 1, 1044253);
 
-            index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113031, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
-            AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
-            AddRes(index, typeof(VoidEssence), 1112327, 1, 502910);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113032, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
-            AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
-            AddRes(index, typeof(VoidEssence), 1112327, 2, 502910);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113033, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
-            AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
-            AddRes(index, typeof(VoidEssence), 1112327, 3, 502910);
-            ForceNonExceptional(index);
-
             index = AddCraft(typeof(HitchingRope), 1044051, 1071124, 60.0, 120.0, typeof(Rope), 1020934, 1, 1044253);
             AddSkill(index, SkillName.AnimalLore, 15.0, 100.0);
             AddRes(index, typeof(ResolvesBridle), 1074761, 1, 1044253);
-
-            index = AddCraft(typeof(HitchingPost), 1044051, 1071127, 90.0, 160.0, typeof(IronIngot), 1044036, 50, 1044253);
-            AddRes(index, typeof(AnimalPheromone), 1071200, 1, 1044253);
-            AddRes(index, typeof(HitchingRope), 1071124, 2, 1044253);
-            AddRes(index, typeof(PhillipsWoodenSteed), 1063488, 1, 1044253);
-
-            index = AddCraft(typeof(ArcanicRuneStone), 1044051, 1113352, 90.0, 140.0, typeof(CrystalShards), 1073161, 1, 1044253);
-            AddRes(index, typeof(PowerCrystal), 1112811, 5, 502910);
-            AddSkill(index, SkillName.Magery, 80.0, 85.0);
-            ForceNonExceptional(index);
-
-            index = AddCraft(typeof(VoidOrb), 1044051, 1113354, 90.0, 104.3, typeof(DarkSapphire), 1032690, 1, 1044253);
-            AddSkill(index, SkillName.Magery, 80.0, 100.0);
-            AddRes(index, typeof(BlackPearl), 1015001, 50, 1044253);
-            ForceNonExceptional(index);
 
             index = AddCraft(typeof(AdvancedTrainingDummySouthDeed), 1044051, 1150595, 90.0, 120.0, typeof(TrainingDummySouthDeed), 1044336, 1, 1044253);
             AddRes(index, typeof(PlateChest), 1025141, 1, 1044253);

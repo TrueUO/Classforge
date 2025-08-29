@@ -6,9 +6,8 @@ namespace Server.Engines.Quests
     {
         None = 0,
 
-        UnfadingMemories = 1,
-        DoughtyWarriors = 2,
-        FlintTheQuartermaster = 3
+        NewClassQuest = 1,
+        UnfadingMemories = 2
     }
 
     public class BaseChain(Type currentQuest, Type quester)
@@ -20,13 +19,12 @@ namespace Server.Engines.Quests
 
         static BaseChain()
         {
-            Chains = new Type[4][];
+            Chains = new Type[3][];
 
             Chains[(int)QuestChain.None] = [];
 
+            Chains[(int)QuestChain.NewClassQuest] = [typeof(NewClassQuest1), typeof(NewClassQuest2), typeof(NewClassQuest3)];
             Chains[(int)QuestChain.UnfadingMemories] = [typeof(UnfadingMemoriesOneQuest), typeof(UnfadingMemoriesTwoQuest), typeof(UnfadingMemoriesThreeQuest)];
-            Chains[(int)QuestChain.DoughtyWarriors] = [typeof(DoughtyWarriorsQuest), typeof(DoughtyWarriors2Quest), typeof(DoughtyWarriors3Quest)];
-            Chains[(int)QuestChain.FlintTheQuartermaster] = [typeof(ThievesBeAfootQuest), typeof(BibliophileQuest)];
         }
     }
 }

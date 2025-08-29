@@ -61,16 +61,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average, 2);
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (!Controlled && Utility.RandomDouble() < 0.05)
-            {
-                c.DropItem(new SlithEye());
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

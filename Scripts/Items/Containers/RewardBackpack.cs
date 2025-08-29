@@ -53,22 +53,6 @@ namespace Server.Items
                     DropItemStacked(Loot.RandomRareGem());
                 }
             }
-
-            switch (Level)
-            {
-                case 1:
-                {
-                    DropItem(new MagicalResidue(20)); break;
-                }
-                case 2:
-                {
-                    DropItem(new EnchantedEssence(10)); break;
-                }
-                case 3:
-                {
-                    DropItem(new RelicFragment()); break;
-                }
-            }
         }
 
         public BaseRewardBackpack(Serial serial)
@@ -79,14 +63,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             reader.ReadInt();
         }
     }

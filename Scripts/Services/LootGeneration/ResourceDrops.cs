@@ -47,75 +47,6 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(GreenGoblinAlchemistRenowned), true, 0.5, ImbuingGems));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(PixieRenowned), true, 0.50, ImbuingGems));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(SkeletalDragonRenowned), true, 0.50, ImbuingGems));
-            
-            //Bottle of Ichor/Spider Carapace
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(TrapdoorSpider), true, 0.05, typeof(SpiderCarapace)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(WolfSpider), true, 0.15, typeof(BottleIchor)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(SentinelSpider), true, 0.15, typeof(BottleIchor)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(Navrey), true, 0.50, typeof(BottleIchor), typeof(SpiderCarapace)));
-
-            //Reflective wolf eye
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(LeatherWolf), true, 0.20, typeof(ReflectiveWolfEye)));
-
-            //Faery Dust - drop from silver sapling mini champ
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(FairyDragon), true, "Abyss", 0.25, typeof(FaeryDust)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(Pixie), true, "Abyss", 0.25, typeof(FaeryDust)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(SAPixie), true, "Abyss", 0.25, typeof(FaeryDust)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(Wisp), true, "Abyss", 0.25, typeof(FaeryDust)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(DarkWisp), true, "Abyss", 0.25, typeof(FaeryDust)));
-
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(FairyDragon), true, "Abyss", 0.25, typeof(FeyWings)));
-
-            //Boura Pelt
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(RuddyBoura), true, 0.05, typeof(BouraPelt)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(LowlandBoura), true, 0.05, typeof(BouraPelt)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(HighPlainsBoura), true, 1.00, typeof(BouraPelt)));
-
-            //Silver snake skin
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", 0.10, typeof(SilverSnakeSkin)));
-
-            //Harpsichord Roll / Not an ingredient
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), true, "TerMur", 0.01, typeof(HarpsichordRoll)));
-
-            //Void Orb/Vial of Vitriol
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseVoidCreature), true, 0.05, typeof(VoidOrb)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(UnboundEnergyVortex), true, 0.25, typeof(VoidOrb), typeof(VialOfVitriol)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(AcidSlug), true, 0.10, typeof(VialOfVitriol)));
-
-            //Slith Tongue
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(Slith), true, 0.05, typeof(SlithTongue)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(StoneSlith), true, 0.05, typeof(SlithTongue)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(ToxicSlith), true, 0.05, typeof(SlithTongue)));
-
-            //Raptor Teeth
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(Raptor), true, 0.05, typeof(RaptorTeeth)));
-
-            //Daemon Claw
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(FireDaemon), true, 0.60, typeof(DaemonClaw)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(FireDaemonRenowned), true, 1.00, typeof(DaemonClaw)));
-
-            //Goblin Blood
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(GreenGoblin), true, 0.10, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(GreenGoblinAlchemist), true, 0.10, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(GreenGoblinScout), true, 0.10, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(GrayGoblin), true, 0.10, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(GrayGoblinKeeper), true, 0.10, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(GrayGoblinMage), true, 0.10, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(EnslavedGoblinKeeper), true, 0.25, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(EnslavedGoblinMage), true, 0.25, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(EnslavedGoblinScout), true, 0.25, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(EnslavedGrayGoblin), true, 0.25, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(EnslavedGreenGoblin), true, 0.25, typeof(GoblinBlood)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(EnslavedGreenGoblinAlchemist), true, 0.25, typeof(GoblinBlood)));
-
-            //Lava Serpent Crust
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(LavaElemental), true, 0.25, typeof(LavaSerpentCrust)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(FireElementalRenowned), true, 1.00, typeof(LavaSerpentCrust)));
-
-            //Undying Flesh
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(UndeadGuardian), true, 0.10, typeof(UndyingFlesh)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(Niporailem), true, 1.0, typeof(UndyingFlesh)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(ChaosVortex), true, 0.25, typeof(UndyingFlesh)));
 
             //Crystaline Blackrock
             m_IngredientTable.Add(new IngredientDropEntry(typeof(AgapiteElemental), true, 0.25, typeof(CrystallineBlackrock)));
@@ -126,22 +57,8 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(ValoriteElemental), true, 0.25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(VeriteElemental), true, 0.25, typeof(CrystallineBlackrock)));
 
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(ChaosVortex), true, 0.25, typeof(ChagaMushroom)));
-
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Cavern of the Discarded", 0.10, typeof(DelicateScales),
-                typeof(ArcanicRuneStone), typeof(EssenceBalance), typeof(CrushedGlass), typeof(CrystallineBlackrock),
-                typeof(ElvenFletching), typeof(CrystalShards), typeof(Lodestone), typeof(AbyssalCloth), typeof(SeedOfRenewal)));
-
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Passage of Tears", 0.05, typeof(EssenceSingularity)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Fairy Dragon Lair", 0.05, typeof(EssenceDiligence)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Abyssal Lair", 0.05, typeof(EssenceAchievement)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Crimson Veins", 0.05, typeof(EssencePrecision)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Lava Caldera", 0.05, typeof(EssencePassion)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Fire Temple Ruins", 0.05, typeof(EssenceOrder)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Enslaved Goblins", 0.05, typeof(GoblinBlood), typeof(EssenceControl)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Lands of the Lich", 0.05, typeof(EssenceDirection)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Secret Garden", 0.05, typeof(EssenceFeeling)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Skeletal Dragon", 0.05, typeof(EssencePersistence)));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Cavern of the Discarded", 0.10,
+                typeof(CrystallineBlackrock), typeof(SeedOfRenewal)));
         }
 
         public static void OnCreatureDeath(Mobile creature, Mobile killer, Container corpse)
