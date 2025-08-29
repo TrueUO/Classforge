@@ -253,7 +253,6 @@ namespace Server.Engines.Points
             Entries[typeof(FrostwoodBoard)] = 3.0;
             Entries[typeof(BarkFragment)] = 1.60;
             Entries[typeof(LuminescentFungi)] = 2.0;
-            Entries[typeof(SwitchItem)] = 3.0;
             Entries[typeof(ParasiticPlant)] = 6.0;
             Entries[typeof(BrilliantAmber)] = 62.0;
 
@@ -402,7 +401,6 @@ namespace Server.Engines.Points
             Entries[typeof(ScrollofValiantCommendation)] = 5000.0;
 
             //Miscellaneous            
-            Entries[typeof(ParrotItem)] = 25.0;
             Entries[typeof(Gold)] = 0.01;
             Entries[typeof(RedScales)] = 0.10;
             Entries[typeof(YellowScales)] = 0.10;
@@ -414,7 +412,6 @@ namespace Server.Engines.Points
             Entries[typeof(ChampionSkull)] = 1000.0;
             Entries[typeof(ClockworkAssembly)] = 50.0;
 
-            Entries[typeof(DeadWood)] = 1.0;
             Entries[typeof(DustyPillow)] = 250.0;
             Entries[typeof(EndlessDecanter)] = 10.0;
             Entries[typeof(ExcellentIronMaiden)] = 50.0;
@@ -439,10 +436,6 @@ namespace Server.Engines.Points
             Entries[typeof(TaintedMushroom)] = 1000.0;
             Entries[typeof(GoldenSkull)] = 1000.0;
             Entries[typeof(HornOfPlenty)] = 2500.0;
-            Entries[typeof(KepetchWax)] = 500.0;
-            Entries[typeof(SlithEye)] = 500.0;
-            Entries[typeof(WhiteClothDyeTub)] = 300.0;
-            Entries[typeof(Lodestone)] = 75.0;
 
             //Treasure Hunting
             Entries[typeof(Lockpick)] = 0.10;

@@ -134,13 +134,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 1);
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new UndyingFlesh());          
-        }
-
         public Niporailem(Serial serial)
             : base(serial)
         {

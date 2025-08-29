@@ -5,15 +5,15 @@ using Server.Services.ClassSystem;
 
 namespace Server.Engines.Quests
 {
-    public class DoughtyWarriorsQuest : BaseQuest
+    public class NewClassQuest1 : BaseQuest
     {
-        public override QuestChain ChainID => QuestChain.DoughtyWarriors;
-        public override Type NextQuest => typeof(DoughtyWarriors2Quest);
+        public override QuestChain ChainID => QuestChain.NewClassQuest;
+        public override Type NextQuest => typeof(NewClassQuest2);
         public override bool DoneOnce => true;
 
-        public override object Title => "The Classforge";
+        public override object Title => "Kill sheep";
 
-        public override object Description => "Kill sheep";
+        public override object Description => "";
 
         public override object Refuse => "";
 
@@ -21,12 +21,12 @@ namespace Server.Engines.Quests
 
         public override object Complete => "";
 
-        public DoughtyWarriorsQuest()
+        public NewClassQuest1()
         {
             AddObjective(new SlayObjective(typeof(Sheep), "Sheep", 5));
 
             AddReward(new BaseReward("+25 XP"));
-            AddReward(new BaseReward("The famous sword: Life Stealer"));
+            AddReward(new BaseReward("A reward based on your Class"));
         }
 
         public override void GiveRewards()
@@ -35,19 +35,22 @@ namespace Server.Engines.Quests
 
             ClassSystemHelper.AwardXp(Owner, 25, "a quest");
 
-            Broadsword sword = new Broadsword
+            if (Owner.CharacterClass == CharacterClass.Warrior)
             {
-                Name = "Life Stealer",
-                WeaponAttributes =
+                Broadsword sword = new Broadsword
                 {
-                    HitLeechHits = 5
-                },
-                MaxHitPoints = 75,
-                HitPoints = 75,
-                Owner = Owner
-            };
+                    Name = "Life Stealer",
+                    WeaponAttributes =
+                    {
+                        HitLeechHits = 5
+                    },
+                    MaxHitPoints = 75,
+                    HitPoints = 75,
+                    Owner = Owner
+                };
 
-            Owner.AddToBackpack(sword);
+                Owner.AddToBackpack(sword);
+            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -63,36 +66,28 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class DoughtyWarriors2Quest : BaseQuest
+    public class NewClassQuest2 : BaseQuest
     {
-        public override QuestChain ChainID => QuestChain.DoughtyWarriors;
-        public override Type NextQuest => typeof(DoughtyWarriors3Quest);
+        public override QuestChain ChainID => QuestChain.NewClassQuest;
+        public override Type NextQuest => typeof(NewClassQuest3);
         public override bool DoneOnce => true;
 
-        /* Doughty Warriors */
-        public override object Title => 1075404;
+        public override object Title => "Kill mongbats";
 
-        /* You did great work. Thanks to you, my puppies are training harder than ever.
-         * I think they could actually take a mongbat now. I’m still worried they’ll 
-         * slack off, though. What say you to slaying some Imps for me now? Show them 
-         * how it’s really done? */
-        public override object Description => 1075405;
+        public override object Description => "";
 
-        /* You’re pretty sad. When I was a young warrior, I wasn’t one to walk away from a challenge. */
-        public override object Refuse => 1075407;
+        public override object Refuse => "";
 
-        /* You won’t find many imps on this continent. Mostly, they’re native to Ilshenar. Might be a
-         * few up around the hedge maze east of Skara Brae, though. */
-        public override object Uncomplete => 1075408;
+        public override object Uncomplete => "";
 
-        /* Hah! I knew you were up to the challenge. */
-        public override object Complete => 1075409;
+        public override object Complete => "";
 
-        public DoughtyWarriors2Quest()
+        public NewClassQuest2()
         {
-            AddObjective(new SlayObjective(typeof(Imp), "Imps", 10));
+            AddObjective(new SlayObjective(typeof(Mongbat), "Mongbats", 10));
 
-            AddReward(new BaseReward(1075406)); // Show them what a real warrior is REALLY made of!
+            AddReward(new BaseReward("+25 XP"));
+            AddReward(new BaseReward("A reward based on your Class"));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -108,34 +103,24 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class DoughtyWarriors3Quest : BaseQuest
+    public class NewClassQuest3 : BaseQuest
     {
-        public override QuestChain ChainID => QuestChain.DoughtyWarriors;
+        public override QuestChain ChainID => QuestChain.NewClassQuest;
         public override bool DoneOnce => true;
 
-        /* Doughty Warriors */
-        public override object Title => 1075410;
+        public override object Title => "Kill skeletons";
 
-        /* You’ve really inspired my trainees. They’re working harder than ever. I’ve got 
-         * one more request for you, and it’s a big one. Those mongbats didn’t pose a problem.
-         * You mowed down the imps with no trouble. But do you dare take on a couple of daemons? */
-        public override object Description => 1075411;
+        public override object Description => "";
 
-        /* What? You’re not scared of a couple of lousy daemons, are you? */
-        public override object Refuse => 1075413;
+        public override object Refuse => "";
 
-        /* There’s all kinds of daemons you can kill. There are some near the hedge maze,
-         * and some really powerful ones in Dungeon Doom. */
-        public override object Uncomplete => 1075414;
+        public override object Uncomplete => "";
 
-        /* Thanks for helping me out. You’re a real hero to my guards. Valor is its own reward,
-         * but maybe you wouldn’t mind wearing this sash. We don’t give these out to just 
-         * anyone, you know! */
-        public override object Complete => 1075415;
+        public override object Complete => "";
 
-        public DoughtyWarriors3Quest()
+        public NewClassQuest3()
         {
-            AddObjective(new SlayObjective(typeof(Daemon), "Daemons", 10));
+            AddObjective(new SlayObjective(typeof(Skeleton), "Skeletons", 10));
 
             AddReward(new BaseReward(typeof(SashOfMight), 1075412)); // Sash of Might
         }
@@ -155,7 +140,7 @@ namespace Server.Engines.Quests
 
     public class Kane : MondainQuester
     {
-        public override Type[] Quests => new[] { typeof( DoughtyWarriorsQuest ) };
+        public override Type[] Quests => [typeof(NewClassQuest1)];
 
         [Constructable]
         public Kane()

@@ -58,7 +58,7 @@ namespace Server.Items
 
                 if (item != null)
                 {
-                    if (item is VoidEssence || item is SilverSerpentVenom || item is ToxicVenomSac || item is ScouringToxin)
+                    if (item is SilverSerpentVenom || item is ScouringToxin)
                     {
                         item.Amount = 30;
                     }
@@ -87,8 +87,8 @@ namespace Server.Items
 
         private readonly Type[] m_Rewards =
         {
-            typeof(VoidEssence),        typeof(SilverSerpentVenom), typeof(ScouringToxin),
-            typeof(ToxicVenomSac),      typeof(MouldingBoard),      typeof(DoughBowl),
+            typeof(SilverSerpentVenom), typeof(ScouringToxin),
+            typeof(MouldingBoard),      typeof(DoughBowl),
             typeof(HornedTotemPole),    typeof(LargeSquarePillow),  typeof(LargeDiamondPillow),
             typeof(DustyPillow),        typeof(StatuePedestal),		typeof(FlouredBreadBoard),
             typeof(LuckyCoin)

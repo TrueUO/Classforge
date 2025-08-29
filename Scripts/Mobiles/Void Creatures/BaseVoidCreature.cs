@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -185,29 +184,6 @@ namespace Server.Mobiles
 
             ortanords.MoveToWorld(spawnLoc, Map);
             ortanords.BoltEffect(0);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            double baseChance = 0.02;
-            double chance = 0.0;
-
-            if (Stage > 0)
-            {
-                chance = baseChance * (Stage + 3);
-            }
-
-            if (Stage > 0 && Utility.RandomDouble() < chance)
-            {
-                c.DropItem(new VoidEssence());
-            }
-
-            if (Stage == 3 && Utility.RandomDouble() < 0.12)
-            {
-                c.DropItem(new VoidCore());
-            }
         }
 
         public override void Delete()

@@ -347,7 +347,7 @@ namespace Server.Engines.Craft
             new[] {typeof(HornedLeather), typeof(HornedHides)},
             new[] {typeof(BarbedLeather), typeof(BarbedHides)},
             new[] {typeof(BlankMap), typeof(BlankScroll)},
-            new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)},
+            new[] {typeof(Cloth), typeof(UncutCloth)},
             new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
             new[] {typeof(Pumpkin), typeof(SmallPumpkin)},
             new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
@@ -379,7 +379,7 @@ namespace Server.Engines.Craft
         private static readonly Type[] m_ColoredResourceTable =
         {
             typeof(Board), typeof(Log),
-            typeof(BaseIngot), typeof(BaseOre), typeof(BaseLeather), typeof(BaseHides), typeof(AbyssalCloth), typeof(UncutCloth), typeof(Cloth),
+            typeof(BaseIngot), typeof(BaseOre), typeof(BaseLeather), typeof(BaseHides), typeof(UncutCloth), typeof(Cloth),
             typeof(BaseGranite), typeof(BaseScales), typeof(PlantClippings), typeof(DryReeds), typeof(SoftenedReeds),
             typeof(PlantPigment), typeof(BaseContainer)
         };
@@ -1325,7 +1325,7 @@ namespace Server.Engines.Craft
                 return;
             }
 
-            if (item is Cloth || item is UncutCloth || item is AbyssalCloth)
+            if (item is Cloth || item is UncutCloth)
             {
                 m_ClothHue = item.Hue;
             }

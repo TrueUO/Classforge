@@ -1,5 +1,4 @@
 using System;
-using Server.Items;
 using Server.Mobiles;
 
 namespace Server.Engines.MiniChamps
@@ -44,14 +43,12 @@ namespace Server.Engines.MiniChamps
     public class MiniChampInfo
     {
         public MiniChampLevelInfo[] Levels { get; set; }
-        public Type EssenceType { get; set; }
 
         public int MaxLevel => Levels == null ? 0 : Levels.Length;
 
-        public MiniChampInfo(Type essenceType, params MiniChampLevelInfo[] levels)
+        public MiniChampInfo(params MiniChampLevelInfo[] levels)
         {
             Levels = levels;
-            EssenceType = essenceType;
         }
 
         public MiniChampLevelInfo GetLevelInfo(int level)
@@ -71,9 +68,7 @@ namespace Server.Engines.MiniChamps
         private static readonly MiniChampInfo[] m_Table = new MiniChampInfo[]
         {
             new MiniChampInfo // Crimson Veins
-            (
-                typeof(EssencePrecision),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(20, typeof(FireAnt)),
                     new MiniChampTypeInfo(10, typeof(LavaSnake)),
@@ -95,9 +90,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Fairy Dragon Lair
-            (
-                typeof(EssenceDiligence),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(25, typeof(FairyDragon))
                 ),
@@ -115,9 +108,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Abyssal Lair
-            (
-                typeof(EssenceAchievement),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(20, typeof(GreaterMongbat)),
                     new MiniChampTypeInfo(20, typeof(Imp))
@@ -136,9 +127,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Passage of Tears
-            (
-                typeof(EssenceSingularity),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(10, typeof(AcidSlug)),
                     new MiniChampTypeInfo(20, typeof(CorrosiveSlime))
@@ -157,9 +146,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Lands of the Lich
-            (
-                typeof(EssenceDirection),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(5, typeof(Wraith)),
                     new MiniChampTypeInfo(10, typeof(Spectre)),
@@ -186,9 +173,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Secret Garden
-            (
-                typeof(EssenceFeeling),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(20, typeof(Pixie))
                 ),
@@ -206,9 +191,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Fire Temple Ruins
-            (
-                typeof(EssenceOrder),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(20, typeof(LavaSnake)),
                     new MiniChampTypeInfo(10, typeof(LavaLizard)),
@@ -231,9 +214,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Enslaved Goblins
-            (
-                typeof(EssenceControl),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(10, typeof(EnslavedGrayGoblin)),
                     new MiniChampTypeInfo(15, typeof(EnslavedGreenGoblin))
@@ -255,9 +236,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Skeletal Dragon
-            (
-                typeof(EssencePersistence),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(5, typeof(PatchworkSkeleton)),
                     new MiniChampTypeInfo(15, typeof(Skeleton))
@@ -282,9 +261,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Lava Caldera
-            (
-                typeof(EssencePassion),
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(10, typeof(LavaSnake)),
                     new MiniChampTypeInfo(10, typeof(LavaLizard)),
@@ -307,9 +284,7 @@ namespace Server.Engines.MiniChamps
                 )
             ),
             new MiniChampInfo // Meraktus the Tormented
-            (
-                null,
-                new MiniChampLevelInfo // Level 1
+            (new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(20, typeof(Minotaur))
                 ),
